@@ -23,8 +23,7 @@ function login(loginService) {
         core : function () {},
 
         loginEmail : function () {
-            /*loginService.doLoginEmail(login.vars.email, login.vars.password);*/
-            loginService.test.save({test : true});
+            loginService.doLoginEmail(login.vars.email, login.vars.password);
         },
 
         resetPassword : function () {
@@ -53,7 +52,7 @@ function login(loginService) {
 angular.module('login')
     .service('loginService', loginService);
 
-function loginService($window, dialogAlert, $resource, defineHost) {
+function loginService($window, dialogAlert) {
     return {
         signUp : function (email, password) {
             firebase.auth().createUserWithEmailAndPassword(email, password).then(function (data) {
@@ -149,9 +148,7 @@ function loginService($window, dialogAlert, $resource, defineHost) {
                     ok : 'OK!'
                 });
             });
-        },
-
-        test : $resource(defineHost.host+'login')
+        }
     }
 }
 })();

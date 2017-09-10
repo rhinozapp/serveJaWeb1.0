@@ -2,6 +2,10 @@
   "name": "rhinoz",
   "version": "1.1.1",
   "description": "rhinoz: An Ionic project",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
   "devDependencies": {
     "gulp": "^3.5.6",
     "gulp-clean-css": "^3.7.0",
@@ -36,6 +40,8 @@
     "gulp-uglify": "^3.0.0",
     "gulp-wrap": "^0.13.0",
     "method-override": "^2.3.9",
+    "mongodb": "^2.2.31",
+    "mongoose": "^4.11.10",
     "morgan": "^1.8.2"
   }
 }
