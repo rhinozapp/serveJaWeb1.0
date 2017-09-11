@@ -88,6 +88,7 @@ angular
                 },
                 children: []*/
             })
+
             .state({
                 name: 'user',
                 url: '/user',
@@ -95,11 +96,19 @@ angular
                 templateUrl: "templates/app/layout/layout.html",
                 children: [
                     {
-                        name: 'timeLine',
-                        url: '/timeLine',
-                        controller: 'timeLineController',
-                        controllerAs : 'timeLine',
-                        templateUrl: 'templates/modules/timeLine/timeLine.html'
+                        name: 'mainList',
+                        url: '/mainList',
+                        controller: 'mainListController',
+                        controllerAs : 'mainList',
+                        templateUrl: 'templates/modules/mainList/mainList.html'
+                    },
+
+                    {
+                        name: 'profile',
+                        url: '/profile',
+                        controller: 'profileController',
+                        controllerAs : 'profile',
+                        templateUrl: 'templates/modules/profile/profile.html'
                     }
                 ]
             });
@@ -139,13 +148,13 @@ angular
             window.scrollTo(0, 0);
             var userUID = $window.localStorage.userUID;
 
-            if ((toState.name.indexOf('timeLine') > -1) && userUID === undefined) {
+            if ((toState.name.indexOf('mainList') > -1) && userUID === undefined) {
                 e.preventDefault();
                 $state.go('login');
                 $window.localStorage.clear();
             }else if (toState.name === 'login' && userUID !== undefined) {
                 e.preventDefault();
-                $state.go('user.timeLine');
+                $state.go('user.mainList');
             }
         });
     });

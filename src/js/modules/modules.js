@@ -1,4 +1,5 @@
 angular.module('modules', [
-  'login',
-  'timeLine'
+    'login',
+    'profile',
+    'mainList'
 ]);

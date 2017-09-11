@@ -1,9 +1,69 @@
-<input type="text" ng-model="login.vars.email">
-<input type="password" ng-model="login.vars.password"><br>
-<input type="button" value="logar" ng-click="login.functions.loginEmail()">
-<input type="button" value="cadastrar-se" ng-click="login.functions.signUp()"><br>
-<a href="#" ng-click="login.functions.resetPassword()">esqueci minha senha</a>
+<div layout="column" layout-align="center center" style="background-color: #FBC02D; height: 100vh">
+    <h1 style="color: white">
+        RhinozApp
+    </h1>
 
-<br><br>
+    <div flex="80">
+        <md-card>
+            <!--<md-card-title>
+                <md-card-title-text>
+                    RhinozApp
+                </md-card-title-text>
+            </md-card-title>-->
 
-<input type="button" value="logar com facebook" ng-click="login.functions.loginFacebook()">
+            <md-card-content>
+                <form name="loginForm">
+                    <md-input-container class="md-block">
+                        <label>E-mail</label>
+                        <input name="email" ng-model="login.vars.email" required>
+                        <div ng-messages="loginForm.email.$error">
+                            <div ng-message="required">
+                                Insira um nome de usuário.
+                            </div>
+                            <div ng-message="userFound">
+                                Usuário não foi encontrado.
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Senha</label>
+                        <input name="password" ng-model="login.vars.password" type="password" required>
+                        <div ng-messages="loginForm.password.$error">
+                            <div ng-message="required">
+                                Insira sua senha.
+                            </div>
+                            <div ng-message="wrongPass">
+                                Senha incorreta.
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <div layout="row">
+                        <md-button
+                                flex="60"
+                                class="md-raised md-accent"
+                                ng-click="login.functions.signUp()">
+                            Criar conta
+                        </md-button>
+
+                        <md-button
+                                flex="40"
+                                class="md-raised md-primary"
+                                ng-click="login.functions.loginEmail()">
+                            Go!
+                        </md-button>
+                    </div>
+
+                    <div layout="row">
+                        <md-button flex="100"
+                                   class="md-raised"
+                                   style="background-color: #3b5998; color: white;"
+                                   ng-click="login.functions.loginFacebook()">
+                            Entrar com Facebook
+                        </md-button>
+                    </div>
+                </form>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

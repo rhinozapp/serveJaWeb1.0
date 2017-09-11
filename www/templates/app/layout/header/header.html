@@ -1,13 +1,25 @@
 <!--HEADER-->
 <md-toolbar class="md-primary">
     <div class="md-toolbar-tools">
-        <md-button class="md-icon-button" aria-label="Settings" ng-click="header.functions.openNav()">
+        <md-button class="md-icon-button" aria-label="Menu" ng-click="header.functions.openNav()">
             <md-icon class="icon-24">menu</md-icon>
         </md-button>
-        <h2>
-            <span>RhinozApp</span>
-        </h2>
+
         <span flex></span>
+
+        <md-button class="md-icon-button" aria-label="Favorite" ng-click="null">
+            <md-icon class="icon-24">star</md-icon>
+        </md-button>
+
+        <span flex></span>
+
+        <md-button class="md-icon-button" aria-label="Search" ng-click="null">
+            <md-icon class="icon-24">search</md-icon>
+        </md-button>
+
+        <!--<h2>
+            <span>RhinozApp</span>
+        </h2>-->
     </div>
 </md-toolbar>
 
@@ -25,13 +37,13 @@
     </md-toolbar>
 
     <md-list class="sideNav">
-        <!--OverView-->
+        <!--mainList-->
         <md-list-item
-                ui-sref="user.timeLine"
+                ui-sref="user.mainList"
                 ui-sref-active="current"
                 ng-click="header.functions.closeNav()">
             <md-icon class="icon-18">list</md-icon>
-            <p>timeline</p>
+            <p>Restaurantes / bares</p>
         </md-list-item>
 
         <!--Profile-->

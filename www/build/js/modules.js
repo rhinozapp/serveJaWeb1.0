@@ -1,8 +1,9 @@
 (function(){
 "use strict";
 angular.module('modules', [
-  'login',
-  'timeLine'
+    'login',
+    'profile',
+    'mainList'
 ]);
 
 })();
@@ -158,15 +159,15 @@ function loginService($window, dialogAlert) {
  * Created by guiga on 04/02/2017.
  */
 
-angular.module('timeLine', [])
-    .controller('timeLineController', timeLine);
+angular.module('mainList', [])
+    .controller('mainListController', mainListController);
 
-function timeLine(loginService) {
-    var timeLine = this;
+function mainListController(loginService) {
+    var mainList = this;
 
-    timeLine.vars = {};
+    mainList.vars = {};
 
-    timeLine.functions = {
+    mainList.functions = {
         core : function () {},
 
         logout : function () {
@@ -174,7 +175,16 @@ function timeLine(loginService) {
         }
     };
 
-    timeLine.functions.core();
+    mainList.functions.core();
 }
 
+})();
+(function(){
+"use strict";
+angular.module('profile', [])
+    .controller('profileController', profileController);
+
+function profileController(loginService) {
+    var profile = this;
+}
 })();
