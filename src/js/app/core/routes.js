@@ -5,25 +5,36 @@
 
 angular
     .module('core')
-    .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, stateHelperProvider) {
         $urlRouterProvider.otherwise('login');
         $locationProvider.html5Mode(false);
 
-        $stateProvider
-            .state('login', {
+        stateHelperProvider
+            .state({
+                name: 'login',
                 url: '/login',
                 controller: 'loginController',
-                controllerAs : 'login',
+                controllerAs: 'login',
                 templateUrl: 'templates/modules/login/login.html',
-                data: {
-                    /*css: 'build/css/login.css'*/
-                }
+                /*data: {
+                    css: 'build/css/login.css'
+                },
+                children: []*/
             })
-            .state('timeLine', {
-                url: '/timeLine',
-                controller: 'timeLineController',
-                controllerAs : 'timeLine',
-                templateUrl: 'templates/modules/timeLine/timeLine.html'
+            .state({
+                name: 'user',
+                url: '/user',
+                abstract: true,
+                templateUrl: "templates/app/layout/layout.html",
+                children: [
+                    {
+                        name: 'timeLine',
+                        url: '/timeLine',
+                        controller: 'timeLineController',
+                        controllerAs : 'timeLine',
+                        templateUrl: 'templates/modules/timeLine/timeLine.html'
+                    }
+                ]
             });
 
         // use the HTML5 History API

@@ -1,0 +1,54 @@
+<!--HEADER-->
+<md-toolbar class="md-primary">
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="header.functions.openNav()">
+            <md-icon class="icon-24">menu</md-icon>
+        </md-button>
+        <h2>
+            <span>RhinozApp</span>
+        </h2>
+        <span flex></span>
+    </div>
+</md-toolbar>
+
+
+<!--NAV-->
+<md-sidenav class="md-sidenav-left md-whiteframe-4dp" md-component-id="left">
+    <md-toolbar class="md-theme-light nav-background">
+        <!--<div class="md-toolbar-tools" ui-sref="user.profile" ui-sref-active="current" ng-click="header.functions.closeNav()">
+            <md-button class="md-icon-button">
+                <md-icon class="icon-24">person</md-icon>
+            </md-button>
+            <h2 ng-if="!header.vars.userProfile.displayName">Seu perfil</h2>
+            <h2 ng-if="header.vars.userProfile.displayName">{{header.vars.userProfile.displayName}}</h2>
+        </div>-->
+    </md-toolbar>
+
+    <md-list class="sideNav">
+        <!--OverView-->
+        <md-list-item
+                ui-sref="user.timeLine"
+                ui-sref-active="current"
+                ng-click="header.functions.closeNav()">
+            <md-icon class="icon-18">list</md-icon>
+            <p>timeline</p>
+        </md-list-item>
+
+        <!--Profile-->
+        <md-list-item
+                ui-sref="user.profile"
+                ui-sref-active="current"
+                ng-click="header.functions.closeNav()">
+            <md-icon class="icon-18">person</md-icon>
+            <p>Perfil</p>
+        </md-list-item>
+
+        <!--logOut-->
+        <md-list-item
+                ng-click="header.functions.doLogout()">
+            <md-icon class="icon-18">power_settings_new</md-icon>
+            <p>Sair</p>
+        </md-list-item>
+    </md-list>
+</md-sidenav>
+

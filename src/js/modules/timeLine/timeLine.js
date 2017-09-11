@@ -7,6 +7,7 @@ angular.module('timeLine', [])
 
 function timeLine(loginService) {
     var timeLine = this;
+
     timeLine.vars = {};
 
     timeLine.functions = {

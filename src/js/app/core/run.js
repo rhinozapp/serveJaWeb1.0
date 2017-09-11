@@ -32,7 +32,7 @@ angular
                 $window.localStorage.clear();
             }else if (toState.name === 'login' && userUID !== undefined) {
                 e.preventDefault();
-                $state.go('timeLine');
+                $state.go('user.timeLine');
             }
         });
     });
