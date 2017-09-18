@@ -26,13 +26,13 @@ angular
             window.scrollTo(0, 0);
             var userUID = $window.localStorage.userUID;
 
-            if ((toState.name.indexOf('timeLine') > -1) && userUID === undefined) {
+            if ((toState.name.indexOf('mainList') > -1) && userUID === undefined) {
                 e.preventDefault();
                 $state.go('login');
                 $window.localStorage.clear();
             }else if (toState.name === 'login' && userUID !== undefined) {
                 e.preventDefault();
-                $state.go('timeLine');
+                $state.go('user.mainList');
             }
         });
     });

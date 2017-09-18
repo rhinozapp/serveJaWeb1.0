@@ -13,8 +13,7 @@ function login(loginService) {
         core : function () {},
 
         loginEmail : function () {
-            /*loginService.doLoginEmail(login.vars.email, login.vars.password);*/
-            loginService.test.save({test : true});
+            loginService.doLoginEmail(login.vars.email, login.vars.password);
         },
 
         resetPassword : function () {

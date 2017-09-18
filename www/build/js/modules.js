@@ -1,8 +1,9 @@
 (function(){
 "use strict";
 angular.module('modules', [
-  'login',
-  'timeLine'
+    'login',
+    'profile',
+    'mainList'
 ]);
 
 })();
@@ -23,8 +24,7 @@ function login(loginService) {
         core : function () {},
 
         loginEmail : function () {
-            /*loginService.doLoginEmail(login.vars.email, login.vars.password);*/
-            loginService.test.save({test : true});
+            loginService.doLoginEmail(login.vars.email, login.vars.password);
         },
 
         resetPassword : function () {
@@ -53,7 +53,7 @@ function login(loginService) {
 angular.module('login')
     .service('loginService', loginService);
 
-function loginService($window, dialogAlert, $resource, defineHost) {
+function loginService($window, dialogAlert) {
     return {
         signUp : function (email, password) {
             firebase.auth().createUserWithEmailAndPassword(email, password).then(function (data) {
@@ -149,9 +149,7 @@ function loginService($window, dialogAlert, $resource, defineHost) {
                     ok : 'OK!'
                 });
             });
-        },
-
-        test : $resource(defineHost.host+'login')
+        }
     }
 }
 })();
@@ -161,14 +159,15 @@ function loginService($window, dialogAlert, $resource, defineHost) {
  * Created by guiga on 04/02/2017.
  */
 
-angular.module('timeLine', [])
-    .controller('timeLineController', timeLine);
+angular.module('mainList', [])
+    .controller('mainListController', mainListController);
 
-function timeLine(loginService) {
-    var timeLine = this;
-    timeLine.vars = {};
+function mainListController(loginService) {
+    var mainList = this;
 
-    timeLine.functions = {
+    mainList.vars = {};
+
+    mainList.functions = {
         core : function () {},
 
         logout : function () {
@@ -176,7 +175,16 @@ function timeLine(loginService) {
         }
     };
 
-    timeLine.functions.core();
+    mainList.functions.core();
 }
 
+})();
+(function(){
+"use strict";
+angular.module('profile', [])
+    .controller('profileController', profileController);
+
+function profileController(loginService) {
+    var profile = this;
+}
 })();

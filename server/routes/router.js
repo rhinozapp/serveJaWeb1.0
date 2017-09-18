@@ -9,8 +9,6 @@ exports.routes = function (app) {
         });
 
     //region Authentication Routes
-    var doLogin = require('./api/modules/login/doLogin');
-    app.post('/login', doLogin.doLogin);
     //endregion
 
     //region Response

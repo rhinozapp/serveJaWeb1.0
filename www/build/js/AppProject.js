@@ -5,6 +5,7 @@
  */
 
 var app = angular.module('RhinozApp',[
+    'layout',
     'core',
     'modules'
 ]);
@@ -71,25 +72,45 @@ angular
 
 angular
     .module('core')
-    .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, stateHelperProvider) {
         $urlRouterProvider.otherwise('login');
         $locationProvider.html5Mode(false);
 
-        $stateProvider
-            .state('login', {
+        stateHelperProvider
+            .state({
+                name: 'login',
                 url: '/login',
                 controller: 'loginController',
-                controllerAs : 'login',
+                controllerAs: 'login',
                 templateUrl: 'templates/modules/login/login.html',
-                data: {
-                    /*css: 'build/css/login.css'*/
-                }
+                /*data: {
+                    css: 'build/css/login.css'
+                },
+                children: []*/
             })
-            .state('timeLine', {
-                url: '/timeLine',
-                controller: 'timeLineController',
-                controllerAs : 'timeLine',
-                templateUrl: 'templates/modules/timeLine/timeLine.html'
+
+            .state({
+                name: 'user',
+                url: '/user',
+                abstract: true,
+                templateUrl: "templates/app/layout/layout.html",
+                children: [
+                    {
+                        name: 'mainList',
+                        url: '/mainList',
+                        controller: 'mainListController',
+                        controllerAs : 'mainList',
+                        templateUrl: 'templates/modules/mainList/mainList.html'
+                    },
+
+                    {
+                        name: 'profile',
+                        url: '/profile',
+                        controller: 'profileController',
+                        controllerAs : 'profile',
+                        templateUrl: 'templates/modules/profile/profile.html'
+                    }
+                ]
             });
 
         // use the HTML5 History API
@@ -127,14 +148,37 @@ angular
             window.scrollTo(0, 0);
             var userUID = $window.localStorage.userUID;
 
-            if ((toState.name.indexOf('timeLine') > -1) && userUID === undefined) {
+            if ((toState.name.indexOf('mainList') > -1) && userUID === undefined) {
                 e.preventDefault();
                 $state.go('login');
                 $window.localStorage.clear();
             }else if (toState.name === 'login' && userUID !== undefined) {
                 e.preventDefault();
-                $state.go('timeLine');
+                $state.go('user.mainList');
             }
+        });
+    });
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular
+    .module('core')
+    .config(function ($mdThemingProvider) {
+        $mdThemingProvider.theme('default')
+            .primaryPalette('yellow', {
+                'default' : '400'
+            })
+            .accentPalette('blue-grey', {
+                'default' : '400'
+            })
+            .warnPalette('orange');
+
+        $mdThemingProvider.enableBrowserColor({
+            hue: '200' // Default is '800'
         });
     });
 })();
@@ -210,4 +254,98 @@ angular
             }
         }
     });
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular.module('layout', []);
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular
+    .module('layout')
+    .directive('container', container);
+
+function container() {
+    return {
+        restrict: 'EA',
+        template: '<ui-view></ui-view>',
+        link: linkFunc,
+        bindToController: true
+    };
+    
+    function linkFunc() {}
+}
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular
+    .module('layout')
+    .directive('header', header);
+
+function header() {
+    return {
+        restrict: 'E',
+        templateUrl: 'templates/app/layout/header/header.html',
+        link: linkFunc,
+        controller: 'headerController',
+        controllerAs: 'header',
+        bindToController: true
+    };
+
+    function linkFunc(scope, el, attr, ctrl) {}
+}
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular
+    .module('layout')
+    .controller('headerController', headerController);
+
+function headerController(loginService, $mdSidenav) {
+    var header = this;
+    header.vars = {};
+
+    header.functions = {
+        core : function () {},
+
+        doLogout : function () {
+            loginService.doLogout();
+        },
+        
+        openNav : function () {
+            header.functions.buildToggler('left');
+            $mdSidenav('left').isOpen();
+        },
+
+        buildToggler : function (navID) {
+            $mdSidenav(navID)
+                .toggle()
+                .then(function () {});
+        },
+
+        closeNav : function () {
+            $mdSidenav('left')
+                .close()
+                .then(function () {});
+        }
+    };
+
+    header.functions.core();
+}
 })();

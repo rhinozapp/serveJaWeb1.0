@@ -3,6 +3,7 @@
  */
 
 var app = angular.module('RhinozApp',[
+    'layout',
     'core',
     'modules'
 ]);
