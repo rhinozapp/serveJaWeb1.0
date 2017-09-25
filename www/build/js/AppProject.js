@@ -169,11 +169,11 @@ angular
     .module('core')
     .config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('yellow', {
-                'default' : '400'
+            .primaryPalette('indigo', {
+                'default' : '900'
             })
-            .accentPalette('blue-grey', {
-                'default' : '400'
+            .accentPalette('orange', {
+                'default' : '900'
             })
             .warnPalette('orange');
 
