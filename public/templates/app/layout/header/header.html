@@ -1,0 +1,79 @@
+<!--HEADER-->
+<md-toolbar class="md-primary">
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="header.functions.openNav()">
+            <md-icon class="icon-24">menu</md-icon>
+        </md-button>
+        <h2>
+            <span>Seja bem vindo</span>
+        </h2>
+        <span flex></span>
+
+        <md-button class="md-icon-button" aria-label="logout" ng-click="header.functions.doLogout()">
+            <md-icon class="icon-24">power_settings_new</md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+
+
+<!--NAV-->
+<md-sidenav class="md-sidenav-left md-whiteframe-4dp" md-component-id="left">
+    <md-toolbar class="md-theme-light nav-background">
+        <!--<div class="md-toolbar-tools" ui-sref="user.profile" ui-sref-active="current" ng-click="header.functions.closeNav()">
+            <md-button class="md-icon-button">
+                <md-icon class="icon-24">person</md-icon>
+            </md-button>
+            <h2 ng-if="!header.vars.userProfile.displayName">Seu perfil</h2>
+            <h2 ng-if="header.vars.userProfile.displayName">{{header.vars.userProfile.displayName}}</h2>
+        </div>-->
+    </md-toolbar>
+
+    <md-content>
+        <md-list>
+            <!--Ferramenta-->
+            <md-subheader class="md-no-sticky">Ferramentas</md-subheader>
+
+            <md-list-item class="md-2-line" ui-sref="user.overview" ui-sref-active="current" ng-click="header.functions.closeNav()">
+                <md-icon class="icon-24">dashboard</md-icon>
+                <div class="md-list-item-text" layout="column">
+                    <h4>Overview</h4>
+                </div>
+            </md-list-item>
+            <md-divider></md-divider>
+
+            <md-list-item class="md-2-line" ui-sref="user.mainControl" ui-sref-active="current" ng-click="header.functions.closeNav()">
+                <md-icon class="icon-24">assessment</md-icon>
+                <div class="md-list-item-text" layout="column">
+                    <h4>Seu Controle</h4>
+                </div>
+            </md-list-item>
+            <md-divider></md-divider>
+
+            <md-list-item class="md-2-line" ui-sref="user.controlShared" ui-sref-active="current" ng-click="header.functions.closeNav()">
+                <md-icon class="icon-24">screen_share</md-icon>
+                <div class="md-list-item-text" layout="column">
+                    <h4>Controle compartilhado</h4>
+                </div>
+            </md-list-item>
+            <md-divider></md-divider>
+
+            <!--Sobre-->
+            <!--<div>
+                <md-subheader class="md-no-sticky">Sobre</md-subheader>
+                <md-list-item class="md-2-line" ng-click="null">
+                    <md-icon class="icon-24">info</md-icon>
+                    <div class="md-list-item-text" layout="column">
+                        <h4>Quem somos</h4>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-2-line" ng-click="null">
+                    <md-icon class="icon-24">extension</md-icon>
+                    <div class="md-list-item-text" layout="column">
+                        <h4>Como usar</h4>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </div>-->
+        </md-list>
+    </md-content>
+</md-sidenav>

@@ -1,0 +1,63 @@
+<div layout="row" layout-align="center center" class="login">
+    <md-card flex-xs="90"
+             flex-sm="70"
+             flex-md="50"
+             flex-lg="30"
+             flex-xl="30">
+         <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">
+                    RhinozAdmin
+                </span>
+
+                <span class="md-subhead">
+                    Seja bem vindo ao RhinozAdmin!<br>
+                    Por favor acesse com seu usuário e senha <br>
+                </span>
+            </md-card-title-text>
+        </md-card-title>
+
+        <md-card-content>
+            <form name="loginForm">
+                <md-input-container class="md-block">
+                    <label>E-mail</label>
+                    <input name="username" ng-model="login.vars.username" required>
+                    <div ng-messages="loginForm.username.$error">
+                        <div ng-message="required">
+                            Insira seu e-mail.
+                        </div>
+                        <div ng-message="userFound">
+                            Usuário não foi encontrado.
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Senha</label>
+                    <input name="password" ng-model="login.vars.password" type="password" required>
+                    <div ng-messages="loginForm.password.$error">
+                        <div ng-message="required">
+                            Insira sua senha.
+                        </div>
+                        <div ng-message="wrongPass">
+                            Senha incorreta.
+                        </div>
+                    </div>
+                </md-input-container>
+            </form>
+        </md-card-content>
+
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button class="md-raised md-primary" ng-click="login.functions.signUP()">
+                Cadastre-se
+            </md-button>
+            <div flex></div>
+
+            <md-button
+                    class="md-raised md-primary"
+                    ng-click="login.functions.loginAction()"
+                    ng-disabled="!login.vars.username || !login.vars.password">
+                GO!
+            </md-button>
+        </md-card-actions>
+    </md-card>
+</div>

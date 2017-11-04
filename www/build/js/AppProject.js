@@ -18,7 +18,6 @@ var app = angular.module('RhinozApp',[
 
 angular.module('core', [
     // Dependecies
-    'ionic',
     'ngAnimate',
     'ngAria',
     'ngMaterial',
@@ -27,8 +26,6 @@ angular.module('core', [
     'ngResource',
     'ngLocale',
 
-    'ngSanitize',
-
     'ui.router',
     'ct.ui.router.extras',
     'ui.router.stateHelper',
@@ -36,7 +33,7 @@ angular.module('core', [
     'uiRouterStyles',
     'angular-loading-bar',
 
-    'firebase'
+    'ngCordovaOauth'
 ]);
 
 })();
@@ -73,47 +70,34 @@ angular
 angular
     .module('core')
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider, stateHelperProvider) {
-        $urlRouterProvider.otherwise('login');
-        $locationProvider.html5Mode(false);
+        $urlRouterProvider.otherwise('/user/mainList');
 
-        stateHelperProvider
-            .state({
-                name: 'login',
-                url: '/login',
-                controller: 'loginController',
-                controllerAs: 'login',
-                templateUrl: 'templates/modules/login/login.html',
-                /*data: {
-                    css: 'build/css/login.css'
-                },
-                children: []*/
-            })
-
-            .state({
-                name: 'user',
+        $stateProvider
+            .state('user', {
                 url: '/user',
                 abstract: true,
                 templateUrl: "templates/app/layout/layout.html",
-                children: [
-                    {
-                        name: 'mainList',
-                        url: '/mainList',
-                        controller: 'mainListController',
-                        controllerAs : 'mainList',
-                        templateUrl: 'templates/modules/mainList/mainList.html'
-                    },
+            })
+            .state('user.mainList', {
+                url: '/mainList',
+                templateUrl: 'templates/modules/mainList/mainList.html',
+                controller: 'mainListController',
+                controllerAs : 'mainList'
+            })
+            .state('user.profile', {
+                url: '/profile',
+                templateUrl: 'templates/modules/profile/profile.html',
+                controller: 'profileController',
+                controllerAs : 'profile'
+            })
 
-                    {
-                        name: 'profile',
-                        url: '/profile',
-                        controller: 'profileController',
-                        controllerAs : 'profile',
-                        templateUrl: 'templates/modules/profile/profile.html'
-                    }
-                ]
+            .state('login', {
+                url: '/login',
+                templateUrl: 'templates/modules/login/login.html',
+                controller: 'loginController',
+                controllerAs: 'login',
             });
 
-        // use the HTML5 History API
         $locationProvider.html5Mode(false);
     });
 
@@ -126,23 +110,7 @@ angular
 
 angular
     .module('core')
-    .run(function($ionicPlatform, $rootScope, $window, $state) {
-        $ionicPlatform.ready(function() {
-            if(window.cordova && window.cordova.plugins.Keyboard) {
-                // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-                // for form inputs)
-                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-
-                // Don't remove this line unless you know what you are doing. It stops the viewport
-                // from snapping when text inputs are focused. Ionic handles this internally for
-                // a much nicer keyboard experience.
-                cordova.plugins.Keyboard.disableScroll(true);
-            }
-            if(window.StatusBar) {
-                StatusBar.styleDefault();
-            }
-        });
-
+    .run(function($rootScope, $window, $state) {
         $rootScope.$on('$stateChangeStart', function (e, toState) {
             // Set scroll to 0
             window.scrollTo(0, 0);
@@ -188,7 +156,7 @@ angular
     .module('core')
     .service('defineHost', function () {
         return {
-            host : 'http://localhost:80/'
+            host : 'http://192.168.1.105:80/'
         };
     });
 })();
@@ -271,27 +239,6 @@ angular.module('layout', []);
 
 angular
     .module('layout')
-    .directive('container', container);
-
-function container() {
-    return {
-        restrict: 'EA',
-        template: '<ui-view></ui-view>',
-        link: linkFunc,
-        bindToController: true
-    };
-    
-    function linkFunc() {}
-}
-})();
-(function(){
-"use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
-angular
-    .module('layout')
     .directive('header', header);
 
 function header() {
@@ -347,5 +294,26 @@ function headerController(loginService, $mdSidenav) {
     };
 
     header.functions.core();
+}
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular
+    .module('layout')
+    .directive('container', container);
+
+function container() {
+    return {
+        restrict: 'EA',
+        template: '<ui-view></ui-view>',
+        link: linkFunc,
+        bindToController: true
+    };
+    
+    function linkFunc() {}
 }
 })();

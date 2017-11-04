@@ -15,14 +15,18 @@
             <input class="login__input" type="password" name="password" ng-model="login.vars.password" required placeholder="senha">
 
             <div layout="row" style="margin-top: 40px">
-                <md-button flex="50" class="md-accent md-raised" ng-click="login.functions.loginEmail()">Login</md-button>
+                <div flex="50">
+                    <md-button class="md-accent md-raised" ng-click="login.functions.loginEmail()">Login</md-button>
+                </div>
+
                 <div flex></div>
 
-                <md-button flex="50" class="md-primary md-raised" ng-click="login.functions.loginFacebook()">facebook</md-button>
+                <div flex="50">
+                    <md-button class="md-primary md-raised" ng-click="login.functions.loginFacebook()">facebook</md-button>
+                </div>
             </div>
 
-
-            <button class="login__btn login__btn--create">Não tem um conta? Crie agora!</button>
+            <button class="login__btn login__btn--create" ng-click="login.functions.signUp()">Não tem um conta? Crie agora!</button>
         </form>
     </div>
 </div>
