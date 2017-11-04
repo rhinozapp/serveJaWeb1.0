@@ -17,6 +17,7 @@
     "ui-router-extras": "0.1.0",
     "angular-loading-bar": "0.8.0",
     "moment": "2.11.2",
-    "angularfire": "^2.3.0"
+    "angularfire": "^2.3.0",
+    "ng-cordova-oauth": "^0.3.0"
   }
 }

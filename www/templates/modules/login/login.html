@@ -1,69 +1,32 @@
-<div layout="column" layout-align="center center" style="background-color: #FBC02D; height: 100vh">
-    <h1 style="color: white">
-        RhinozApp
-    </h1>
+<div class="login center">
+    <div class="login__blur"></div>
 
-    <div flex="80">
-        <md-card>
-            <!--<md-card-title>
-                <md-card-title-text>
-                    RhinozApp
-                </md-card-title-text>
-            </md-card-title>-->
+    <div class="center">
+        <h1 class="login__title">
+            <img class="login__logo"
+                 src="http://fayettevilleyouthwrestling.com/wp-content/uploads/2014/11/rhino800.png"
+                 alt="logotipo do RhinozApp">
+            RhinozApp
+        </h1>
 
-            <md-card-content>
-                <form name="loginForm">
-                    <md-input-container class="md-block">
-                        <label>E-mail</label>
-                        <input name="email" ng-model="login.vars.email" required>
-                        <div ng-messages="loginForm.email.$error">
-                            <div ng-message="required">
-                                Insira um nome de usuário.
-                            </div>
-                            <div ng-message="userFound">
-                                Usuário não foi encontrado.
-                            </div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container class="md-block">
-                        <label>Senha</label>
-                        <input name="password" ng-model="login.vars.password" type="password" required>
-                        <div ng-messages="loginForm.password.$error">
-                            <div ng-message="required">
-                                Insira sua senha.
-                            </div>
-                            <div ng-message="wrongPass">
-                                Senha incorreta.
-                            </div>
-                        </div>
-                    </md-input-container>
+        <form class="login__form" name="loginForm">
+            <input class="login__input" type="email" name="email" ng-model="login.vars.email" required placeholder="e-mail">
 
-                    <div layout="row">
-                        <md-button
-                                flex="60"
-                                class="md-raised md-accent"
-                                ng-click="login.functions.signUp()">
-                            Criar conta
-                        </md-button>
+            <input class="login__input" type="password" name="password" ng-model="login.vars.password" required placeholder="senha">
 
-                        <md-button
-                                flex="40"
-                                class="md-raised md-primary"
-                                ng-click="login.functions.loginEmail()">
-                            Go!
-                        </md-button>
-                    </div>
+            <div layout="row" style="margin-top: 40px">
+                <div flex="50">
+                    <md-button class="md-accent md-raised" ng-click="login.functions.loginEmail()">Login</md-button>
+                </div>
 
-                    <div layout="row">
-                        <md-button flex="100"
-                                   class="md-raised"
-                                   style="background-color: #3b5998; color: white;"
-                                   ng-click="login.functions.loginFacebook()">
-                            Entrar com Facebook
-                        </md-button>
-                    </div>
-                </form>
-            </md-card-content>
-        </md-card>
+                <div flex></div>
+
+                <div flex="50">
+                    <md-button class="md-primary md-raised" ng-click="login.functions.loginFacebook()">facebook</md-button>
+                </div>
+            </div>
+
+            <button class="login__btn login__btn--create" ng-click="login.functions.signUp()">Não tem um conta? Crie agora!</button>
+        </form>
     </div>
 </div>

@@ -1,0 +1,56 @@
+// Material Icons
+@mixin material-icon($iconsize, $iconline) {
+  font-family: $material-font;
+  font-weight: normal;
+  font-style: normal;
+  font-size: $iconsize;
+  line-height: $iconline;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+@font-face {
+  font-family: $material-font;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'),
+  local('MaterialIcons-Regular'),
+  url('/files/fonts/material_icons/MaterialIcons-Regular.woff2') format('woff2'),
+  url('/files/fonts/material_icons/MaterialIcons-Regular.woff') format('woff');
+}
+
+.icon-12 {
+  @include material-icon(12px, 1);
+}
+
+.icon-18 {
+  @include material-icon(18px, 1);
+}
+
+.icon-22 {
+  @include material-icon(22px, 1);
+}
+
+.icon-24 {
+  @include material-icon(24px, 1);
+}
+
+.icon-26 {
+  @include material-icon(26px, 1);
+}
+
+.icon-28 {
+  @include material-icon(28px, 1);
+}
+
+.icon-30 {
+  @include material-icon(30px, 1);
+}
