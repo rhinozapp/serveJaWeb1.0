@@ -13,10 +13,13 @@ angular.module('core', [
     'uiRouterStyles',
     'angular-loading-bar',
 
+    'angular-jwt',
+
+    'ngFileUpload'
+
     /*
     'permission',
     'permission.ui',
-    'angular-jwt',
 
     'md.data.table',
 

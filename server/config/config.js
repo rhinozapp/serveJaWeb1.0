@@ -32,6 +32,8 @@ module.exports = function (app) {
     app.use('/static1', express.static('./www/'));
     app.use(cors({origin: 'http://localhost:80'}));
     app.use(cors({origin: 'http://localhost:8100'}));
+    app.use(cors({origin: 'http://maps.google.com'}));
+    app.use(cors({origin: 'https://viacep.com.br'}));
     app.use(cors());
     //endregion
 

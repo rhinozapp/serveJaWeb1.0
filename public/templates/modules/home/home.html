@@ -11,9 +11,16 @@
             <md-button aria-label="Quem somos">
                 Quem somos
             </md-button>
-            <md-button ui-sref="login" aria-label="Login">
-                Login
+
+            <md-button ng-click="home.functions.doLogin()" aria-label="Login">
+                Entrar
+            </md-button>
+
+            <md-button ng-click="home.functions.signUp()" aria-label="signUp">
+                Cadastre-se
             </md-button>
         </div>
     </md-toolbar>
+
+
 </md-content>

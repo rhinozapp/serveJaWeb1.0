@@ -25,10 +25,13 @@ angular.module('core', [
     'uiRouterStyles',
     'angular-loading-bar',
 
+    'angular-jwt',
+
+    'ngFileUpload'
+
     /*
     'permission',
     'permission.ui',
-    'angular-jwt',
 
     'md.data.table',
 
@@ -65,7 +68,7 @@ angular
         //region URLPROVIDER
         $urlRouterProvider.otherwise('/home');
 
-        $urlRouterProvider.when('/admin', '/admin/mainControl');
+        $urlRouterProvider.when('/admin', '/admin/profile');
         $urlRouterProvider.when('/home', '/');
         //endregion
 
@@ -81,18 +84,6 @@ angular
                 },
                 children: []*/
             })
-
-            .state({
-                name: 'login',
-				url: '/login',
-				controller: 'loginController',
-				controllerAs: 'login',
-				templateUrl: 'templates/modules/login/login.html',
-                data: {
-                    css: 'build/css/login.css'
-                },
-                children: []
-			})
 			.state({
                 name: 'admin',
                 url: '/admin',
@@ -106,6 +97,16 @@ angular
                         controller: 'mainControlController',
                         controllerAs: 'mainControl',
                         templateUrl: 'templates/modules/mainControl/mainControl.html'
+                    },
+                    //endregion
+
+                    //region Profile
+                    {
+                        name: 'profile',
+                        url: '/profile',
+                        controller: 'profileController',
+                        controllerAs: 'profile',
+                        templateUrl: 'templates/modules/profile/profile.html'
                     },
                     //endregion
                 ]
@@ -122,17 +123,25 @@ angular
 
 angular
     .module('core')
-    .run(function($rootScope, $window, $state) {
+    .run(function($rootScope, $window, $state, loginService, jwtHelper) {
         $rootScope.$on('$stateChangeStart', function (e, toState) {
             window.scrollTo(0, 0);
-            var userUID = $window.localStorage.userUID;
-            if ((toState.name.indexOf('admin') > -1) && userUID === undefined) {
+            var token = $window.localStorage.token;
+
+            if (token !== undefined) {
+                var bool = jwtHelper.isTokenExpired(token);
+                if (bool === true) {
+                    loginService.doLogout();
+                }
+            }
+
+            if ((toState.name.indexOf('admin') > -1) && token === undefined) {
                 e.preventDefault();
-                $state.go('login');
+                $state.go('home');
                 $window.localStorage.clear();
-            }else if (toState.name === 'login' && userUID !== undefined) {
+            }else if (toState.name === 'home' && token !== undefined) {
                 e.preventDefault();
-                $state.go('admin.mainControl');
+                $state.go('admin.profile');
             }
         });
     });
@@ -221,6 +230,19 @@ angular
 "use strict";
 angular
     .module('core')
+    .service('profileGet', function ($window, jwtHelper) {
+        var profile = jwtHelper.decodeToken($window.localStorage.token);
+        return {
+            id : profile.id,
+            email: profile.email,
+            name : profile.name
+        }
+    });
+})();
+(function(){
+"use strict";
+angular
+    .module('core')
     .service('getLatLong', function ($http) {
         return {
             getData : function (zipCode) {
@@ -259,7 +281,7 @@ angular
             }
         };
     })
-    .service('zipCodeSearch', function (getLatLong, getAddress) {
+    .service('zipCodeSearch', function (getLatLong, getAddress, $resource) {
         return {
             getData : function (allAddress) {
                 return new Promise((success => {
@@ -275,7 +297,8 @@ angular
                         });
                     });
                 }));
-            }
+            },
+            getDataBack : $resource('web/zipCode')
         };
     });
 })();
@@ -341,7 +364,7 @@ angular
     .module('layout')
     .controller('headerController', headerController);
 
-function headerController(loginService, $mdSidenav, profileGet) {
+function headerController(loginService, profileGet) {
     var header = this;
     header.vars = {};
 
@@ -351,28 +374,11 @@ function headerController(loginService, $mdSidenav, profileGet) {
         },
 
         profile : function () {
-            header.vars.userProfile = profileGet.currentUser;
+            header.vars.userProfile = profileGet;
         },
 
         doLogout : function () {
             loginService.doLogout();
-        },
-        
-        openNav : function () {
-            header.functions.buildToggler('left');
-            $mdSidenav('left').isOpen();
-        },
-
-        buildToggler : function (navID) {
-            $mdSidenav(navID)
-                .toggle()
-                .then(function () {});
-        },
-
-        closeNav : function () {
-            $mdSidenav('left')
-                .close()
-                .then(function () {});
         }
     };
 

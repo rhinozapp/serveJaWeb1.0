@@ -1,8 +1,9 @@
 # Created by https://www.gitignore.io/api/node,sass,bower,angular,webstorm,apachecordova
 
 ###My Folders and Files###
-/log
+/log/server/*
 /OldRhinoz
+/public/files/logoProfile/*
 
 ### Angular ###
 ## Angular ##
