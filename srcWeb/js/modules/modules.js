@@ -1,4 +1,5 @@
 angular.module('modules', [
     'home',
-    'login'
+    'mainControl',
+    'profile'
 ]);

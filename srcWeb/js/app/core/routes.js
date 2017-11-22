@@ -7,7 +7,7 @@ angular
         //region URLPROVIDER
         $urlRouterProvider.otherwise('/home');
 
-        $urlRouterProvider.when('/admin', '/admin/mainControl');
+        $urlRouterProvider.when('/admin', '/admin/profile');
         $urlRouterProvider.when('/home', '/');
         //endregion
 
@@ -23,18 +23,6 @@ angular
                 },
                 children: []*/
             })
-
-            .state({
-                name: 'login',
-				url: '/login',
-				controller: 'loginController',
-				controllerAs: 'login',
-				templateUrl: 'templates/modules/login/login.html',
-                data: {
-                    css: 'build/css/login.css'
-                },
-                children: []
-			})
 			.state({
                 name: 'admin',
                 url: '/admin',
@@ -48,6 +36,16 @@ angular
                         controller: 'mainControlController',
                         controllerAs: 'mainControl',
                         templateUrl: 'templates/modules/mainControl/mainControl.html'
+                    },
+                    //endregion
+
+                    //region Profile
+                    {
+                        name: 'profile',
+                        url: '/profile',
+                        controller: 'profileController',
+                        controllerAs: 'profile',
+                        templateUrl: 'templates/modules/profile/profile.html'
                     },
                     //endregion
                 ]

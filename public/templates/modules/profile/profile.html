@@ -1,0 +1,471 @@
+<div layout="row"
+     layout-align="center center"
+     layout-padding
+     ng-if="profile.vars.charge">
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+
+<md-content ng-if="!profile.vars.charge">
+    <md-subheader class="md-primary">Edite abaixo seu perfil</md-subheader>
+
+    <md-button
+            class="md-fab md-primary buttonFixedRight"
+            aria-label="refresh"
+            ng-click="profile.functions.upload()">
+        <md-icon class="icon-24">save</md-icon>
+
+        <md-tooltip>
+            Salvar alterações
+        </md-tooltip>
+    </md-button>
+
+    <div layout="row" layout-align="start start">
+
+        <div layout="column" flex="50">
+            <md-card flex="100">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Seu perfil</span>
+                    </md-card-title-text>
+                </md-card-title>
+
+                <md-card-content layout-padding>
+                    <div layout="row">
+                        <div flex="30">
+                            <img ng-if="profile.vars.logoPath && !profile.vars.files" ng-src="files/logoProfile/{{profile.vars.logoPath}}" class="avatar-profile" alt="" />
+
+                            <img ng-if="profile.vars.files" class="avatar-profile" ngf-thumbnail="profile.vars.files || '/thumb.jpg'">
+                        </div>
+
+                        <div flex="70">
+                            <input class="ng-hide"
+                                   id="input-file-id"
+                                   type="file"
+                                   name="files"
+                                   ng-model="profile.vars.files"
+
+                                   ngf-select
+                                   ngf-pattern="'image/*'"
+                                   ngf-accept="'image/*'"
+                                   ngf-multiple="false">
+
+                            <label for="input-file-id"
+                                   class="md-button md-raised md-accent">
+                                trocar logo
+                            </label>
+                            <md-input-container class="md-block"
+                                                flex="40"
+                                                style="margin: 0; top: 13px; left: 5px;">
+                                <label>Insira aqui seu logo</label>
+                                <input name="files-name"
+                                       ng-model="profile.vars.filesName"
+                                       readonly>
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <div layout="row" layout-wrap layout-align="start start">
+                        <md-input-container flex="50">
+                            <label>Nome</label>
+                            <input name="name"
+                                   ng-model="profile.vars.name"
+                                   type="text"
+                                   required>
+
+                            <div ng-messages="adminSignUp.name.$error" role="alert">
+                                <div ng-message="required">Nome não pode ser vazio.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container flex="100">
+                            <label>Escreva uma breve descrição do seu bar/restaurante</label>
+                            <textarea ng-model="profile.vars.description" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                        </md-input-container>
+
+                        <md-input-container flex="50">
+                            <label>Página no facebook</label>
+                            <input type="text"
+                                   name="pageFacebook"
+                                   ng-model="profile.vars.pageFacebook">
+                        </md-input-container>
+
+                        <md-input-container flex="50">
+                            <label>Web site</label>
+                            <input type="text"
+                                   name="webSite"
+                                   ng-model="profile.vars.webSite">
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+
+            </md-card>
+
+            <md-card flex="100">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Endereço</span>
+                    </md-card-title-text>
+                </md-card-title>
+
+                <md-card-content layout-padding>
+                    <div layout="row">
+                        <md-input-container flex="30">
+                            <label>CEP</label>
+                            <input type="text"
+                                   name="zipCode"
+                                   ng-model="profile.vars.zipCode"
+                                   ng-change="profile.functions.zipCodeChange()"
+                                   required>
+
+                            <div ng-messages="adminSignUp.zipCode.$error">
+                                <div ng-message="required">CEP não pode estar vazio.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container flex="50">
+                            <label>Rua</label>
+                            <input type="text" name="address" ng-model="profile.vars.address" required>
+
+                            <div ng-messages="adminSignUp.address.$error">
+                                <div ng-message="required">Rua não pode estar vazia.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container flex="20">
+                            <label>Nº</label>
+                            <input type="text" ng-model="profile.vars.number">
+                        </md-input-container>
+                    </div>
+
+                    <div layout="row">
+                        <md-input-container flex="30">
+                            <label>Complemento</label>
+                            <input type="text" ng-model="profile.vars.complement">
+                        </md-input-container>
+
+                        <md-input-container flex="30">
+                            <label>Bairro</label>
+                            <input type="text" name="neighborhood" ng-model="profile.vars.neighborhood" required>
+
+                            <div ng-messages="adminSignUp.neighborhood.$error">
+                                <div ng-message="required">Bairro não pode estar vazio.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container flex="30">
+                            <label>Cidade</label>
+                            <input type="text" name="city" ng-model="profile.vars.city" required>
+
+                            <div ng-messages="adminSignUp.city.$error">
+                                <div ng-message="required">Cidade não pode estar vazia.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container flex="10">
+                            <label>UF</label>
+                            <md-select ng-model="profile.vars.uf">
+                                <md-option ng-repeat="data in profile.vars.listUF" ng-value="data" required>
+                                    {{data}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+
+        <div layout="row" flex="50" layout-wrap layout-align="start start">
+            <md-card flex="100">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Funcionamento</span>
+                    </md-card-title-text>
+                </md-card-title>
+
+                <md-card-content layout-padding>
+                    <div layout="column" layout-padding>
+                        <div flex="100">
+                            <div layout="row">
+                                <span flex="30">Domingo</span>
+
+                                <div flex></div>
+
+                                <div>
+                                    <md-checkbox ng-model="profile.vars.sundayClosed">
+                                        Fechado este dia?
+                                    </md-checkbox><br>
+                                    <md-checkbox ng-model="profile.vars.sundayAllDay">
+                                        Funciona 24h este dia?
+                                    </md-checkbox>
+                                </div>
+                            </div>
+
+                            <div layout="row">
+                                <md-input-container flex="30">
+                                    <label>Hora de abertura</label>
+                                    <md-select ng-model="profile.vars.sundayStart"
+                                               ng-disabled="profile.vars.sundayClosed || profile.vars.sundayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Hora de fechamento</label>
+                                    <md-select ng-model="profile.vars.sundayEnd"
+                                               ng-disabled="profile.vars.sundayClosed || profile.vars.sundayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <md-divider></md-divider>
+                        </div>
+
+                        <div flex="100">
+                            <div layout="row">
+                                <span flex="30">Segunda</span>
+
+                                <div flex></div>
+
+                                <div>
+                                    <md-checkbox ng-model="profile.vars.mondayClosed">
+                                        Fechado este dia?
+                                    </md-checkbox><br>
+                                    <md-checkbox ng-model="profile.vars.mondayAllDay">
+                                        Funciona 24h este dia?
+                                    </md-checkbox>
+                                </div>
+                            </div>
+
+                            <div layout="row">
+                                <md-input-container flex="30">
+                                    <label>Hora de abertura</label>
+                                    <md-select ng-model="profile.vars.mondayStart"
+                                               ng-disabled="profile.vars.mondayClosed || profile.vars.mondayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Hora de fechamento</label>
+                                    <md-select ng-model="profile.vars.mondayEnd"
+                                               ng-disabled="profile.vars.mondayClosed || profile.vars.mondayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <md-divider></md-divider>
+                        </div>
+
+                        <div flex="100">
+                            <div layout="row">
+                                <span flex="30">Terça</span>
+
+                                <div flex></div>
+
+                                <div>
+                                    <md-checkbox ng-model="profile.vars.tuesdayClosed">
+                                        Fechado este dia?
+                                    </md-checkbox><br>
+                                    <md-checkbox ng-model="profile.vars.tuesdayAllDay">
+                                        Funciona 24h este dia?
+                                    </md-checkbox>
+                                </div>
+                            </div>
+
+                            <div layout="row">
+                                <md-input-container flex="30">
+                                    <label>Hora de abertura</label>
+                                    <md-select ng-model="profile.vars.tuesdayStart"
+                                               ng-disabled="profile.vars.tuesdayClosed || tuesdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Hora de fechamento</label>
+                                    <md-select ng-model="profile.vars.tuesdayEnd"
+                                               ng-disabled="profile.vars.tuesdayClosed || tuesdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <md-divider></md-divider>
+                        </div>
+
+                        <div flex="100">
+                            <div layout="row">
+                                <span flex="30">Quarta</span>
+
+                                <div flex></div>
+
+                                <div>
+                                    <md-checkbox ng-model="profile.vars.wednesdayClosed">
+                                        Fechado este dia?
+                                    </md-checkbox><br>
+                                    <md-checkbox ng-model="profile.vars.wednesdayAllDay">
+                                        Funciona 24h este dia?
+                                    </md-checkbox>
+                                </div>
+                            </div>
+
+                            <div layout="row">
+                                <md-input-container flex="30">
+                                    <label>Hora de abertura</label>
+                                    <md-select ng-model="profile.vars.wednesdayStart"
+                                               ng-disabled="profile.vars.wednesdayClosed || profile.vars.wednesdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Hora de fechamento</label>
+                                    <md-select ng-model="profile.vars.wednesdayEnd"
+                                               ng-disabled="profile.vars.wednesdayClosed || profile.vars.wednesdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <md-divider></md-divider>
+                        </div>
+
+                        <div flex="100">
+                            <div layout="row">
+                                <span flex="30">Quinta</span>
+
+                                <div flex></div>
+
+                                <div>
+                                    <md-checkbox ng-model="profile.vars.thursdayClosed">
+                                        Fechado este dia?
+                                    </md-checkbox><br>
+                                    <md-checkbox ng-model="profile.vars.thursdayAllDay">
+                                        Funciona 24h este dia?
+                                    </md-checkbox>
+                                </div>
+                            </div>
+
+                            <div layout="row">
+                                <md-input-container flex="30">
+                                    <label>Hora de abertura</label>
+                                    <md-select ng-model="profile.vars.thursdayStart"
+                                               ng-disabled="profile.vars.thursdayClosed || profile.vars.thursdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Hora de fechamento</label>
+                                    <md-select ng-model="profile.vars.thursdayEnd"
+                                               ng-disabled="profile.vars.thursdayClosed || profile.vars.thursdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <md-divider></md-divider>
+                        </div>
+
+                        <div flex="100">
+                            <div layout="row">
+                                <span flex="30">Sexta</span>
+
+                                <div flex></div>
+
+                                <div>
+                                    <md-checkbox ng-model="profile.vars.fridayClosed">
+                                        Fechado este dia?
+                                    </md-checkbox><br>
+                                    <md-checkbox ng-model="profile.vars.fridayAllDay">
+                                        Funciona 24h este dia?
+                                    </md-checkbox>
+                                </div>
+                            </div>
+
+                            <div layout="row">
+                                <md-input-container flex="30">
+                                    <label>Hora de abertura</label>
+                                    <md-select ng-model="profile.vars.fridayStart"
+                                               ng-disabled="profile.vars.fridayClosed || profile.vars.fridayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Hora de fechamento</label>
+                                    <md-select ng-model="profile.vars.fridayEnd"
+                                               ng-disabled="profile.vars.fridayClosed || profile.vars.fridayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <md-divider></md-divider>
+                        </div>
+
+                        <div flex="100">
+                            <div layout="row">
+                                <span flex="30">Sábado</span>
+
+                                <div flex></div>
+
+                                <div>
+                                    <md-checkbox ng-model="profile.vars.saturdayClosed">
+                                        Fechado este dia?
+                                    </md-checkbox><br>
+                                    <md-checkbox ng-model="profile.vars.saturdayAllDay">
+                                        Funciona 24h este dia?
+                                    </md-checkbox>
+                                </div>
+                            </div>
+
+                            <div layout="row">
+                                <md-input-container flex="30">
+                                    <label>Hora de abertura</label>
+                                    <md-select ng-model="profile.vars.saturdayStart"
+                                               ng-disabled="profile.vars.saturdayClosed || profile.vars.saturdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Hora de fechamento</label>
+                                    <md-select ng-model="profile.vars.saturdayEnd"
+                                               ng-disabled="profile.vars.saturdayClosed || profile.vars.saturdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
+                                            {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <md-divider></md-divider>
+                        </div>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+</md-content>

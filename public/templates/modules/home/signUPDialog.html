@@ -25,7 +25,19 @@
                 </div>
 
                 <div layout="row">
-                    <md-input-container flex="100">
+                    <md-input-container flex="50">
+                        <label>Nome</label>
+                        <input name="name"
+                               ng-model="signUP.vars.name"
+                               type="text"
+                               required>
+
+                        <div ng-messages="adminSignUp.name.$error" role="alert">
+                            <div ng-message="required">Nome não pode ser vazio.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container flex="50">
                         <label>E-mail</label>
                         <input name="email"
                                ng-model="signUP.vars.username"
@@ -135,6 +147,7 @@
                    md-raised
                    ng-click="signUP.functions.signUPAction()"
                    ng-disabled="
+                   !signUP.vars.name ||
                    !signUP.vars.username ||
                    !signUP.vars.zipCode ||
                    !signUP.vars.address ||

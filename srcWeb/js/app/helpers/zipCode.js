@@ -38,7 +38,7 @@ angular
             }
         };
     })
-    .service('zipCodeSearch', function (getLatLong, getAddress) {
+    .service('zipCodeSearch', function (getLatLong, getAddress, $resource) {
         return {
             getData : function (allAddress) {
                 return new Promise((success => {
@@ -54,6 +54,7 @@ angular
                         });
                     });
                 }));
-            }
+            },
+            getDataBack : $resource('web/zipCode')
         };
     });

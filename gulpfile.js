@@ -115,7 +115,12 @@ gulp.task('vendorWeb', function () {
         bower + 'angular-ui-router/release/angular-ui-router.js',
         bower + 'ui-router-extras/release/ct-ui-router-extras.js',
         bower + 'angular-ui-router-styles/ui-router-styles.js',
-        bower + 'angular-ui-router.stateHelper/statehelper.js'
+        bower + 'angular-ui-router.stateHelper/statehelper.js',
+
+        bower + 'angular-jwt/dist/angular-jwt.js',
+
+        bower + 'ng-file-upload/ng-file-upload.js',
+        bower + 'ng-file-upload/ng-file-upload-shim.js'
     ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest(destWeb + 'js'));
