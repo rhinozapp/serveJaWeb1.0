@@ -17,11 +17,18 @@ angular
                 url: '/',
                 controller: 'homeController',
                 controllerAs: 'home',
-                templateUrl: 'templates/modules/home/home.html'
+                templateUrl: 'templates/modules/home/home.html',
                 /*data: {
                     css: 'build/css/home.css'
                 },
                 children: []*/
+            })
+            .state({
+                name : 'recoveryPassword',
+                url: '/recoveryPassword/:q',
+                controller: 'recoveryPasswordController',
+                controllerAs : 'recoveryPassword',
+                templateUrl: 'templates/modules/recoveryPassword/recoveryPassword.html'
             })
 			.state({
                 name: 'admin',
@@ -46,6 +53,16 @@ angular
                         controller: 'profileController',
                         controllerAs: 'profile',
                         templateUrl: 'templates/modules/profile/profile.html'
+                    },
+                    //endregion
+
+                    //region Profile
+                    {
+                        name: 'products',
+                        url: '/products',
+                        controller: 'productsController',
+                        controllerAs: 'products',
+                        templateUrl: 'templates/modules/products/products.html'
                     },
                     //endregion
                 ]

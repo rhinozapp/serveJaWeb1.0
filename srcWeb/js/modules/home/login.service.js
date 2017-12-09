@@ -12,9 +12,7 @@ angular.module('home')
 function loginService($window, $resource) {
     return {
         signUP : $resource('web/signUp'),
-
         doLogin: $resource('web/doLogin'),
-
         doLogout : function () {
             $window.localStorage.clear();
             $window.location.reload();

@@ -2,7 +2,9 @@
 "use strict";
 angular.module('modules', [
     'home',
+    'recoveryPassword',
     'mainControl',
+    'products',
     'profile'
 ]);
 })();
@@ -41,7 +43,7 @@ function home(dialogAdvanced) {
     home.functions.core();
 }
 
-function loginController(dialogAdvanced, loginService, dialogAlert, $window) {
+function loginController(dialogAdvanced, loginService, recoveryPasswordService, dialogAlert, $window) {
     var login = this;
     login.vars = {};
 
@@ -57,6 +59,34 @@ function loginController(dialogAdvanced, loginService, dialogAlert, $window) {
 
                         $window.localStorage.token = data.token;
                         $window.location.reload();
+                        break;
+
+                    case data.status === false:
+                        login.vars.alert = true;
+                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                        break;
+
+                    default:
+                        login.vars.alert = true;
+                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                }
+
+                if(login.vars.alert){
+                    dialogAlert.show({
+                        title : 'Atenção',
+                        content : login.vars.message,
+                        ok : 'Ok'
+                    });
+                }
+            });
+        },
+
+        recoveryPasswordSend : function () {
+            recoveryPasswordService.recoveryPasswordSend.save(login.vars, function (data) {
+                switch (true){
+                    case data.status === true:
+                        login.vars.alert = true;
+                        login.vars.message = 'Enviamos um link para recuperação de senha, veja seu e-mail e clique no link para alterá-la.';
                         break;
 
                     case data.status === false:
@@ -213,9 +243,7 @@ angular.module('home')
 function loginService($window, $resource) {
     return {
         signUP : $resource('web/signUp'),
-
         doLogin: $resource('web/doLogin'),
-
         doLogout : function () {
             $window.localStorage.clear();
             $window.location.reload();
@@ -251,6 +279,300 @@ function mainControl() {
     var mainControl = this;
 
     console.log(mainControl);
+}
+})();
+(function(){
+"use strict";
+angular.module('products', [])
+    .controller('productsController', products);
+
+function products($scope, $filter, productsService, profileGet, dialogAdvanced, dialogAlert, dialogConfirm) {
+    var products = this;
+    products.vars = {};
+
+    products.functions = {
+        core : function () {
+            products.functions.getCategory.getCategory();
+            products.functions.get.getProduct();
+            products.functions.search();
+            products.functions.defineVars();
+        },
+
+        defineVars : function () {
+            products.vars.filter = false;
+            products.vars.query = {
+                order: '-productName',
+                limit: 25,
+                page: 1
+            };
+        },
+
+        closeFilter : function () {
+            products.vars.filter = false;
+            products.vars.search = "";
+        },
+
+        search : function () {
+            $scope.$watch('products.vars.search', function (newvalue, oldvalue) {
+                if(newvalue < oldvalue){
+                    products.vars.listPassFilter = products.vars.listPass
+                }else{
+                    products.vars.listPassFilter = $filter('filter')(products.vars.listPassFilter, {
+                        title : newvalue
+                    });
+                }
+            });
+        },
+
+        get : {
+            getProduct : function () {
+                productsService.getProducts.save({id : profileGet.id}, products.functions.get.successGetProducts);
+            },
+
+            successGetProducts : function (data) {
+                products.vars.listProducts = data.data;
+                products.vars.listProductsFilter = products.vars.listProducts;
+
+                if(products.vars.listCategory){
+                    products.vars.listProductsFilter.forEach(function (valueProd) {
+                        products.vars.listCategory.forEach(function (valueCat) {
+                            if(valueProd.categoryID === valueCat._id){
+                                valueProd.nameCategory = valueCat.categoryName
+                            }
+                        });
+                    });
+                }
+            }
+        },
+
+        getCategory : {
+            getCategory : function () {
+                productsService.getCategory.save({id : profileGet.id}, products.functions.getCategory.successGetCategory);
+            },
+
+            successGetCategory : function (data) {
+                products.vars.listCategory = data.data;
+            }
+        },
+
+        saveProducts : function(data) {
+            dialogAdvanced.show({
+                controller : saveProductsController,
+                controllerAs : 'saveProducts',
+                templateUrl : 'templates/modules/products/saveProducts.html',
+                clickOutsideToClose : false,
+                dataToDialog : data,
+                functionThen : function (showSuccess) {
+                    if(showSuccess){
+                        dialogAlert.show({
+                            title : 'Sucesso!',
+                            content : 'Seu produto foi criado com sucesso!',
+                            ok : 'OK!'
+                        });
+                    }
+                    products.functions.get.getProduct();
+                }
+            });
+        },
+
+        createCategory : function() {
+            dialogAdvanced.show({
+                controller : saveCategoryController,
+                controllerAs : 'saveCategory',
+                templateUrl : 'templates/modules/products/saveCategory.html',
+                clickOutsideToClose : false
+            });
+        },
+
+        deleteProduct : function (data) {
+            dialogConfirm.show({
+                title : 'Atenção!',
+                textContent : 'Deseja realmente deletar este produto?',
+                ok : 'Sim',
+                cancel : 'Cancelar',
+                confirmFunction : function () {
+                    productsService.deleteProducts.save({id : data}, function () {
+                        dialogAlert.show({
+                            title : 'Produto deletado!',
+                            content : 'Seu produto foi deletado com sucesso.',
+                            ok : 'OK'
+                        });
+                        products.functions.get.getProduct();
+                    });
+                }
+            });
+        }
+    };
+
+    products.functions.core();
+}
+
+function saveProductsController(dialogAdvanced, toastAction, productsService, profileGet, data) {
+    var saveProducts = this;
+    saveProducts.vars = {};
+
+    saveProducts.functions = {
+        core : function () {
+            saveProducts.functions.defineVars();
+            saveProducts.functions.getCategory.getCategory();
+        },
+
+        defineVars : function () {
+            if(data){
+                saveProducts.vars = data;
+                saveProducts.vars.value = Number(saveProducts.vars.value);
+                saveProducts.vars.promotionValue = Number(saveProducts.vars.promotionValue);
+                saveProducts.vars.amount = Number(saveProducts.vars.amount);
+
+            }
+        },
+
+        hide : function (showSuccess) {
+            saveProducts.vars = {};
+            dialogAdvanced.hide(showSuccess);
+        },
+
+        cancel : function () {
+            saveProducts.vars = {};
+            dialogAdvanced.cancel();
+        },
+
+        getCategory : {
+            getCategory : function () {
+                productsService.getCategory.save({id : profileGet.id}, saveProducts.functions.getCategory.successGetCategory);
+            },
+
+            successGetCategory : function (data) {
+                saveProducts.vars.listCategory = data.data;
+            }
+        },
+
+        save : {
+            doSave : function () {
+                productsService.saveProducts.save({id : profileGet.id, data : saveProducts.vars}, saveProducts.functions.save.successSaveProducts);
+            },
+
+            successSaveProducts : function (data) {
+                saveProducts.functions.hide(true);
+            }
+        },
+
+        saveAndNew : {
+            doSave : function () {
+                productsService.saveProducts.save({id : profileGet.id, data : saveProducts.vars}, saveProducts.functions.saveAndNew.successSaveProducts);
+            },
+
+            successSaveProducts : function (data) {
+                toastAction.show({
+                    top : false,
+                    bottom : true,
+                    left : false,
+                    right : true,
+                    text : 'Produto salvo!',
+                    scope : saveProducts
+                });
+                saveProducts.vars = {};
+                saveProducts.functions.getCategory.getCategory();
+            }
+        }
+    };
+
+    saveProducts.functions.core();
+}
+
+function saveCategoryController(dialogAdvanced, productsService, profileGet) {
+    var saveCategory = this;
+    saveCategory.vars = {};
+
+    saveCategory.functions = {
+        core : function () {
+            saveCategory.functions.get.getCategory();
+            saveCategory.functions.defineVars();
+        },
+
+        defineVars : function () {
+            saveCategory.vars.filter = false;
+            saveCategory.vars.query = {
+                order: '-categoryName',
+                limit: 10,
+                page: 1
+            };
+        },
+
+        hide : function () {
+            saveCategory.vars = {};
+            dialogAdvanced.hide();
+        },
+
+        cancel : function () {
+            saveCategory.vars = {};
+            dialogAdvanced.cancel();
+        },
+
+        get : {
+            getCategory : function () {
+                productsService.getCategory.save({id : profileGet.id}, saveCategory.functions.get.successGetCategory);
+            },
+
+            successGetCategory : function (data) {
+                saveCategory.vars.listCategory = data.data;
+            }
+        },
+
+        save : {
+            doSave : function () {
+                productsService.saveCategory.save({id : profileGet.id, data : saveCategory.vars}, saveCategory.functions.save.successSave);
+            },
+
+            successSave : function (data) {
+                saveCategory.vars = {};
+                saveCategory.functions.core();
+            }
+        },
+
+        edit : {
+            selectEdit : function (data) {
+                saveCategory.vars.categoryID = data._id;
+                saveCategory.vars.categoryName = data.categoryName;
+                saveCategory.vars.editMode = true;
+            },
+
+            backToCreate : function () {
+                saveCategory.vars = {};
+                saveCategory.functions.core();
+            }
+        },
+
+        delete : {
+            deleteCategory : function (data) {
+                saveCategory.vars.categoryID = data._id;
+                productsService.deleteCategory.save(saveCategory.vars, saveCategory.functions.delete.successDeleteCategory);
+            },
+
+            successDeleteCategory : function () {
+                saveCategory.vars = {};
+                saveCategory.functions.core();
+            }
+        }
+    };
+
+    saveCategory.functions.core();
+}
+})();
+(function(){
+"use strict";
+angular.module('products')
+    .service('productsService', productsService);
+
+function productsService($resource) {
+    return {
+        saveProducts : $resource('web/saveProducts'),
+        getProducts : $resource('web/getProducts'),
+        deleteProducts : $resource('web/deleteProducts'),
+        saveCategory : $resource('web/saveCategory'),
+        getCategory : $resource('web/getCategory'),
+        deleteCategory : $resource('web/deleteCategory')
+    }
 }
 })();
 (function(){
@@ -489,6 +811,130 @@ function profileService($resource) {
     return {
         updateProfile : $resource('web/updateProfile'),
         getProfile : $resource('web/getProfile')
+    }
+}
+})();
+(function(){
+"use strict";
+angular.module('recoveryPassword', [])
+    .controller('recoveryPasswordController', recoveryPassword);
+
+function recoveryPassword($scope, recoveryPasswordService, dialogAlert, $stateParams, $state) {
+    var recoveryPassword = this;
+    recoveryPassword.vars = {};
+
+    if(!$stateParams.q){
+        $state.go('home');
+    }else{
+        recoveryPassword.functions = {
+            core : function () {
+                recoveryPassword.functions.defineVars();
+                recoveryPassword.functions.watchMatch();
+                recoveryPassword.functions.getHash.get();
+            },
+
+            defineVars : function () {
+                recoveryPassword.vars.hashRecovery = $stateParams.q;
+            },
+
+            watchMatch : function () {
+                $scope.$watchGroup(['recoveryPassword.vars.password', 'recoveryPassword.vars.repPassword'], function (value) {
+                    if(value[0] !== value[1]){
+                        $scope.formReset.password.$setValidity('notMatch', false);
+                        $scope.formReset.repPassword.$setValidity('notMatch', false);
+                    }else{
+                        $scope.formReset.password.$setValidity('notMatch', true);
+                        $scope.formReset.repPassword.$setValidity('notMatch', true);
+                    }
+                });
+            },
+
+            getHash : {
+                get : function () {
+                    recoveryPasswordService.recoveryPasswordGetHash.save(recoveryPassword.vars, recoveryPassword.functions.getHash.getSuccess);
+                },
+
+                getSuccess : function (data) {
+                    switch (true){
+                        case data.status === true:
+                            recoveryPassword.vars.alert = false;
+                            break;
+
+                        case data.status === false:
+                            recoveryPassword.vars.alert = true;
+                            break;
+
+                        default:
+                            recoveryPassword.vars.alert = true;
+                    }
+
+                    if(recoveryPassword.vars.alert){
+                        dialogAlert.show({
+                            title : 'Atenção',
+                            content : 'Você já atualizou sua senha, faça o login ou clique em "Esqueci minha senha"',
+                            ok : 'Ok'
+                        });
+
+                        $state.go('home');
+                    }
+                }
+            },
+
+            resetPassword : {
+                action : function () {
+                    recoveryPasswordService.recoveryPassword.save(recoveryPassword.vars, recoveryPassword.functions.resetPassword.recoverySuccess);
+                },
+
+                recoverySuccess : function (data) {
+                    switch (true){
+                        case data.status === true:
+                            recoveryPassword.vars.alert = true;
+                            recoveryPassword.vars.alertError = false;
+                            break;
+
+                        case data.status === false:
+                            recoveryPassword.vars.alert = false;
+                            recoveryPassword.vars.alertError = true;
+                            break;
+
+                        default:
+                            recoveryPassword.vars.alert = false;
+                            recoveryPassword.vars.alertError = true;
+                    }
+
+                    if(recoveryPassword.vars.alertError){
+                        dialogAlert.show({
+                            title : 'Atenção',
+                            content : 'Sua senha não foi atualizada, tente novamente"',
+                            ok : 'Ok'
+                        });
+                    }else if(recoveryPassword.vars.alert){
+                        dialogAlert.show({
+                            title : 'Atenção',
+                            content : 'Sua senha foi atualizada com sucesso! Faça o login com a nova senha"',
+                            ok : 'Ok'
+                        });
+
+                        $state.go('home');
+                    }
+                }
+            }
+        };
+
+        recoveryPassword.functions.core();
+    }
+}
+})();
+(function(){
+"use strict";
+angular.module('recoveryPassword')
+    .service('recoveryPasswordService', recoveryPasswordService);
+
+function recoveryPasswordService($resource) {
+    return {
+        recoveryPasswordSend: $resource('web/recoveryPasswordSend'),
+        recoveryPasswordGetHash: $resource('web/recoveryPasswordGetHash'),
+        recoveryPassword: $resource('web/recoveryPassword')
     }
 }
 })();

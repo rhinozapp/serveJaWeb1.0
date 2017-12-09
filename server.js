@@ -8,8 +8,8 @@ let express = require('express'),
 
 //region Config
 require('./server/config/config')(app);
-//require('./server/config/database/databaseConfig')('mongodb://localhost/' + appName);
-require('./server/config/database/databaseConfig')('mongodb://'+ dbUser +':'+ dbPassword + '@ds149335.mlab.com:49335/heroku_gzm8rnrq');
+require('./server/config/database/databaseConfig')('mongodb://localhost/' + appName);
+//require('./server/config/database/databaseConfig')('mongodb://'+ dbUser +':'+ dbPassword + '@ds149335.mlab.com:49335/heroku_gzm8rnrq');
 //endregion
 
 //region Start App

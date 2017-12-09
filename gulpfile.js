@@ -120,7 +120,9 @@ gulp.task('vendorWeb', function () {
         bower + 'angular-jwt/dist/angular-jwt.js',
 
         bower + 'ng-file-upload/ng-file-upload.js',
-        bower + 'ng-file-upload/ng-file-upload-shim.js'
+        bower + 'ng-file-upload/ng-file-upload-shim.js',
+
+        bower + 'angular-material-data-table/dist/md-data-table.js',
     ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest(destWeb + 'js'));
@@ -142,7 +144,8 @@ gulp.task('cssWeb', function () {
     console.log('Compiling the project CSS in Bower');
     return gulp.src([
         bower + 'angular-material/angular-material.css',
-        bower + 'angular-loading-bar/build/loading-bar.css'
+        bower + 'angular-loading-bar/build/loading-bar.css',
+        bower + 'angular-material-data-table/dist/md-data-table.css'
     ])
         .pipe(concatCss('bowerCssComponents.css'))
         .pipe(gulp.dest(destWeb + 'css'));

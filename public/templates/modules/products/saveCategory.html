@@ -1,0 +1,95 @@
+<md-dialog aria-label="Products" style="width: 1200px">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Categoria de produtos</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="saveCategory.functions.hide()">
+                <md-icon class="icon-28">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <div layout="row">
+                <md-input-container flex="100">
+                    <label>Nome do produto</label>
+                    <input ng-model="saveCategory.vars.categoryName">
+                </md-input-container>
+
+                <div flex></div>
+                <div flex="100">
+                    <md-button class="md-accent md-raised"
+                               ng-click="saveCategory.functions.save.doSave()">
+                        <span ng-if="saveCategory.vars.editMode">Editar</span>
+                        <span ng-if="!saveCategory.vars.editMode">Criar</span>
+                        Categoria
+                    </md-button>
+
+                    <md-button ng-if="saveCategory.vars.editMode"
+                               class="md-accent md-raised"
+                               ng-click="saveCategory.functions.edit.backToCreate()">
+                        Voltar
+                    </md-button>
+                </div>
+            </div>
+
+            <div layout="row">
+                <md-card flex="100">
+                    <md-table-container>
+                        <table md-table>
+
+                            <thead md-head md-order="saveCategory.vars.query.order">
+                            <tr md-row>
+                                <th md-column md:order:by="categoryName">Categoria</th>
+                                <th md-column>Editar</th>
+                                <th md-column>Excluir</th>
+                            </tr>
+                            </thead>
+
+                            <tbody md-body>
+                            <tr md-row
+                                ng-repeat="data in saveCategory.vars.listCategory |
+                        orderBy: saveCategory.vars.query.order |
+                        limitTo: saveCategory.vars.query.limit: (saveCategory.vars.query.page - 1) * saveCategory.vars.query.limit">
+
+                                <td md-cell>
+                                    {{data.categoryName}}
+                                </td>
+
+                                <td md-cell>
+                                    <md-button ng-click="saveCategory.functions.edit.selectEdit(data)"
+                                               class="md-icon-button">
+                                        <md-icon class="icon-24">mode_edit</md-icon>
+                                    </md-button>
+
+                                </td>
+
+                                <td md-cell>
+                                    <md-button ng-click="saveCategory.functions.delete.deleteCategory(data)"
+                                               class="md-icon-button">
+                                        <md-icon class="icon-24">delete_forever</md-icon>
+                                    </md-button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+
+                    <md-table-pagination md-limit="saveCategory.vars.query.limit"
+                                         md-page="saveCategory.vars.query.page"
+                                         md-total="{{saveCategory.vars.listCategory.length}}"
+                                         md-page-select md-label="{page: 'Página:', rowsPerPage: 'Linhas por Página:', of: 'de'}"
+                                         md-options="[25,50,100]"></md-table-pagination>
+                </md-card>
+            </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-click="saveCategory.functions.hide()">
+            Fechar
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>
