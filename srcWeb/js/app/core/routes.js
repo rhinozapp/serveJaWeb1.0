@@ -65,6 +65,16 @@ angular
                         templateUrl: 'templates/modules/products/products.html'
                     },
                     //endregion
+
+                    //region Menu
+                    {
+                        name: 'menu',
+                        url: '/menu',
+                        controller: 'menuController',
+                        controllerAs: 'menu',
+                        templateUrl: 'templates/modules/menu/menu.html'
+                    },
+                    //endregion
                 ]
 			});
 

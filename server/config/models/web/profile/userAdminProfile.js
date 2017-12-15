@@ -20,37 +20,44 @@ let mongoose = require('mongoose'),
         sunday : {
             status : { type : Boolean },
             timeStart : { type: String },
-            timeEnd : { type: String }
+            timeEnd : { type: String },
+            sundayMenu : { type: String }
         },
         monday : {
             status : { type : Boolean },
             timeStart : { type: String },
-            timeEnd : { type: String }
+            timeEnd : { type: String },
+            mondayMenu : { type: String }
         },
         tuesday : {
             status : { type : Boolean },
             timeStart : { type: String },
-            timeEnd : { type: String }
+            timeEnd : { type: String },
+            tuesdayMenu : { type: String }
         },
         wednesday : {
             status : { type : Boolean },
             timeStart : { type: String },
-            timeEnd : { type: String }
+            timeEnd : { type: String },
+            wednesdayMenu : { type: String }
         },
         thursday : {
             status : { type : Boolean },
             timeStart : { type: String },
-            timeEnd : { type: String }
+            timeEnd : { type: String },
+            thursdayMenu : { type: String }
         },
         friday : {
             status : { type : Boolean },
             timeStart : { type: String },
-            timeEnd : { type: String }
+            timeEnd : { type: String },
+            fridayMenu : { type: String }
         },
         saturday : {
             status : { type : Boolean },
             timeStart : { type: String },
-            timeEnd : { type: String }
+            timeEnd : { type: String },
+            saturdayMenu : { type: String }
         }
     });
 

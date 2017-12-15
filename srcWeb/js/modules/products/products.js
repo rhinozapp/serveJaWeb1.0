@@ -30,10 +30,10 @@ function products($scope, $filter, productsService, profileGet, dialogAdvanced, 
         search : function () {
             $scope.$watch('products.vars.search', function (newvalue, oldvalue) {
                 if(newvalue < oldvalue){
-                    products.vars.listPassFilter = products.vars.listPass
+                    products.vars.listProductsFilter = products.vars.listProducts
                 }else{
-                    products.vars.listPassFilter = $filter('filter')(products.vars.listPassFilter, {
-                        title : newvalue
+                    products.vars.listProductsFilter = $filter('filter')(products.vars.listProducts, {
+                        productName : newvalue
                     });
                 }
             });

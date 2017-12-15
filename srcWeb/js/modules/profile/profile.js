@@ -1,7 +1,7 @@
 angular.module('profile', [])
     .controller('profileController', profile);
 
-function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert) {
+function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert, menuService) {
     var profile = this;
     profile.vars = {};
     profile.vars.charge = true;
@@ -9,6 +9,7 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert)
     profile.functions = {
         core : function () {
             profile.functions.getProfile.get();
+            profile.functions.getMenu.getMenu();
         },
 
         defineVars : function () {
@@ -169,6 +170,24 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert)
                     profile.vars.saturdayStart = profile.vars.saturday.timeStart;
                     profile.vars.saturdayEnd = profile.vars.saturday.timeEnd;
                 }
+
+                profile.vars.sundayMenu = profile.vars.sunday.sundayMenu;
+                profile.vars.mondayMenu = profile.vars.monday.mondayMenu;
+                profile.vars.tuesdayMenu = profile.vars.tuesday.tuesdayMenu;
+                profile.vars.wednesdayMenu = profile.vars.wednesday.wednesdayMenu;
+                profile.vars.thursdayMenu = profile.vars.thursday.thursdayMenu;
+                profile.vars.fridayMenu = profile.vars.friday.fridayMenu;
+                profile.vars.saturdayMenu = profile.vars.saturday.saturdayMenu;
+            }
+        },
+
+        getMenu : {
+            getMenu : function () {
+                menuService.getMenu.save({id : profileGet.id}, profile.functions.getMenu.successGetMenu);
+            },
+
+            successGetMenu : function (data) {
+                profile.vars.listMenu = data.data;
             }
         },
 
@@ -215,7 +234,7 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert)
                     ok : 'OK!'
                 });
 
-                profile.functions.getProfile.get();
+                profile.functions.core();
             });
         }
     };

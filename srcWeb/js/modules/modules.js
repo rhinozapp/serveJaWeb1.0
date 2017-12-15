@@ -3,5 +3,6 @@ angular.module('modules', [
     'recoveryPassword',
     'mainControl',
     'products',
-    'profile'
+    'profile',
+    'menu'
 ]);

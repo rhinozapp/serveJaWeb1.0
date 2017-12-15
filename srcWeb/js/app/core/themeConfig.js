@@ -6,9 +6,9 @@ angular
     .module('core')
     .config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('blue', {
+            .primaryPalette('grey', {
                 'default' : '800'
             })
-            .accentPalette('teal')
+            .accentPalette('blue')
             .warnPalette('orange');
     });

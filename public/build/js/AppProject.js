@@ -125,6 +125,16 @@ angular
                         templateUrl: 'templates/modules/products/products.html'
                     },
                     //endregion
+
+                    //region Menu
+                    {
+                        name: 'menu',
+                        url: '/menu',
+                        controller: 'menuController',
+                        controllerAs: 'menu',
+                        templateUrl: 'templates/modules/menu/menu.html'
+                    },
+                    //endregion
                 ]
 			});
 
@@ -172,10 +182,10 @@ angular
     .module('core')
     .config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('blue', {
+            .primaryPalette('grey', {
                 'default' : '800'
             })
-            .accentPalette('teal')
+            .accentPalette('blue')
             .warnPalette('orange');
     });
 })();

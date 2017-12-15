@@ -61,6 +61,17 @@ module.exports = function (app) {
     let deleteCategoryWeb = require('./web/modules/products/deleteCategory');
     app.post('/web/deleteCategory', authenticate, deleteCategoryWeb.deleteCategory);
     //endregion
+
+    //region Menu
+    let updateMenuWeb = require('./web/modules/menu/updateMenu');
+    app.post('/web/updateMenu', updateMenuWeb.updateMenu);
+
+    let getMenuWeb = require('./web/modules/menu/getMenu');
+    app.post('/web/getMenu', authenticate, getMenuWeb.getMenu);
+
+    let deleteMenuWeb = require('./web/modules/menu/deleteMenu');
+    app.post('/web/deleteMenu', authenticate, deleteMenuWeb.deleteMenu);
+    //endregion
     //endregion
 
     //region Response
