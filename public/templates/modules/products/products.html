@@ -1,0 +1,114 @@
+<md-content ng-if="!profile.vars.charge">
+    <md-subheader class="md-primary">Crie e edite abaixo seus produtos</md-subheader>
+
+    <div layout="row" layout-align="start">
+        <md-button class="md-accent md-raised" ng-click="products.functions.saveProducts()">
+            Inserir produto
+        </md-button>
+        <md-button class="md-accent md-raised" ng-click="products.functions.createCategory()">
+            Criar categoria de produto
+        </md-button>
+    </div>
+
+    <div layout="row">
+        <md-card flex="100">
+            <md-toolbar class="md-table-toolbar md-default" ng-show="products.vars.filter">
+                <div class="md-toolbar-tools">
+                    <md-icon class="icon-24">search</md-icon>
+                    <form flex>
+                        <input type="text"
+                               style="border: 0; outline: none;"
+                               placeholder="Buscar pelo título"
+                               ng-model="products.vars.search"
+                               set-focus="products.vars.filter">
+                    </form>
+                    <md-button class="md-icon-button" ng-click="products.functions.closeFilter()">
+                        <md-icon class="icon-24">close</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="products.vars.filter">
+                <div class="md-toolbar-tools">
+                    <h2 class="md-title" ng-click="products.vars.filter = true" style="outline: none;">Clique para filtrar por título</h2>
+                    <div flex></div>
+                    <md-button class="md-icon-button" ng-click="products.vars.filter = true">
+                        <md-icon class="icon-24">filter_list</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-table-container>
+                <table md-table>
+
+                    <thead md-head md-order="products.vars.query.order">
+                    <tr md-row>
+                        <th md-column md:order:by="productName">Produto</th>
+                        <th md-column md:order:by="value">Valor</th>
+                        <th md-column md:order:by="promotionValue">Valor - Promoção</th>
+                        <th md-column md:order:by="amount">Quantidade</th>
+                        <th md-column md:order:by="nameCategory">Categoria</th>
+                        <th md-column>Deletar</th>
+                    </tr>
+                    </thead>
+
+                    <tbody md-body>
+                    <tr md-row
+                        ng-repeat="data in products.vars.listProductsFilter |
+                        orderBy: products.vars.query.order |
+                        limitTo: products.vars.query.limit: (products.vars.query.page - 1) * products.vars.query.limit">
+
+                        <td md-cell>
+                            <a style="cursor: pointer; color: black" ng-click="products.functions.saveProducts(data)">
+                                <b>{{data.productName}}</b>
+                                <md-tooltip md-direction="right">
+                                    Clique para editar produto
+                                </md-tooltip>
+                            </a>
+                        </td>
+
+                        <td md-cell>
+                            R${{data.value}}
+                        </td>
+
+                        <td md-cell>
+                            <span ng-if="data.promotionValue">
+                                R${{data.promotionValue}}
+                            </span>
+                            <span ng-if="!data.promotionValue">
+                                -
+                            </span>
+                        </td>
+
+                        <td md-cell>
+                            {{data.amount}}
+                        </td>
+
+                        <td md-cell>
+                            <span ng-if="data.nameCategory">
+                                {{data.nameCategory}}
+                            </span>
+                            <span ng-if="!data.nameCategory">
+                                Sem categoria
+                            </span>
+                        </td>
+
+                        <td md-cell>
+                            <md-button ng-click="products.functions.deleteProduct(data._id)"
+                                       class="md-icon-button">
+                                <md-icon class="icon-24">delete_forever</md-icon>
+                            </md-button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+
+            <md-table-pagination md-limit="products.vars.query.limit"
+                                 md-page="products.vars.query.page"
+                                 md-total="{{products.vars.listProducts.length}}"
+                                 md-page-select md-label="{page: 'Página:', rowsPerPage: 'Linhas por Página:', of: 'de'}"
+                                 md-options="[25,50,100]"></md-table-pagination>
+        </md-card>
+    </div>
+</md-content>

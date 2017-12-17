@@ -1,0 +1,72 @@
+<md-dialog aria-label="Products" style="width: 1200px">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Produtos</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="saveProducts.functions.hide()">
+                <md-icon class="icon-28">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <md-card-title flex="100">
+                <md-card-title-text>
+                    <span class="md-dialog-title">Informações do Produto</span>
+                </md-card-title-text>
+            </md-card-title>
+            <div layout="row">
+                <md-input-container flex="100">
+                    <label>Nome do produto</label>
+                    <input ng-model="saveProducts.vars.productName">
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container flex="100">
+                    <label>Valor</label>
+                    <input type="number" ng-model="saveProducts.vars.value">
+                </md-input-container>
+
+                <md-input-container flex="100">
+                    <label>Valor em promoção</label>
+                    <input type="number" ng-model="saveProducts.vars.promotionValue">
+
+                    <md-tooltip>
+                        Deixe em branco caso não esteja em promoção
+                    </md-tooltip>
+                </md-input-container>
+
+                <md-input-container flex="100">
+                    <label>Quantidade</label>
+                    <input type="number" ng-model="saveProducts.vars.amount">
+                </md-input-container>
+
+                <md-input-container flex="100">
+                    <label>Categoria</label>
+                    <md-select ng-model="saveProducts.vars.categoryID" aria-label="type">
+                        <md-option ng-repeat="item in saveProducts.vars.listCategory"
+                                   aria-label="{{item.categoryName}}"
+                                   value="{{item._id}}">
+                            {{item.categoryName}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <md-button ng-click="saveProducts.functions.hide()">
+            Cancelar
+        </md-button>
+        <span flex></span>
+
+        <md-button ng-click="saveProducts.functions.saveAndNew.doSave()">
+            Salvar e inserir um novo
+        </md-button>
+        <md-button ng-click="saveProducts.functions.save.doSave()">
+            Salvar
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

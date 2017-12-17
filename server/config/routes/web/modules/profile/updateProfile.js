@@ -121,37 +121,44 @@ exports.updateProfile = function (req, res) {
         sunday : {
             status: sundayStatus,
             timeStart : updateVars.sundayStart,
-            timeEnd : updateVars.sundayEnd
+            timeEnd : updateVars.sundayEnd,
+            sundayMenu : updateVars.sundayMenu
         },
         monday : {
             status: mondayStatus,
             timeStart : updateVars.mondayStart,
-            timeEnd : updateVars.mondayEnd
+            timeEnd : updateVars.mondayEnd,
+            mondayMenu : updateVars.mondayMenu
         },
         tuesday : {
             status : tuesdayStatus ,
             timeStart : updateVars.tuesdayStart,
-            timeEnd : updateVars.tuesdayEnd
+            timeEnd : updateVars.tuesdayEnd,
+            tuesdayMenu : updateVars.tuesdayMenu
         },
         wednesday : {
             status : wednesdayStatus,
             timeStart : updateVars.wednesdayStart,
-            timeEnd : updateVars.wednesdayEnd
+            timeEnd : updateVars.wednesdayEnd,
+            wednesdayMenu : updateVars.wednesdayMenu
         },
         thursday : {
             status : thursdayStatus,
             timeStart : updateVars.thursdayStart,
-            timeEnd : updateVars.thursdayEnd
+            timeEnd : updateVars.thursdayEnd,
+            thursdayMenu : updateVars.thursdayMenu
         },
         friday : {
             status: fridayStatus,
             timeStart : updateVars.fridayStart,
-            timeEnd : updateVars.fridayEnd
+            timeEnd : updateVars.fridayEnd,
+            fridayMenu : updateVars.fridayMenu
         },
         saturday : {
             status : saturdayStatus,
             timeStart : updateVars.saturdayStart,
-            timeEnd : updateVars.saturdayEnd
+            timeEnd : updateVars.saturdayEnd,
+            saturdayMenu : updateVars.saturdayMenu
         }
     }, {
         multi : false

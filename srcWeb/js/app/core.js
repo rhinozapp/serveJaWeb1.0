@@ -15,13 +15,12 @@ angular.module('core', [
 
     'angular-jwt',
 
-    'ngFileUpload'
+    'ngFileUpload',
 
+    'md.data.table'
     /*
     'permission',
     'permission.ui',
-
-    'md.data.table',
 
     'ngclipboard',
     'daterangepicker',

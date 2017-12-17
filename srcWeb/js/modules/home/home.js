@@ -31,7 +31,7 @@ function home(dialogAdvanced) {
     home.functions.core();
 }
 
-function loginController(dialogAdvanced, loginService, dialogAlert, $window) {
+function loginController(dialogAdvanced, loginService, recoveryPasswordService, dialogAlert, $window) {
     var login = this;
     login.vars = {};
 
@@ -47,6 +47,34 @@ function loginController(dialogAdvanced, loginService, dialogAlert, $window) {
 
                         $window.localStorage.token = data.token;
                         $window.location.reload();
+                        break;
+
+                    case data.status === false:
+                        login.vars.alert = true;
+                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                        break;
+
+                    default:
+                        login.vars.alert = true;
+                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                }
+
+                if(login.vars.alert){
+                    dialogAlert.show({
+                        title : 'Atenção',
+                        content : login.vars.message,
+                        ok : 'Ok'
+                    });
+                }
+            });
+        },
+
+        recoveryPasswordSend : function () {
+            recoveryPasswordService.recoveryPasswordSend.save(login.vars, function (data) {
+                switch (true){
+                    case data.status === true:
+                        login.vars.alert = true;
+                        login.vars.message = 'Enviamos um link para recuperação de senha, veja seu e-mail e clique no link para alterá-la.';
                         break;
 
                     case data.status === false:

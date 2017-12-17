@@ -1,15 +1,15 @@
 //region Dependencies
 let express = require('express'),
     app = express(),
-    appName = 'rhinozApp',
+    appName = 'serveJa',
     dbUser = 'dev',
     dbPassword = 'dev001!';
 //endregion
 
 //region Config
 require('./server/config/config')(app);
-//require('./server/config/database/databaseConfig')('mongodb://localhost/' + appName);
-require('./server/config/database/databaseConfig')('mongodb://'+ dbUser +':'+ dbPassword + '@ds149335.mlab.com:49335/heroku_gzm8rnrq');
+require('./server/config/database/databaseConfig')('mongodb://localhost/' + appName);
+//require('./server/config/database/databaseConfig')('mongodb://'+ dbUser +':'+ dbPassword + '@ds149335.mlab.com:49335/heroku_gzm8rnrq');
 //endregion
 
 //region Start App

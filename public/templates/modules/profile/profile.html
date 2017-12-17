@@ -220,6 +220,16 @@
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Cardápio do dia</label>
+                                    <md-select ng-model="profile.vars.sundayMenu"
+                                               ng-disabled="profile.vars.sundayClosed || profile.vars.sundayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
+                                            {{data.menuName}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
                             </div>
                             <md-divider></md-divider>
                         </div>
@@ -257,6 +267,16 @@
                                                ng-disabled="profile.vars.mondayClosed || profile.vars.mondayAllDay">
                                         <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
                                             {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Cardápio do dia</label>
+                                    <md-select ng-model="profile.vars.mondayMenu"
+                                               ng-disabled="profile.vars.mondayClosed || profile.vars.mondayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
+                                            {{data.menuName}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
@@ -300,6 +320,16 @@
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Cardápio do dia</label>
+                                    <md-select ng-model="profile.vars.tuesdayMenu"
+                                               ng-disabled="profile.vars.tuesdayClosed || profile.vars.tuesdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
+                                            {{data.menuName}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
                             </div>
                             <md-divider></md-divider>
                         </div>
@@ -337,6 +367,16 @@
                                                ng-disabled="profile.vars.wednesdayClosed || profile.vars.wednesdayAllDay">
                                         <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
                                             {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Cardápio do dia</label>
+                                    <md-select ng-model="profile.vars.wednesdayMenu"
+                                               ng-disabled="profile.vars.wednesdayClosed || profile.vars.wednesdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
+                                            {{data.menuName}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
@@ -380,6 +420,16 @@
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Cardápio do dia</label>
+                                    <md-select ng-model="profile.vars.thursdayMenu"
+                                               ng-disabled="profile.vars.thursdayClosed || profile.vars.thursdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
+                                            {{data.menuName}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
                             </div>
                             <md-divider></md-divider>
                         </div>
@@ -420,6 +470,16 @@
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Cardápio do dia</label>
+                                    <md-select ng-model="profile.vars.fridayMenu"
+                                               ng-disabled="profile.vars.fridayClosed || profile.vars.fridayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
+                                            {{data.menuName}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
                             </div>
                             <md-divider></md-divider>
                         </div>
@@ -457,6 +517,16 @@
                                                ng-disabled="profile.vars.saturdayClosed || profile.vars.saturdayAllDay">
                                         <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
                                             {{data}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex="33">
+                                    <label>Cardápio do dia</label>
+                                    <md-select ng-model="profile.vars.saturdayMenu"
+                                               ng-disabled="profile.vars.saturdayClosed || profile.vars.saturdayAllDay">
+                                        <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
+                                            {{data.menuName}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>

@@ -23,7 +23,8 @@ exports.doLogin = function (req, res) {
                             token = jwt.sign({
                                 id : user[0]._id,
                                 email : user[0].email,
-                                name : userProfile[0].name
+                                name : userProfile[0].name,
+                                logoPath : userProfile[0].logoPath
                             }, 'rhinoz', { expiresIn: '12h' });
 
                             res.json({

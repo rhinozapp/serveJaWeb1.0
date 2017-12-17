@@ -1,0 +1,33 @@
+<md-dialog aria-label="Tables" style="width: 600px">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Mesa</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="saveTable.functions.cancel()">
+                <md-icon class="icon-28">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <div layout="row">
+                <md-input-container flex="100">
+                    <label>Nome da mesa</label>
+                    <input ng-model="saveTable.vars.tableName">
+                </md-input-container>
+            </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <md-button ng-click="saveTable.functions.cancel()">
+            Cancelar
+        </md-button>
+        <span flex></span>
+
+        <md-button ng-click="saveTable.functions.save.doSave()">
+            gerar qrcode
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

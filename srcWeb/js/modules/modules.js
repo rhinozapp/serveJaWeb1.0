@@ -1,5 +1,9 @@
 angular.module('modules', [
     'home',
+    'recoveryPassword',
     'mainControl',
-    'profile'
+    'products',
+    'profile',
+    'menu',
+    'tables'
 ]);

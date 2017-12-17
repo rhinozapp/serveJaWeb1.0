@@ -5,6 +5,7 @@ angular
         return {
             id : profile.id,
             email: profile.email,
-            name : profile.name
+            name : profile.name,
+            logoPath : profile.logoPath
         }
     });

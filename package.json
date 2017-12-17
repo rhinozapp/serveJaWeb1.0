@@ -1,6 +1,6 @@
 {
-  "name": "com.rhinoz.app",
-  "displayName": "rhinozApp",
+  "name": "com.serveJa.app",
+  "displayName": "serveJa",
   "version": "1.0.0",
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "scripts": {
@@ -39,7 +39,9 @@
     "method-override": "^2.3.9",
     "mongodb": "^2.2.31",
     "mongoose": "^4.10.8",
-    "morgan": "^1.8.2"
+    "morgan": "^1.8.2",
+    "nodemailer": "^4.4.0",
+    "qr-image": "^3.2.0"
   },
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",

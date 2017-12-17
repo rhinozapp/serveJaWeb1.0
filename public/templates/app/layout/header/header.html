@@ -1,29 +1,46 @@
-<!--HEADER-->
 <md-toolbar class="md-primary">
     <div class="md-toolbar-tools">
         <h2>
-            <span>{{header.vars.userProfile.name}}</span>
+            <!--<span>{{header.vars.userProfile.name}}</span>-->
+            RhinozApp
         </h2>
+
         <span flex></span>
 
         <md-button ui-sref-active="md-raised" ui-sref="user" aria-label="Requests">
             Pedidos
         </md-button>
 
-        <md-button ui-sref-active="md-raised" ui-sref="admin.profile" aria-label="Profile">
-            Perfil
-        </md-button>
-
-        <md-button ui-sref-active="md-raised" ui-sref="user" aria-label="Menu">
+        <md-button ui-sref-active="md-raised" ui-sref="admin.menu" aria-label="Menu">
             Cardápio
         </md-button>
 
-        <md-button ui-sref-active="md-raised" ui-sref="user" aria-label="Tables">
+        <md-button ui-sref-active="md-raised" ui-sref="admin.products" aria-label="Menu">
+            Produtos
+        </md-button>
+
+        <md-button ui-sref-active="md-raised" ui-sref="admin.tables" aria-label="Tables">
             Mesas
         </md-button>
 
-        <md-button aria-label="logout" ng-click="header.functions.doLogout()">
-            Sair
-        </md-button>
+        <md-menu>
+            <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+                <md-icon class="icon-24">more_vert</md-icon>
+            </md-button>
+
+            <md-menu-content width="3">
+                <md-menu-item>
+                    <md-button ui-sref="admin.profile" aria-label="Profile">
+                        Perfil
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item>
+                    <md-button aria-label="logout" ng-click="header.functions.doLogout()">
+                        Sair
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
     </div>
 </md-toolbar>

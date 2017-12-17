@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 angular
-    .module('RhinozApp', [
+    .module('serveJa', [
         // Ordem não importa.
         'core',
         'layout',
@@ -27,13 +27,12 @@ angular.module('core', [
 
     'angular-jwt',
 
-    'ngFileUpload'
+    'ngFileUpload',
 
+    'md.data.table'
     /*
     'permission',
     'permission.ui',
-
-    'md.data.table',
 
     'ngclipboard',
     'daterangepicker',
@@ -78,11 +77,18 @@ angular
                 url: '/',
                 controller: 'homeController',
                 controllerAs: 'home',
-                templateUrl: 'templates/modules/home/home.html'
+                templateUrl: 'templates/modules/home/home.html',
                 /*data: {
                     css: 'build/css/home.css'
                 },
                 children: []*/
+            })
+            .state({
+                name : 'recoveryPassword',
+                url: '/recoveryPassword/:q',
+                controller: 'recoveryPasswordController',
+                controllerAs : 'recoveryPassword',
+                templateUrl: 'templates/modules/recoveryPassword/recoveryPassword.html'
             })
 			.state({
                 name: 'admin',
@@ -107,6 +113,36 @@ angular
                         controller: 'profileController',
                         controllerAs: 'profile',
                         templateUrl: 'templates/modules/profile/profile.html'
+                    },
+                    //endregion
+
+                    //region Profile
+                    {
+                        name: 'products',
+                        url: '/products',
+                        controller: 'productsController',
+                        controllerAs: 'products',
+                        templateUrl: 'templates/modules/products/products.html'
+                    },
+                    //endregion
+
+                    //region Menu
+                    {
+                        name: 'menu',
+                        url: '/menu',
+                        controller: 'menuController',
+                        controllerAs: 'menu',
+                        templateUrl: 'templates/modules/menu/menu.html'
+                    },
+                    //endregion
+
+                    //region Menu
+                    {
+                        name: 'tables',
+                        url: '/tables',
+                        controller: 'tablesController',
+                        controllerAs: 'tables',
+                        templateUrl: 'templates/modules/tables/tables.html'
                     },
                     //endregion
                 ]
@@ -141,7 +177,7 @@ angular
                 $window.localStorage.clear();
             }else if (toState.name === 'home' && token !== undefined) {
                 e.preventDefault();
-                $state.go('admin.profile');
+                $state.go('admin.products');
             }
         });
     });
@@ -156,10 +192,10 @@ angular
     .module('core')
     .config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('blue', {
+            .primaryPalette('grey', {
                 'default' : '800'
             })
-            .accentPalette('teal')
+            .accentPalette('blue')
             .warnPalette('orange');
     });
 })();
@@ -228,6 +264,58 @@ angular
 })();
 (function(){
 "use strict";
+/**
+ * Created by guilherme.assis on 06/12/2016.
+ */
+
+angular
+    .module('core')
+    .service('toastAction', function ($mdToast) {
+        return {
+            show: function(option){
+                var last = {
+                    bottom: option.bottom,
+                    top: option.top,
+                    left: option.left,
+                    right: option.right
+                };
+
+                option.scope.toastPosition = angular.extend({},last);
+
+                function sanitizePosition() {
+                    var current = option.scope.toastPosition;
+
+                    if ( current.bottom && last.top ) current.top = false;
+                    if ( current.top && last.bottom ) current.bottom = false;
+                    if ( current.right && last.left ) current.left = false;
+                    if ( current.left && last.right ) current.right = false;
+
+                    last = angular.extend({},current);
+                }
+
+
+                option.scope.getToastPosition = function() {
+                    sanitizePosition();
+
+                    return Object.keys(option.scope.toastPosition)
+                        .filter(function(pos) { return option.scope.toastPosition[pos]; })
+                        .join(' ');
+                };
+
+
+                var pin = option.scope.getToastPosition();
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent(option.text)
+                        .position(pin)
+                        .hideDelay(3000)
+                );
+            }
+        };
+    });
+})();
+(function(){
+"use strict";
 angular
     .module('core')
     .service('profileGet', function ($window, jwtHelper) {
@@ -235,8 +323,28 @@ angular
         return {
             id : profile.id,
             email: profile.email,
-            name : profile.name
+            name : profile.name,
+            logoPath : profile.logoPath
         }
+    });
+})();
+(function(){
+"use strict";
+angular
+    .module('core')
+    .directive('setFocus', function ($timeout) {
+        return {
+            link: function (scope, element, attrs) {
+                scope.$watch(attrs.setFocus, function (value) {
+                    if (value === true) {
+                        $timeout(function () {
+                            element[0].focus();
+                            scope[attrs.setFocus] = false;
+                        });
+                    }
+                });
+            }
+        };
     });
 })();
 (function(){

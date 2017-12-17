@@ -1,5 +1,5 @@
 angular
-    .module('RhinozApp', [
+    .module('serveJa', [
         // Ordem não importa.
         'core',
         'layout',

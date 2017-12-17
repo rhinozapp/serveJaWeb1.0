@@ -14,7 +14,7 @@ module.exports = function (app) {
     //region Morgan Setup
     fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
 
-    var accessLogStream = FileStreamRotator.getStream({
+    let accessLogStream = FileStreamRotator.getStream({
         date_format: 'YYYYMMDD',
         filename: logDirectory + '/access-%DATE%.log',
         frequency: 'daily',

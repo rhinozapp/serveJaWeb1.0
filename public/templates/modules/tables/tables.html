@@ -1,0 +1,35 @@
+<md-content ng-if="!profile.vars.charge">
+    <md-subheader class="md-primary">Veja abaixo as suas mesas</md-subheader>
+
+    <div layout="row" layout-align="start">
+        <md-button class="md-accent md-raised" ng-click="tables.functions.saveTable()">
+            Inserir mesa
+        </md-button>
+    </div>
+
+
+    <div layout="row" layout-wrap layout-align="center center">
+        <md-card flex="10" ng-repeat="data in tables.vars.listTablesFilter">
+            <img ng-src="/files/qrCodes/{{data._id}}.png" class="md-card-image" alt="Washed Out">
+
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline" style="text-align: center">
+                        {{data.tableName}}
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content>
+            </md-card-content>
+
+            <md-card-actions layout="column" layout-align="start">
+                <md-button ng-click="tables.functions.saveTable(data)">Editar</md-button>
+
+                <md-button ng-click="tables.functions.deleteTable(data._id)">Remover</md-button>
+
+                <md-button>Imprimir</md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</md-content>
