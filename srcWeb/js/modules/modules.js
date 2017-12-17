@@ -4,5 +4,6 @@ angular.module('modules', [
     'mainControl',
     'products',
     'profile',
-    'menu'
+    'menu',
+    'tables'
 ]);

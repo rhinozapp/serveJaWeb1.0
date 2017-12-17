@@ -4,6 +4,7 @@
 /log/server/*
 /OldRhinoz
 /public/files/logoProfile/*
+/public/files/qrCodes/*
 
 ### Angular ###
 ## Angular ##

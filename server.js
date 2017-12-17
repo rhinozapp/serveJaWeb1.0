@@ -1,7 +1,7 @@
 //region Dependencies
 let express = require('express'),
     app = express(),
-    appName = 'rhinozApp',
+    appName = 'serveJa',
     dbUser = 'dev',
     dbPassword = 'dev001!';
 //endregion

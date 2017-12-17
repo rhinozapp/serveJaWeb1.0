@@ -75,6 +75,16 @@ angular
                         templateUrl: 'templates/modules/menu/menu.html'
                     },
                     //endregion
+
+                    //region Menu
+                    {
+                        name: 'tables',
+                        url: '/tables',
+                        controller: 'tablesController',
+                        controllerAs: 'tables',
+                        templateUrl: 'templates/modules/tables/tables.html'
+                    },
+                    //endregion
                 ]
 			});
 

@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 angular
-    .module('RhinozApp', [
+    .module('serveJa', [
         // Ordem não importa.
         'core',
         'layout',
@@ -133,6 +133,16 @@ angular
                         controller: 'menuController',
                         controllerAs: 'menu',
                         templateUrl: 'templates/modules/menu/menu.html'
+                    },
+                    //endregion
+
+                    //region Menu
+                    {
+                        name: 'tables',
+                        url: '/tables',
+                        controller: 'tablesController',
+                        controllerAs: 'tables',
+                        templateUrl: 'templates/modules/tables/tables.html'
                     },
                     //endregion
                 ]
