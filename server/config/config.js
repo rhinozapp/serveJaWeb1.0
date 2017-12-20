@@ -44,7 +44,7 @@ module.exports = function (app) {
 
     //region Consign
     consign({
-        cwd: 'server/config',
+        cwd: process.cwd()+'\\server\\config',
         verbose : false
     })
         .include('models')
