@@ -426,15 +426,36 @@ angular.module('layout', []);
 
 angular
     .module('layout')
-    .directive('header', header);
+    .directive('container', container);
 
-function header() {
+function container() {
+    return {
+        restrict: 'EA',
+        template: '<ui-view></ui-view>',
+        link: linkFunc,
+        bindToController: true
+    };
+    
+    function linkFunc() {}
+}
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular
+    .module('layout')
+    .directive('headerNav', headerNav);
+
+function headerNav() {
     return {
         restrict: 'E',
-        templateUrl: 'templates/app/layout/header/header.html',
+        templateUrl: 'templates/app/layout/headerNav/headerNav.html',
         link: linkFunc,
-        controller: 'headerController',
-        controllerAs: 'header',
+        controller: 'headerNavController',
+        controllerAs: 'headerNav',
         bindToController: true
     };
 
@@ -449,19 +470,19 @@ function header() {
 
 angular
     .module('layout')
-    .controller('headerController', headerController);
+    .controller('headerNavController', headerNavController);
 
-function headerController(loginService, profileGet) {
-    var header = this;
-    header.vars = {};
+function headerNavController(loginService, profileGet) {
+    var headerNav = this;
+    headerNav.vars = {};
 
-    header.functions = {
+    headerNav.functions = {
         core : function () {
-            header.functions.profile();
+            headerNav.functions.profile();
         },
 
         profile : function () {
-            header.vars.userProfile = profileGet;
+            headerNav.vars.userProfile = profileGet;
         },
 
         doLogout : function () {
@@ -469,27 +490,6 @@ function headerController(loginService, profileGet) {
         }
     };
 
-    header.functions.core();
-}
-})();
-(function(){
-"use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
-angular
-    .module('layout')
-    .directive('container', container);
-
-function container() {
-    return {
-        restrict: 'EA',
-        template: '<ui-view></ui-view>',
-        link: linkFunc,
-        bindToController: true
-    };
-    
-    function linkFunc() {}
+    headerNav.functions.core();
 }
 })();

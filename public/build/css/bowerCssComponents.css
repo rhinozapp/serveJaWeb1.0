@@ -5,12 +5,6 @@
  * v1.1.1
  */
 
- @import url('https://fonts.googleapis.com/css?family=Dosis|Roboto');
-
- md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar){
-  background-color: #ffbb00 !important;
- }
-
 html,
 body {
   height: 100%;
@@ -343,8 +337,7 @@ select,
 html,
 textarea,
 input {
-  font-family: 'Roboto', sans-serif;
-  font-family: 'Dosis', sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 select,
@@ -810,8 +803,7 @@ md-bottom-sheet.ng-leave-active {
 
 md-bottom-sheet .md-subheader {
   background-color: transparent;
-  font-family: 'Roboto', sans-serif;
-  font-family: 'Dosis', sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   line-height: 56px;
   padding: 0;
   white-space: nowrap;
@@ -1609,8 +1601,7 @@ md-card md-card-footer {
 
 .md-chips {
   display: block;
-  font-family: 'Roboto', sans-serif;
-  font-family: 'Dosis', sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 16px;
   padding: 0 0 8px 3px;
   vertical-align: middle;
@@ -7610,7 +7601,6 @@ md-toolbar._md-toolbar-transitions {
   transition-timing-function: cubic-bezier(0.35, 0, 0.25, 1);
   -webkit-transition-property: background-color, fill, color;
   transition-property: background-color, fill, color;
-  padding: 0.7% 0 1% 0;
 }
 
 md-toolbar.md-whiteframe-z1-add,
@@ -7684,10 +7674,11 @@ md-toolbar ~ md-content > md-list md-list-item:last-child md-divider {
   -webkit-box-direction: normal;
   -webkit-flex-direction: row;
   flex-direction: row;
-  width: 85%;
+  width: 100%;
   height: 64px;
   max-height: 64px;
-  margin: 0 auto;
+  padding: 0 16px;
+  margin: 0;
 }
 
 .md-toolbar-tools h1,
