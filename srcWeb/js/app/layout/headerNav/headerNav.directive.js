@@ -4,15 +4,15 @@
 
 angular
     .module('layout')
-    .directive('header', header);
+    .directive('headerNav', headerNav);
 
-function header() {
+function headerNav() {
     return {
         restrict: 'E',
-        templateUrl: 'templates/app/layout/header/header.html',
+        templateUrl: 'templates/app/layout/headerNav/headerNav.html',
         link: linkFunc,
-        controller: 'headerController',
-        controllerAs: 'header',
+        controller: 'headerNavController',
+        controllerAs: 'headerNav',
         bindToController: true
     };
 
