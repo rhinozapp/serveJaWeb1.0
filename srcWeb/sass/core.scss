@@ -1,4 +1,15 @@
-@import 'components/variables';
+/* BASE */
+@import 'components/base/reset';
+
+/* VARIABLES */
+@import 'components/variables/variables';
+
+/* LAYOUT */
+@import 'components/layout/home/header';
+@import 'components/layout/home/sections';
+
+
+
 @import 'components/material-icons';
 @import 'components/background';
 @import 'components/scrollbar';
@@ -6,5 +17,3 @@
 @import 'components/contentControlView';
 @import 'components/collapse';
 @import 'components/general';
-@import 'components/index';
-@import 'components/sj-teste';
