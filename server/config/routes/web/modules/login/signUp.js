@@ -14,6 +14,7 @@ exports.signup = function (req, res) {
         new userProfile({
             userID : data._id,
             name: req.body.name,
+            cnpj : req.body.cnpj,
             zipCode: req.body.zipCode,
             address : req.body.address ,
             number : req.body.number ,

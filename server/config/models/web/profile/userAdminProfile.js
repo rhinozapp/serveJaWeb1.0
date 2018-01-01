@@ -3,6 +3,7 @@ let mongoose = require('mongoose'),
     objSchema = new mongoose.Schema({
         profileID: Schema.ObjectId,
         name : { type: String, required: true },
+        cnpj : { type: String, required: true },
         description : { type: String, required: false },
         pageFacebook : { type: String, required: false },
         webSite : { type: String, required: false },

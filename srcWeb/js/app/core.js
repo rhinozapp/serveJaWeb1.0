@@ -12,12 +12,15 @@ angular.module('core', [
     'ui.router.stateHelper',
     'uiRouterStyles',
     'angular-loading-bar',
+    'ui.mask',
+    'ngCpfCnpj',
 
     'angular-jwt',
 
     'ngFileUpload',
 
     'md.data.table'
+
     /*
     'permission',
     'permission.ui',
