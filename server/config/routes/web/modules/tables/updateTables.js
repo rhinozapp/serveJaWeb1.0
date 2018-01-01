@@ -19,7 +19,7 @@ exports.updateTables = function (req, res) {
             userID: req.body.id,
             tableName : req.body.data.tableName
         }).save().then(function (data) {
-            fs.writeFile('./public/files/qrCodes/'+data._id+'.png', qr.imageSync(String(data._id)), (err) => {
+            fs.writeFile('./public/files/qrCodes/'+data._id+'.png', qr.imageSync(String(data._id), {size : 10}), (err) => {
                 res.json({status : true});
             });
 
