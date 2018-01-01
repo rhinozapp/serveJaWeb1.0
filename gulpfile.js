@@ -108,6 +108,10 @@ gulp.task('vendorWeb', function () {
 
         bower + 'angular-material/angular-material.js',
         bower + 'angular-loading-bar/build/loading-bar.js',
+        bower + 'cpf_cnpj/build/cpf.js',
+        bower + 'cpf_cnpj/build/cnpj.js',
+        bower + 'ng-cpf-cnpj/lib/ngCpfCnpj.js',
+        bower + 'angular-ui-mask/dist/mask.js',
 
         bower + 'moment/moment.js',
         bower + 'moment/locale/pt-br.js',

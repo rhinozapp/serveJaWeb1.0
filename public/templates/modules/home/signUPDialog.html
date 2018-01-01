@@ -53,6 +53,24 @@
 
                 <div layout="row">
                     <md-input-container flex="50">
+                        <label>CNPJ</label>
+                        <input name="cnpj"
+                               ng-model="signUP.vars.cnpj"
+                               type="text"
+                               ng-cnpj
+                               ui-mask="99.999.999/9999-99"
+                               ui-options="{addDefaultPlaceholder : false}"
+                               required>
+
+                        <div ng-messages="adminSignUp.cnpj.$error" role="alert">
+                            <div ng-message="required">CNPJ não pode ser vazio.</div>
+                            <div ng-message="cnpj">Digite um CNPJ válido.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+                    <md-input-container flex="50">
                         <label>Senha</label>
                         <input name="password" ng-minlength="6" type="password" ng-model="signUP.vars.password" required>
 
@@ -78,7 +96,13 @@
                 <div layout="row">
                     <md-input-container flex="30">
                         <label>CEP</label>
-                        <input type="text" name="zipCode" ng-model="signUP.vars.zipCode" ng-change="signUP.functions.zipCodeChange()" required>
+                        <input type="text"
+                               name="zipCode"
+                               ng-model="signUP.vars.zipCode"
+                               ng-change="signUP.functions.zipCodeChange()"
+                               ui-mask="99999-999"
+                               ui-options="{addDefaultPlaceholder : false}"
+                               required>
 
                         <div ng-messages="adminSignUp.zipCode.$error">
                             <div ng-message="required">CEP não pode estar vazio.</div>
@@ -149,6 +173,7 @@
                    ng-disabled="
                    !signUP.vars.name ||
                    !signUP.vars.username ||
+                   !signUP.vars.cnpj ||
                    !signUP.vars.zipCode ||
                    !signUP.vars.address ||
                    !signUP.vars.neighborhood ||

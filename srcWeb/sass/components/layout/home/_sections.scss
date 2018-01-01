@@ -1,21 +1,12 @@
-.centralizer{
-    width: 85%;
-    margin: 0 auto;
-}
-
-.index__title{
-    font-size: 1.8em !important;
-    font-weight: bold !important;
-}
-
 .welcome{
     background: url(https://www.opas.org.br/wp-content/uploads/2017/06/cerveja-e-sa%C3%BAde.jpg);
     background-size: cover;
     padding: 20% 0;
-    .welcome__title{
+    .welcome__msg{
         font-size: 4em;
-        color: #fff;
+        color: $secundary-color;
         display: block;
         width: 50%;
     }
 }
+

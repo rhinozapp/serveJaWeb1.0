@@ -93,6 +93,17 @@ function tables($scope, $filter, profileGet, tablesService, dialogAdvanced, dial
                     });
                 }
             });
+        },
+
+        printQRCode : function (data) {
+            dialogAdvanced.show({
+                controller : printQRCode,
+                controllerAs : 'printQRCode',
+                templateUrl : 'templates/modules/tables/tablesPrint.html',
+                clickOutsideToClose : false,
+                dataToDialog : data,
+                functionThen : function () {}
+            });
         }
     };
 
@@ -135,4 +146,38 @@ function saveTableController(dialogAdvanced, tablesService, profileGet, data) {
     };
 
     saveTable.functions.core();
+}
+
+function printQRCode(data, dialogAdvanced, profileGet) {
+    var printQRCode = this;
+    printQRCode.vars = {};
+
+    printQRCode.functions = {
+        core: function () {
+            printQRCode.functions.defineVars();
+        },
+
+        defineVars : function () {
+            printQRCode.vars = data;
+            printQRCode.vars.profile = profileGet;
+        },
+
+        print : function () {
+            printQRCode.vars.printContents = document.getElementById('print').innerHTML;
+            printQRCode.vars.popupWin = window.open('', '_blank');
+            printQRCode.vars.popupWin.document.open();
+            printQRCode.vars.popupWin.document.write('<body onload="window.print()">' + printQRCode.vars.printContents + '</body>');
+            printQRCode.vars.popupWin.document.close();
+        },
+
+        cancel : function () {
+            dialogAdvanced.cancel();
+        },
+
+        hide : function () {
+            dialogAdvanced.hide();
+        }
+    };
+
+    printQRCode.functions.core();
 }

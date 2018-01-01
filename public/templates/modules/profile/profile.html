@@ -77,6 +77,22 @@
                             </div>
                         </md-input-container>
 
+                        <md-input-container flex="50">
+                            <label>CNPJ</label>
+                            <input name="cnpj"
+                                   ng-model="profile.vars.cnpj"
+                                   type="text"
+                                   ng-cnpj
+                                   ui-mask="99.999.999/9999-99"
+                                   ui-options="{addDefaultPlaceholder : false}"
+                                   required>
+
+                            <div ng-messages="adminSignUp.cnpj.$error" role="alert">
+                                <div ng-message="required">CNPJ não pode ser vazio.</div>
+                                <div ng-message="cnpj">Digite um CNPJ válido.</div>
+                            </div>
+                        </md-input-container>
+
                         <md-input-container flex="100">
                             <label>Escreva uma breve descrição do seu bar/restaurante</label>
                             <textarea ng-model="profile.vars.description" md-maxlength="150" rows="5" md-select-on-focus></textarea>
@@ -115,6 +131,8 @@
                                    name="zipCode"
                                    ng-model="profile.vars.zipCode"
                                    ng-change="profile.functions.zipCodeChange()"
+                                   ui-mask="99999-999"
+                                   ui-options="{addDefaultPlaceholder : false}"
                                    required>
 
                             <div ng-messages="adminSignUp.zipCode.$error">
@@ -224,7 +242,7 @@
                                 <md-input-container flex="33">
                                     <label>Cardápio do dia</label>
                                     <md-select ng-model="profile.vars.sundayMenu"
-                                               ng-disabled="profile.vars.sundayClosed || profile.vars.sundayAllDay">
+                                               ng-disabled="profile.vars.sundayClosed">
                                         <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
                                             {{data.menuName}}
                                         </md-option>
@@ -274,7 +292,7 @@
                                 <md-input-container flex="33">
                                     <label>Cardápio do dia</label>
                                     <md-select ng-model="profile.vars.mondayMenu"
-                                               ng-disabled="profile.vars.mondayClosed || profile.vars.mondayAllDay">
+                                               ng-disabled="profile.vars.mondayClosed">
                                         <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
                                             {{data.menuName}}
                                         </md-option>
@@ -324,7 +342,7 @@
                                 <md-input-container flex="33">
                                     <label>Cardápio do dia</label>
                                     <md-select ng-model="profile.vars.tuesdayMenu"
-                                               ng-disabled="profile.vars.tuesdayClosed || profile.vars.tuesdayAllDay">
+                                               ng-disabled="profile.vars.tuesdayClosed">
                                         <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
                                             {{data.menuName}}
                                         </md-option>
@@ -374,7 +392,7 @@
                                 <md-input-container flex="33">
                                     <label>Cardápio do dia</label>
                                     <md-select ng-model="profile.vars.wednesdayMenu"
-                                               ng-disabled="profile.vars.wednesdayClosed || profile.vars.wednesdayAllDay">
+                                               ng-disabled="profile.vars.wednesdayClosed">
                                         <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
                                             {{data.menuName}}
                                         </md-option>
@@ -424,7 +442,7 @@
                                 <md-input-container flex="33">
                                     <label>Cardápio do dia</label>
                                     <md-select ng-model="profile.vars.thursdayMenu"
-                                               ng-disabled="profile.vars.thursdayClosed || profile.vars.thursdayAllDay">
+                                               ng-disabled="profile.vars.thursdayClosed">
                                         <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
                                             {{data.menuName}}
                                         </md-option>
@@ -474,7 +492,7 @@
                                 <md-input-container flex="33">
                                     <label>Cardápio do dia</label>
                                     <md-select ng-model="profile.vars.fridayMenu"
-                                               ng-disabled="profile.vars.fridayClosed || profile.vars.fridayAllDay">
+                                               ng-disabled="profile.vars.fridayClosed">
                                         <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
                                             {{data.menuName}}
                                         </md-option>
@@ -524,7 +542,7 @@
                                 <md-input-container flex="33">
                                     <label>Cardápio do dia</label>
                                     <md-select ng-model="profile.vars.saturdayMenu"
-                                               ng-disabled="profile.vars.saturdayClosed || profile.vars.saturdayAllDay">
+                                               ng-disabled="profile.vars.saturdayClosed">
                                         <md-option ng-repeat="data in profile.vars.listMenu" ng-value="data._id" required>
                                             {{data.menuName}}
                                         </md-option>

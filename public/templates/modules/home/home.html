@@ -1,35 +1,68 @@
-<md-content>
-
-    <md-toolbar>
-
-        <div class="md-toolbar-tools">
-
-            <h1 class="index__title">ServeJá!</h1>
-            <span flex></span>
-
-            <md-button aria-label="Example">
-                Exemplo
-            </md-button>
-
-            <md-button aria-label="Quem somos">
-                Quem somos
-            </md-button>
-
-            <md-button ng-click="home.functions.doLogin()" aria-label="Login">
-                Entrar
-            </md-button>
-
-            <md-button ng-click="home.functions.signUp()" aria-label="signUp">
-                Cadastre-se
-            </md-button>
-
+<div class="content">
+    
+    <header class="header">
+        <div class="centralizer">
+            <h1 class="header__title">ServeJá!</h1>
+            <nav class="menu">
+                <ul class="menu__itens">
+                    <li class="menu__item">
+                        <a class="menu__link" ng-click="home.functions.doLogin()" aria-label="Login">
+                            <span class="ng-scope">
+                                Bar já cadastrado
+                            </span>
+                        </a>
+                    </li>
+                    <li class="menu__item">
+                        <a class="menu__link" ng-click="home.functions.signUp()" aria-label="signUp">
+                            <span class="ng-scope">
+                                Cadastrar meu bar
+                            </span>
+                        </a>
+                    </li>
+                    <li class="menu__item">
+                        <a class="menu__link" aria-label="Quem somos">
+                            <span class="ng-scope">
+                                Quem somos
+                            </span>
+                        </a>
+                    </li>
+                    <li class="menu__item">
+                        <a class="menu__link" aria-label="Example">
+                            <span class="ng-scope">
+                                Dúvidas
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </md-toolbar>
+    </header>
 
     <section class="welcome">
         <div class="centralizer">
-            <h2 class="welcome__title">Um jeito mais fácil de curtir seu happy hour</h2>
+            <span class="welcome__msg">Um jeito mais fácil de curtir seu happy hour</span>
         </div>
     </section>
 
-</md-content>
+    <section class="who-bar">
+        <div class="centralizer">
+            <h2 class="who-bar__title">Para seu bar</h2>
+            <article class="who-bar__article">
+                <p class="who-bar__parag">Somos uma startup criada com o objetivo ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. </p>
+            </article>
+            <ul class="who-bar__itens">
+                <li class="who-bar__item"></li>
+                <li class="who-bar__item"></li>
+                <li class="who-bar__item"></li>
+                <li class="who-bar__item"></li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="who-user">
+        <div class="centralizer">
+            <h2 class="who-user">Para seus clientes</h2>
+            
+        </div>
+    </section>
+</div>

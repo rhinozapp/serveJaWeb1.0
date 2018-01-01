@@ -1,0 +1,40 @@
+<md-dialog aria-label="Tables" style="width: 600px">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Imprimir</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="printQRCode.functions.cancel()">
+                <md-icon class="icon-28">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <div layout-align="center center" id="print">
+                <div layout="row">
+                    <div flex="20" style="text-align: center">
+                        ServeJá
+                    </div>
+                </div>
+
+                <div layout="row">
+                    <div flex="100" style="text-align: center">
+                        <img ng-src="/files/qrCodes/{{printQRCode.vars._id}}.png" alt="QRCode">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <md-button ng-click="printQRCode.functions.cancel()">
+            Cancelar
+        </md-button>
+        <span flex></span>
+
+        <md-button ng-click="printQRCode.functions.print()">
+            imprimir qrcode
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>
