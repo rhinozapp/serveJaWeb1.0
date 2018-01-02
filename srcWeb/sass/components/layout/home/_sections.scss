@@ -1,12 +1,82 @@
-.welcome{
+.welcome {
     background: url(https://www.opas.org.br/wp-content/uploads/2017/06/cerveja-e-sa%C3%BAde.jpg);
     background-size: cover;
+    background-attachment: fixed;
     padding: 20% 0;
-    .welcome__msg{
+    .welcome__msg {
         font-size: 4em;
         color: $secundary-color;
         display: block;
-        width: 50%;
+        width: 500px;
     }
 }
 
+.who-are-we {
+    padding: 20px 0;
+    .who-are-we__reasons {
+        text-align: center;
+        margin-top: 20px;
+        .who-are-we__reason {
+            width: 300px;
+            display: inline-block;
+            .who-are-we__icon {
+                font-size: 6em;
+                color: #fb0;
+            }
+            .who-are-we__reason-title {
+                font-size: 1.5em;
+                font-weight: bold;
+                margin: 15px 0;
+            }
+            .who-are-we__reason-parag {
+                line-height: 25px;
+            }
+        }
+    }
+    .who-are-we__title {
+        font-size: 2em;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+    .who-are-we__parag {
+        font-size: 1.2em;
+        line-height: 25px;
+        text-align: justify;
+    }
+    &:nth-of-type(3) {
+        margin-top: 70px;
+        background: #eee;
+        .who-are-we__article {
+            width: 65%;
+            margin-bottom: 20px;
+        }
+        .who-are-we__img-app {
+            position: absolute;
+            width: 30%;
+            max-width: 319px;
+            box-shadow: 5px 5px 130px #aaa;
+            right: 0;
+            top: -65px;
+        }
+    }
+    .who-are-we__store {
+        display: inline-block;
+        margin-right: 10px;
+        .who-are-we__img-store {
+            width: 175px;
+        }
+    }
+}
+
+.contact {
+    margin-top: 35px;
+    padding: 20px 0;
+    .contact__title {
+        font-size: 2em;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+    .footer__span{
+        font-size: 1.2em;
+    }
+}

@@ -1,10 +1,24 @@
 <div class="content">
-    
+
     <header class="header">
         <div class="centralizer">
             <h1 class="header__title">ServeJá!</h1>
             <nav class="menu">
                 <ul class="menu__itens">
+                    <li class="menu__item">
+                        <a class="menu__link" aria-label="Quem somos">
+                            <span class="ng-scope">
+                                Sobre o ServeJá
+                            </span>
+                        </a>
+                    </li>
+                    <li class="menu__item">
+                        <a class="menu__link" aria-label="Example">
+                            <span class="ng-scope">
+                                Dúvidas
+                            </span>
+                        </a>
+                    </li>
                     <li class="menu__item">
                         <a class="menu__link" ng-click="home.functions.doLogin()" aria-label="Login">
                             <span class="ng-scope">
@@ -19,20 +33,6 @@
                             </span>
                         </a>
                     </li>
-                    <li class="menu__item">
-                        <a class="menu__link" aria-label="Quem somos">
-                            <span class="ng-scope">
-                                Quem somos
-                            </span>
-                        </a>
-                    </li>
-                    <li class="menu__item">
-                        <a class="menu__link" aria-label="Example">
-                            <span class="ng-scope">
-                                Dúvidas
-                            </span>
-                        </a>
-                    </li>
                 </ul>
             </nav>
         </div>
@@ -44,25 +44,84 @@
         </div>
     </section>
 
-    <section class="who-bar">
+    <section class="who-are-we">
         <div class="centralizer">
-            <h2 class="who-bar__title">Para seu bar</h2>
-            <article class="who-bar__article">
-                <p class="who-bar__parag">Somos uma startup criada com o objetivo ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. </p>
+            <h2 class="who-are-we__title">Para bares</h2>
+            <article class="who-are-we__article">
+                <p class="who-are-we__parag">Somos uma startup criada com o objetivo ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+                    doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto
+                    beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
+                    fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. </p>
             </article>
-            <ul class="who-bar__itens">
-                <li class="who-bar__item"></li>
-                <li class="who-bar__item"></li>
-                <li class="who-bar__item"></li>
-                <li class="who-bar__item"></li>
+            <ul class="who-are-we__reasons">
+                <li class="who-are-we__reason">
+                    <i class="fa fa-line-chart who-are-we__icon" aria-hidden="true"></i>
+                    <h3 class="who-are-we__reason-title">Motivo 1</h3>
+                    <article class="who-are-we__reason-article">
+                        <p class="who-are-we__reason-parag">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur
+                            magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                    </article>
+                </li>
+                <li class="who-are-we__reason">
+                    <i class="fa fa-beer who-are-we__icon" aria-hidden="true"></i>
+                    <h3 class="who-are-we__reason-title">Motivo 2</h3>
+                    <article class="who-are-we__reason-article">
+                        <p class="who-are-we__reason-parag">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur
+                            magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                    </article>
+                </li>
+                <li class="who-are-we__reason">
+                    <i class="fa fa-users who-are-we__icon" aria-hidden="true"></i>
+                    <h3 class="who-are-we__reason-title">Motivo 3</h3>
+                    <article class="who-are-we__reason-article">
+                        <p class="who-are-we__reason-parag">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur
+                            magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                    </article>
+                </li>
             </ul>
         </div>
     </section>
 
-    <section class="who-user">
+    <section class="who-are-we">
         <div class="centralizer">
-            <h2 class="who-user">Para seus clientes</h2>
-            
+            <h2 class="who-are-we__title">Para amantes de happy hour</h2>
+            <article class="who-are-we__article">
+                <p class="who-are-we__parag">Somos uma startup criada com o objetivo ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+                    doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto
+                    beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
+                    fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Somos uma startup
+                    criada com o objetivo ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                    laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae
+                    vitae dicta sunt explicabo.</p>
+            </article>
+            <img class="who-are-we__img-app" ng-src="files\img\img-app.png" class="md-avatar" alt="Imagem do aplicativo Servejá" />
+            <h2 class="who-are-we__title">Baixe agora o app</h2>
+            <ul class="who-are-we__stores">
+                <li class="who-are-we__store">
+                    <a href="" class="who-are-we__link">
+                        <img src="https://imagepng.org/wp-content/uploads/2017/06/baixar-na-app-store-botao-4.png" alt="" class="who-are-we__img-store">
+                    </a>
+                </li>
+                <li class="who-are-we__store">
+                    <a href="" class="who-are-we__link">
+                        <img src="https://duo.google.com/images/store-badges/play/pt-BR_badge_web_generic.png" alt="" class="who-are-we__img-store">
+                    </a>
+                </li>
+            </ul>
         </div>
     </section>
+
+    <section class="contact">
+        <div class="centralizer">
+            <h2 class="contact__title">Tem alguma dúvida?</h2>
+            <span>Entre em contato no número (xx) xxxxx-xxxx ou por e-mail no <strong>serveja_suport@serveja.com.br</strong></span>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="centralizer">
+            <span class="footer__span">ServeJá 2018 - Todos os direitos reservados</span>
+        </div>
+    </footer>
+
 </div>

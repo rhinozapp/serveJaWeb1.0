@@ -1,25 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Dosis|Roboto');
-
-*{
-    box-sizing: border-box;
-}
-
-body{
-    font-family: 'Roboto', sans-serif;
-    font-family: 'Dosis', sans-serif;
-}
-
-.centralizer{
-    width: 80%;
-    margin: 0 auto;
-}
-
-.content{
-    max-width: 1500px;
-    margin: 0 auto;
-}
-
 .header{
+    position: fixed;
+    z-index: 1;
+    top: 0;
     width: 100%;
     background: $main-color;
     color: $secundary-color;
@@ -28,7 +10,7 @@ body{
         float: left;
         font-size: 2em;
         font-weight: bold;
-        padding: 2% 0;
+        padding: 20px 0;
     }
     .menu{
         float: right;
