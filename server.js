@@ -1,4 +1,5 @@
 //region Dependencies
+<<<<<<< HEAD
 var appName = 'rhinozApp';
 var express = require('express'),
     app = express(),
@@ -33,10 +34,23 @@ config.config(app);
 //region Routes
 var routes = require('./server/routes/router');
 routes.routes(app);
+=======
+let express = require('express'),
+    app = express(),
+    appName = 'serveJa',
+    dbUser = 'dev',
+    dbPassword = 'dev001!';
+//endregion
+
+//region Config
+require('./server/config/config')(app);
+require('./server/config/database/databaseConfig')('mongodb://localhost/' + appName);
+//require('./server/config/database/databaseConfig')('mongodb://'+ dbUser +':'+ dbPassword + '@ds149335.mlab.com:49335/heroku_gzm8rnrq');
+>>>>>>> 462de9f4c9b5087f19df475bd5ffa19bd84d02e4
 //endregion
 
 //region Start App
-var port = process.env.PORT || 80;
+let port = process.env.PORT || 80;
 app.listen(port);
 exports = module.exports = app;
 console.log('Server opened at port ' + port);

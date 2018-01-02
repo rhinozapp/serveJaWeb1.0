@@ -1,0 +1,58 @@
+<md-dialog aria-label="Menu" style="width: 1200px">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Produtos</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="saveMenu.functions.cancel()">
+                <md-icon class="icon-28">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <!--Config-->
+            <div layout="row">
+                <md-input-container flex="50">
+                    <label>Nome do cardápio</label>
+                    <input ng-model="saveMenu.vars.menuName">
+                </md-input-container>
+            </div>
+
+            <!--Category-->
+            <md-card ng-repeat="data in saveMenu.vars.listOrder" ng-init="data.view = true" ng-if="data.products.length">
+
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>{{data.categoryName}}</h2>
+                        <span flex></span>
+                        <md-button class="md-icon-button" aria-label="button" ng-click="data.view = !data.view">
+                            <md-icon ng-if="!data.view" class="icon-28">keyboard_arrow_right</md-icon>
+                            <md-icon ng-if="data.view" class="icon-28">keyboard_arrow_down</md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+
+                <!--Products-->
+                <md-list ng-show="data.view">
+                    <md-list-item ng-repeat="data2 in data.products">
+                        <p>{{data2.productName}}</p>
+                        <md-checkbox class="md-secondary" ng-model="data2.statusInMenu"></md-checkbox>
+                    </md-list-item>
+                </md-list>
+            </md-card>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <md-button ng-click="saveMenu.functions.cancel()">
+            Cancelar
+        </md-button>
+        <span flex></span>
+
+        <md-button ng-disabled="!saveMenu.vars.menuName"
+                   ng-click="saveMenu.functions.save.doSave()">
+            Salvar
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

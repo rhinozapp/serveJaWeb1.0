@@ -1,0 +1,89 @@
+<md-content ng-if="!profile.vars.charge">
+    <md-subheader class="md-primary">Crie e edite abaixo seus cardápios</md-subheader>
+
+    <div layout="row" layout-align="start">
+        <md-button class="md-accent md-raised" ng-click="menu.functions.saveMenu()">
+            Inserir cardápio
+        </md-button>
+    </div>
+
+    <div layout="row">
+        <md-card flex="100">
+            <md-toolbar class="md-table-toolbar md-default" ng-show="menu.vars.filter">
+                <div class="md-toolbar-tools">
+                    <md-icon class="icon-24">search</md-icon>
+                    <form flex>
+                        <input type="text"
+                               style="border: 0; outline: none;"
+                               placeholder="Buscar pelo título"
+                               ng-model="menu.vars.search"
+                               set-focus="menu.vars.filter">
+                    </form>
+                    <md-button class="md-icon-button" ng-click="menu.functions.closeFilter()">
+                        <md-icon class="icon-24">close</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="menu.vars.filter">
+                <div class="md-toolbar-tools">
+                    <h2 class="md-title" ng-click="menu.vars.filter = true" style="outline: none;">Clique para filtrar por título</h2>
+                    <div flex></div>
+                    <md-button class="md-icon-button" ng-click="menu.vars.filter = true">
+                        <md-icon class="icon-24">filter_list</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-table-container>
+                <table md-table>
+
+                    <thead md-head md-order="menu.vars.query.order">
+                    <tr md-row>
+                        <th md-column md:order:by="menuName">Cardápio</th>
+                        <th md-column>Editar</th>
+                        <th md-column>Deletar</th>
+                    </tr>
+                    </thead>
+
+                    <tbody md-body>
+                    <tr md-row
+                        ng-repeat="data in menu.vars.listMenuFilter |
+                        orderBy: menu.vars.query.order |
+                        limitTo: menu.vars.query.limit: (menu.vars.query.page - 1) * menu.vars.query.limit">
+
+                        <td md-cell>
+                            {{data.menuName}}
+                        </td>
+
+                        <td md-cell>
+                            <a style="cursor: pointer; color: black" ng-click="menu.functions.saveMenu(data)">
+                                <md-icon class="icon-24">edit_mode</md-icon>
+                                <md-tooltip md-direction="right">
+                                    Clique para editar o cardápio
+                                </md-tooltip>
+                            </a>
+                        </td>
+
+                        <td md-cell>
+                            <md-button ng-click="menu.functions.deleteMenu(data._id)"
+                                       class="md-icon-button">
+                                <md-icon class="icon-24">delete_forever</md-icon>
+                                <md-tooltip md-direction="right">
+                                    Clique para excluir o cardápio
+                                </md-tooltip>
+                            </md-button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+
+            <md-table-pagination md-limit="menu.vars.query.limit"
+                                 md-page="menu.vars.query.page"
+                                 md-total="{{menu.vars.listMenuFilter.length}}"
+                                 md-page-select md-label="{page: 'Página:', rowsPerPage: 'Linhas por Página:', of: 'de'}"
+                                 md-options="[25,50,100]"></md-table-pagination>
+        </md-card>
+    </div>
+</md-content>

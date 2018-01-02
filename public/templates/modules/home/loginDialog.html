@@ -1,0 +1,99 @@
+<md-dialog flex-xs="90"
+           flex-sm="70"
+           flex-md="60"
+           flex-lg="40"
+           flex-xl="40" aria-label="login">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>RhinozAdmin</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="login.functions.cancel()">
+                <i class="icon-28">close</i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <form name="loginForm">
+                <div ng-show="!login.vars.forgotPasswordAction">
+                    <md-input-container class="md-block">
+                        <label>E-mail</label>
+                        <input name="username" ng-model="login.vars.username" required>
+                        <div ng-messages="loginForm.username.$error">
+                            <div ng-message="required">
+                                Insira seu e-mail.
+                            </div>
+                            <div ng-message="userFound">
+                                Usuário não foi encontrado.
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Senha</label>
+                        <input name="password" ng-model="login.vars.password" type="password" required>
+                        <div ng-messages="loginForm.password.$error">
+                            <div ng-message="required">
+                                Insira sua senha.
+                            </div>
+                            <div ng-message="wrongPass">
+                                Senha incorreta.
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout="row" layout-align="center">
+                    <a ng-click="login.vars.forgotPasswordAction = true">Esqueceu sua senha?</a>
+                </div>
+
+                <div layout="row" ng-show="login.vars.forgotPasswordAction">
+                    <md-input-container class="md-block" flex="100">
+                        <label>Entre com o e-mail de cadastro</label>
+                        <input name="forgotPass" ng-model="login.vars.recoveryEmail" required>
+                        <div ng-messages="loginForm.forgotPass.$error">
+                            <div ng-message="required">
+                                Insira seu e-mail de cadastro para enviarmos o link de recuperação de senha.
+                            </div>
+                            <div ng-message="userFound">
+                                Usuário não foi encontrado.
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row" ng-show="!login.vars.forgotPasswordAction">
+        <md-button class="md-raised md-primary" ng-click="login.functions.signUP()">
+            Cadastre-se
+        </md-button>
+        <div flex></div>
+
+        <md-button
+                class="md-raised md-primary"
+                ng-click="login.functions.loginAction()"
+                ng-disabled="!login.vars.username || !login.vars.password">
+            GO!
+        </md-button>
+    </md-dialog-actions>
+
+    <md-dialog-actions layout="row" ng-show="login.vars.forgotPasswordAction">
+        <md-button class="md-raised md-primary" ng-click="login.functions.signUP()">
+            Cadastre-se
+        </md-button>
+
+        <md-button class="md-raised md-primary" ng-click="login.vars.forgotPasswordAction = false">
+            Voltar para login
+        </md-button>
+        <div flex></div>
+
+        <md-button
+                class="md-raised md-primary"
+                ng-click="login.functions.recoveryPasswordSend()"
+                ng-disabled="!login.vars.recoveryEmail">
+            Recuperar senha
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>
