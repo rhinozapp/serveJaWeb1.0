@@ -1,3 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Dosis|Roboto');
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Dosis', sans-serif;
+}
+
+.content{
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.centralizer{
+    width: 970px;
+    margin: 0 auto;
+    position: relative;
+}
+
 a{
   text-decoration: none;
   outline:none
