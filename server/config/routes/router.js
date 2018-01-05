@@ -44,7 +44,7 @@ module.exports = function (app) {
 
     //region Products
     let saveProductsWeb = require('./web/modules/products/saveProducts');
-    app.post('/web/saveProducts', authenticate, saveProductsWeb.saveProducts);
+    app.post('/web/saveProducts', multipart({uploadDir: './public/files/imgProducts/'}), saveProductsWeb.saveProducts);
 
     let getProductsWeb = require('./web/modules/products/getProducts');
     app.post('/web/getProducts', authenticate, getProductsWeb.getProducts);
@@ -82,6 +82,16 @@ module.exports = function (app) {
 
     let deleteTablesWeb = require('./web/modules/tables/deleteTables');
     app.post('/web/deleteTables', authenticate, deleteTablesWeb.deleteTables);
+    //endregion
+    //endregion
+
+    //region APP Routes
+    //region doLogin
+    let doLoginApp = require('./app/modules/login/doLogin');
+    app.post('/app/doLogin', doLoginApp.doLogin);
+
+    let doLoginHack = require('./app/modules/login/doLoginHack');
+    app.post('/app/doLoginHack', doLoginHack.doLoginHack);
     //endregion
     //endregion
 

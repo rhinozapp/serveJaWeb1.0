@@ -211,6 +211,14 @@ angular
 (function(){
 "use strict";
 /**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular.module('layout', []);
+})();
+(function(){
+"use strict";
+/**
  * Created by guilherme.assis on 02/12/2016.
  */
 angular
@@ -418,14 +426,6 @@ angular
             getDataBack : $resource('web/zipCode')
         };
     });
-})();
-(function(){
-"use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
-angular.module('layout', []);
 })();
 (function(){
 "use strict";

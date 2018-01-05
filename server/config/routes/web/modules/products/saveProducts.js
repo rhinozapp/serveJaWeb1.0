@@ -1,16 +1,33 @@
 exports.saveProducts = function (req, res) {
     let mongoose = require('mongoose'),
-        products = mongoose.model('products');
+        products = mongoose.model('products'),
+        files = '',
+        fileName = '';
 
-    if(req.body.data._id){
+    //region If file
+    if(req.files.file){
+        fileName = req.files.file.path.split('imgProducts\\');
+        files += fileName[1];
+
         products.update({
-            _id : req.body.data._id
+            _id : req.body.vars._id
         }, {
-            categoryID : req.body.data.categoryID,
-            productName: req.body.data.productName,
-            amount : req.body.data.amount,
-            value : req.body.data.value,
-            promotionValue : req.body.data.promotionValue
+            imgPath : files
+        },{
+            multi : false
+        });
+    }
+    //endregion
+
+    if(req.body.vars._id){
+        products.update({
+            _id : req.body.vars._id
+        }, {
+            categoryID : req.body.vars.categoryID,
+            productName: req.body.vars.productName,
+            amount : req.body.vars.amount,
+            value : req.body.vars.value,
+            promotionValue : req.body.vars.promotionValue
         }, {
             multi : false
         }, function () {
@@ -19,11 +36,12 @@ exports.saveProducts = function (req, res) {
     }else{
         new products({
             userID: req.body.id,
-            categoryID : req.body.data.categoryID,
-            productName: req.body.data.productName,
-            amount : req.body.data.amount,
-            value : req.body.data.value,
-            promotionValue : req.body.data.promotionValue
+            categoryID : req.body.vars.categoryID,
+            productName: req.body.vars.productName,
+            amount : req.body.vars.amount,
+            value : req.body.vars.value,
+            promotionValue : req.body.vars.promotionValue,
+            imgPath : files
         }).save().then(function (data) {
             res.json({status : true});
         }, function (err) {

@@ -1,11 +1,12 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+let mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    userSchema = new mongoose.Schema({
+        userId : Schema.ObjectId,
+        email: { type: String, required: true },
+        name : { type: String, required: true },
+        photo : { type: String, required: true },
+        token : { type: String, required: true },
+        idFace : { type: String, required: true }
+    });
 
-let userSchema = new mongoose.Schema({
-    userIDFirebase : String,
-    email: { type: String, required: true },
-    profileApp: { type: Object },
-    profileFace: { type: Object }
-});
-
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model('userApp', userSchema);

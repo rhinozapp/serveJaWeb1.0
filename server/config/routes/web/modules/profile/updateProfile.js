@@ -109,6 +109,7 @@ exports.updateProfile = function (req, res) {
         cnpj : updateVars.cnpj,
         description : updateVars.description,
         pageFacebook : updateVars.pageFacebook,
+        pageInstagram : updateVars.pageInstagram,
         webSite : updateVars.webSite,
         zipCode: updateVars.zipCode,
         address : updateVars.address,
