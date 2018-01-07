@@ -16,5 +16,5 @@ require('./server/config/database/databaseConfig')('mongodb://localhost/' + appN
 let port = process.env.PORT || 80;
 app.listen(port);
 exports = module.exports = app;
-console.log('Server opened at port '+port);
+console.log('Server opened at port ' + port);
 //endregion

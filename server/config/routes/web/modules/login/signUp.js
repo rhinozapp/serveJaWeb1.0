@@ -1,20 +1,21 @@
-exports.signup = function (req, res) {
+exports.signup = function(req, res) {
     let mongoose = require('mongoose'),
         userAdmin = mongoose.model('userAdmin'),
         userProfile = mongoose.model('userAdminProfile'),
         jwt = require('jsonwebtoken'),
         bcrypt = require('bcrypt'),
+        logger = require('../../../../logger'),
         salt = bcrypt.genSaltSync(10),
         token;
 
     new userAdmin({
         email: req.body.username,
-        password : bcrypt.hashSync(req.body.password, salt)
-    }).save().then(function (data) {
+        password: bcrypt.hashSync(req.body.password, salt)
+    }).save().then(function(data) {
         new userProfile({
-            userID : data._id,
+            userID: data._id,
             name: req.body.name,
-            cnpj : req.body.cnpj,
+            cnpj: req.body.cnpj,
             zipCode: req.body.zipCode,
             address : req.body.address ,
             number : req.body.number ,
@@ -29,24 +30,24 @@ exports.signup = function (req, res) {
             statusLoc : req.body.status,
         }).save().then(function (data) {
             token = jwt.sign({
-                id : data.userID,
-                email : req.body.username,
-                name : req.body.name
+                id: data.userID,
+                email: req.body.username,
+                name: req.body.name
             }, 'rhinoz', { expiresIn: '12h' });
 
             res.json({
-                status : true,
-                token : token
+                status: true,
+                token: token
             });
 
-        }, function (err) {
-            console.log(err);
-            res.json({status : false});
+        }, function(err) {
+            logger.log('error', err);
+            res.json({ status: false });
         });
 
-    }, function (err) {
-        console.log(err);
-        res.json({status : false});
+    }, function(err) {
+        logger.log('error', err);
+        res.json({ status: false });
 
     });
 };
