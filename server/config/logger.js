@@ -20,11 +20,11 @@ let logger = new winston.Logger({
         })
     ],
     exitOnError: false
-})
+});
 
 module.exports = logger;
 module.exports.stream = {
     write: function(message, encoding) {
         logger.info(message);
     }
-}
+};

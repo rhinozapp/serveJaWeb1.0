@@ -5,6 +5,7 @@ exports.doLogin = function(req, res) {
         bcrypt = require('bcrypt'),
         logger = require('../../../../logger'),
         jwt = require('jsonwebtoken'),
+        logger = require('../../../../logger'),
         token;
 
     userModel.find({ email: req.body.username }, function(err, user) {
