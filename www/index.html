@@ -2,49 +2,35 @@
 <html>
 
 <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <title>serveJa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>serveJa</title>
+    <meta http-equiv="Content_security_policy" content="default-src 'self' style-src 'self' 'unsafe-inline' https://www.googleapis.com https://graph.facebook.com">
 
-        <link rel="manifest" href="manifest.json">
-        <!-- cordova script (this will be a 404 during development) -->
-        <script src="cordova.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
 
-        <!--Firebase-->
-        <!--<script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
-        <script>
-            // Initialize Firebase
-            var config = {
-                apiKey: "AIzaSyDrgnxO_sSTLTfGWcP1rI2XgOGBfk-4wV0",
-                authDomain: "rhinozapp-70fbe.firebaseapp.com",
-                databaseURL: "https://rhinozapp-70fbe.firebaseio.com",
-                projectId: "rhinozapp-70fbe",
-                storageBucket: "rhinozapp-70fbe.appspot.com",
-                messagingSenderId: "675857416832"
-            };
-            firebase.initializeApp(config);
-        </script>-->
+    <!--un-comment this code to enable service worker-->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(() => console.log('service worker installed'))
+                .catch(err => console.log('Error', err));
+        }
+    </script>
 
-        <!--un-comment this code to enable service worker-->
-        <script>
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(() => console.log('service worker installed'))
-                    .catch(err => console.log('Error', err));
-            }
-        </script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="build/css/bowerCssComponents.css"/>
+    <link rel="stylesheet" href="build/css/core.css">
 
-        <!-- CSS -->
-        <link rel="stylesheet" href="build/css/bowerCssComponents.css"/>
-        <link rel="stylesheet" href="build/css/core.css">
+    <!-- vendor js -->
+    <script src="build/js/vendor.js"></script>
 
-        <!-- vendor js -->
-        <script src="build/js/vendor.js"></script>
-
-        <!-- Rhinoz Project -->
-        <script src="build/js/AppProject.js"></script>
-        <script src="build/js/modules.js"></script>
-  </head>
+    <!-- Rhinoz Project -->
+    <script src="build/js/AppProject.js"></script>
+    <script src="build/js/modules.js"></script>
+</head>
 
 <body ng-app="serveJa">
 <div>

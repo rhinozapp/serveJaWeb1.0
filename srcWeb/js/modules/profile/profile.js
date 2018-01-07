@@ -215,6 +215,7 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.uf = data.address.uf;
                     profile.vars.lat = data.latlong.lat;
                     profile.vars.long = data.latlong.lng;
+                    profile.vars.status = data.latlong.status;
                 });
             }
         },

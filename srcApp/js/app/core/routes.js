@@ -1,8 +1,3 @@
-/**
- * Created by guilherme.assis on 2/24/2016.
- * @Description: Configuração das Rotas do RhinozApp Project.
- */
-
 angular
     .module('core')
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider, stateHelperProvider) {

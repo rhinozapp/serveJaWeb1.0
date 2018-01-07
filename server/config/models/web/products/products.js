@@ -7,7 +7,8 @@ let mongoose = require('mongoose'),
         productName: { type: String, required: true },
         amount : { type: String, required: true },
         value : { type: String, required: true },
-        promotionValue : { type: String }
+        promotionValue : { type: String },
+        imgPath : { type: String }
     });
 
 module.exports = mongoose.model('products', objSchema);

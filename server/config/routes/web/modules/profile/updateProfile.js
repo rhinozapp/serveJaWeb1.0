@@ -83,6 +83,14 @@ exports.updateProfile = function (req, res) {
     }else{
         saturdayStatus = true;
     }
+
+    if(!updateVars.long){
+        updateVars.long = updateVars.loc.coordinates[0];
+    }
+
+    if(!updateVars.lat){
+        updateVars.lat = updateVars.loc.coordinates[1];
+    }
     //endregion
 
     //region If file
@@ -109,6 +117,7 @@ exports.updateProfile = function (req, res) {
         cnpj : updateVars.cnpj,
         description : updateVars.description,
         pageFacebook : updateVars.pageFacebook,
+        pageInstagram : updateVars.pageInstagram,
         webSite : updateVars.webSite,
         zipCode: updateVars.zipCode,
         address : updateVars.address,
@@ -117,8 +126,11 @@ exports.updateProfile = function (req, res) {
         neighborhood : updateVars.neighborhood,
         city : updateVars.city,
         uf : updateVars.uf,
-        lat : updateVars.lat,
-        long : updateVars.long,
+        loc : {
+            'type' : 'Point',
+            coordinates: [updateVars.long, updateVars.lat]
+        },
+        statusLoc : updateVars.status,
         sunday : {
             status: sundayStatus,
             timeStart : updateVars.sundayStart,

@@ -178,6 +178,7 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
                     signUP.vars.uf = data.address.uf;
                     signUP.vars.lat = data.latlong.lat;
                     signUP.vars.long = data.latlong.lng;
+                    signUP.vars.status = data.latlong.status;
                 });
             }
         },

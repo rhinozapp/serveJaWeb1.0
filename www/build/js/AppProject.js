@@ -62,11 +62,6 @@ angular
 })();
 (function(){
 "use strict";
-/**
- * Created by guilherme.assis on 2/24/2016.
- * @Description: Configuração das Rotas do RhinozApp Project.
- */
-
 angular
     .module('core')
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider, stateHelperProvider) {
@@ -104,23 +99,15 @@ angular
 })();
 (function(){
 "use strict";
-/**
- * Created by guiga on 27/08/2017.
- */
-
 angular
     .module('core')
     .run(function($rootScope, $window, $state) {
         $rootScope.$on('$stateChangeStart', function (e, toState) {
             // Set scroll to 0
             window.scrollTo(0, 0);
-            var userUID = $window.localStorage.userUID;
+            var token = $window.localStorage.token;
 
-            if ((toState.name.indexOf('mainList') > -1) && userUID === undefined) {
-                e.preventDefault();
-                $state.go('login');
-                $window.localStorage.clear();
-            }else if (toState.name === 'login' && userUID !== undefined) {
+            if (toState.name === 'login' && token !== undefined) {
                 e.preventDefault();
                 $state.go('user.mainList');
             }
@@ -156,8 +143,31 @@ angular
     .module('core')
     .service('defineHost', function () {
         return {
-            host : 'http://192.168.1.105:80/'
+            host : 'http://192.168.1.103:80/'
         };
+    });
+})();
+(function(){
+"use strict";
+angular
+    .module('core')
+    .service('getCoordinates', function ($window) {
+        return {
+            getPos : function () {
+                if(window.navigator && window.navigator.geolocation){
+                    window.navigator.geolocation.getCurrentPosition(function (data) {
+                        $window.localStorage.lat = data.coords.latitude;
+                        $window.localStorage.long = data.coords.longitude;
+                    }, function () {
+                        $window.localStorage.lat = '-23.533773';
+                        $window.localStorage.long = '-46.625290';
+                    });
+                }else{
+                    $window.localStorage.lat = '-23.533773';
+                    $window.localStorage.long = '-46.625290';
+                }
+            }
+        }
     });
 })();
 (function(){
@@ -221,6 +231,58 @@ angular
                 $mdDialog.show(confirm).then(options.confirmFunction, options.cancelFunction);
             }
         }
+    });
+})();
+(function(){
+"use strict";
+/**
+ * Created by guilherme.assis on 06/12/2016.
+ */
+
+angular
+    .module('core')
+    .service('toastAction', function ($mdToast) {
+        return {
+            show: function(option){
+                var last = {
+                    bottom: option.bottom,
+                    top: option.top,
+                    left: option.left,
+                    right: option.right
+                };
+
+                option.scope.toastPosition = angular.extend({},last);
+
+                function sanitizePosition() {
+                    var current = option.scope.toastPosition;
+
+                    if ( current.bottom && last.top ) current.top = false;
+                    if ( current.top && last.bottom ) current.bottom = false;
+                    if ( current.right && last.left ) current.left = false;
+                    if ( current.left && last.right ) current.right = false;
+
+                    last = angular.extend({},current);
+                }
+
+
+                option.scope.getToastPosition = function() {
+                    sanitizePosition();
+
+                    return Object.keys(option.scope.toastPosition)
+                        .filter(function(pos) { return option.scope.toastPosition[pos]; })
+                        .join(' ');
+                };
+
+
+                var pin = option.scope.getToastPosition();
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent(option.text)
+                        .position(pin)
+                        .hideDelay(3000)
+                );
+            }
+        };
     });
 })();
 (function(){

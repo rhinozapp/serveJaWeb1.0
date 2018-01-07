@@ -25,11 +25,11 @@ module.exports = function(app) {
     app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
     app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
     app.use(express.static('./public/'));
-    app.use('/static1', express.static('./www/'));
-    app.use(cors({ origin: 'http://localhost:80' }));
-    app.use(cors({ origin: 'http://localhost:8100' }));
-    app.use(cors({ origin: 'http://maps.google.com' }));
-    app.use(cors({ origin: 'https://viacep.com.br' }));
+    app.use('/app', express.static('./www/'));
+    app.use(cors({origin: 'http://localhost:80'}));
+    app.use(cors({origin: 'http://localhost:8100'}));
+    app.use(cors({origin: 'http://maps.google.com'}));
+    app.use(cors({origin: 'https://viacep.com.br'}));
     app.use(cors());
     //endregion
 

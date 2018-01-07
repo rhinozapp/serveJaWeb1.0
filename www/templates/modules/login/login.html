@@ -2,31 +2,20 @@
     <div class="login__blur"></div>
 
     <div class="center">
-        <h1 class="login__title">
-            <img class="login__logo"
-                 src="http://fayettevilleyouthwrestling.com/wp-content/uploads/2014/11/rhino800.png"
-                 alt="logotipo do RhinozApp">
-            RhinozApp
-        </h1>
-
         <form class="login__form" name="loginForm">
-            <input class="login__input" type="email" name="email" ng-model="login.vars.email" required placeholder="e-mail">
-
-            <input class="login__input" type="password" name="password" ng-model="login.vars.password" required placeholder="senha">
-
-            <div layout="row" style="margin-top: 40px">
-                <div flex="50">
-                    <md-button class="md-accent md-raised" ng-click="login.functions.loginEmail()">Login</md-button>
-                </div>
-
-                <div flex></div>
-
-                <div flex="50">
-                    <md-button class="md-primary md-raised" ng-click="login.functions.loginFacebook()">facebook</md-button>
-                </div>
+            <div>
+                Entre com facebook
             </div>
 
-            <button class="login__btn login__btn--create" ng-click="login.functions.signUp()">Não tem um conta? Crie agora!</button>
+            <div layout="row" style="margin-top: 40px" layout-align="center">
+                <div flex="50">
+                    <md-button class="md-primary md-raised" ng-click="login.functions.loginFacebook()">Entrar</md-button>
+                </div>
+
+                <div flex="50">
+                    <md-button class="md-primary md-raised" ng-click="login.functions.loginHack()">Hack</md-button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

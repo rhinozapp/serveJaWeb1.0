@@ -16,6 +16,46 @@
                     <span class="md-dialog-title">Informações do Produto</span>
                 </md-card-title-text>
             </md-card-title>
+
+            <div layout="row" style="margin-top: 50px">
+                <div flex="25" style="margin-left: 50px">
+                    <img ng-if="saveProducts.vars.imgPath && !saveProducts.vars.files"
+                         ng-src="files/imgProducts/{{saveProducts.vars.imgPath}}"
+                         style="width: 200px; height: 200px"
+                         alt="" />
+
+                    <img ng-if="saveProducts.vars.files"
+                         style="width: 200px; height: 200px"
+                         ngf-thumbnail="saveProducts.vars.files || '/thumb.jpg'">
+                </div>
+
+                <div flex="70">
+                    <input class="ng-hide"
+                           id="input-file-id"
+                           type="file"
+                           name="files"
+                           ng-model="saveProducts.vars.files"
+
+                           ngf-select
+                           ngf-pattern="'image/*'"
+                           ngf-accept="'image/*'"
+                           ngf-multiple="false">
+
+                    <label for="input-file-id"
+                           class="md-button md-raised md-accent">
+                        inserir imagem do produto
+                    </label>
+                    <md-input-container class="md-block"
+                                        flex="70"
+                                        style="margin: 0; top: 13px; left: 5px;">
+                        <label>Recomendamos subir imagens com 200px de largura e 200px de altura</label>
+                        <input name="files-name"
+                               ng-model="saveProducts.vars.filesName"
+                               readonly>
+                    </md-input-container>
+                </div>
+            </div>
+
             <div layout="row">
                 <md-input-container flex="100">
                     <label>Nome do produto</label>

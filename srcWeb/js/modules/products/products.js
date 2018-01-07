@@ -122,7 +122,7 @@ function products($scope, $filter, productsService, profileGet, dialogAdvanced, 
     products.functions.core();
 }
 
-function saveProductsController(dialogAdvanced, toastAction, productsService, profileGet, data) {
+function saveProductsController(dialogAdvanced, toastAction, productsService, profileGet, data, Upload) {
     var saveProducts = this;
     saveProducts.vars = {};
 
@@ -138,7 +138,6 @@ function saveProductsController(dialogAdvanced, toastAction, productsService, pr
                 saveProducts.vars.value = Number(saveProducts.vars.value);
                 saveProducts.vars.promotionValue = Number(saveProducts.vars.promotionValue);
                 saveProducts.vars.amount = Number(saveProducts.vars.amount);
-
             }
         },
 
@@ -164,7 +163,15 @@ function saveProductsController(dialogAdvanced, toastAction, productsService, pr
 
         save : {
             doSave : function () {
-                productsService.saveProducts.save({id : profileGet.id, data : saveProducts.vars}, saveProducts.functions.save.successSaveProducts);
+                Upload.upload({
+                    url: '/web/saveProducts',
+                    method: 'POST',
+                    data: {
+                        file: saveProducts.vars.files,
+                        vars : saveProducts.vars,
+                        id : profileGet.id
+                    }
+                }).then(saveProducts.functions.save.successSaveProducts);
             },
 
             successSaveProducts : function (data) {
@@ -174,7 +181,15 @@ function saveProductsController(dialogAdvanced, toastAction, productsService, pr
 
         saveAndNew : {
             doSave : function () {
-                productsService.saveProducts.save({id : profileGet.id, data : saveProducts.vars}, saveProducts.functions.saveAndNew.successSaveProducts);
+                Upload.upload({
+                    url: '/web/saveProducts',
+                    method: 'POST',
+                    data: {
+                        file: saveProducts.vars.files,
+                        vars : saveProducts.vars,
+                        id : profileGet.id
+                    }
+                }).then(saveProducts.functions.saveAndNew.successSaveProducts);
             },
 
             successSaveProducts : function (data) {

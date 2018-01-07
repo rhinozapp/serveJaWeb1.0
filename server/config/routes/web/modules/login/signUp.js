@@ -17,15 +17,18 @@ exports.signup = function(req, res) {
             name: req.body.name,
             cnpj: req.body.cnpj,
             zipCode: req.body.zipCode,
-            address: req.body.address,
-            number: req.body.number,
-            complement: req.body.complement,
-            neighborhood: req.body.neighborhood,
-            city: req.body.city,
-            uf: req.body.uf,
-            lat: req.body.lat,
-            long: req.body.long
-        }).save().then(function(data) {
+            address : req.body.address ,
+            number : req.body.number ,
+            complement : req.body.complement ,
+            neighborhood : req.body.neighborhood ,
+            city : req.body.city ,
+            uf : req.body.uf ,
+            loc : {
+                'type' : 'Point',
+                coordinates: [req.body.long, req.body.lat]
+            },
+            statusLoc : req.body.status,
+        }).save().then(function (data) {
             token = jwt.sign({
                 id: data.userID,
                 email: req.body.username,

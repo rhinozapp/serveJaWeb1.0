@@ -10,12 +10,14 @@ angular
                             results = {
                                 lat : response.data.results[0].geometry.location.lat,
                                 lng : response.data.results[0].geometry.location.lng,
-                                status : response.data.status
+                                status : true
                             };
 
                             success(results);
                         }else{
                             results = {
+                                lat : 0,
+                                lng : 0,
                                 status : false
                             };
 
