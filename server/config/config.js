@@ -13,7 +13,9 @@ module.exports = function(app) {
     //endregion
 
     //region Morgan Setup
-    logger.debug("Overriding 'Express' logger")
+    logger.debug("Overriding 'Express' logger") //Attention: this is an example of how to use winston
+        //Every time you want to log something YOU DON'T USE console.log(), instead you're gonna use logger.debug()
+        //logger.info() also works. There is several levels of logs. ATTENTION ON THAT!
     app.use(morgan(':method :url :status :response-time ms - :date[web]', { stream: logger.stream }));
     //endregion
 
