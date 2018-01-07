@@ -22,8 +22,11 @@ exports.signup = function (req, res) {
             neighborhood : req.body.neighborhood ,
             city : req.body.city ,
             uf : req.body.uf ,
-            lat : req.body.lat ,
-            long : req.body.long
+            loc : {
+                'type' : 'Point',
+                coordinates: [req.body.long, req.body.lat]
+            },
+            statusLoc : req.body.status,
         }).save().then(function (data) {
             token = jwt.sign({
                 id : data.userID,

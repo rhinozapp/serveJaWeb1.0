@@ -15,7 +15,7 @@ exports.saveProducts = function (req, res) {
             imgPath : files
         },{
             multi : false
-        });
+        }, function () {});
     }
     //endregion
 

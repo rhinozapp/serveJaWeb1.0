@@ -329,7 +329,7 @@
                                 <md-input-container flex="30">
                                     <label>Hora de abertura</label>
                                     <md-select ng-model="profile.vars.tuesdayStart"
-                                               ng-disabled="profile.vars.tuesdayClosed || tuesdayAllDay">
+                                               ng-disabled="profile.vars.tuesdayClosed || profile.vars.tuesdayAllDay">
                                         <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
                                             {{data}}
                                         </md-option>
@@ -339,7 +339,7 @@
                                 <md-input-container flex="33">
                                     <label>Hora de fechamento</label>
                                     <md-select ng-model="profile.vars.tuesdayEnd"
-                                               ng-disabled="profile.vars.tuesdayClosed || tuesdayAllDay">
+                                               ng-disabled="profile.vars.tuesdayClosed || profile.vars.tuesdayAllDay">
                                         <md-option ng-repeat="data in profile.vars.hours" ng-value="data" required>
                                             {{data}}
                                         </md-option>

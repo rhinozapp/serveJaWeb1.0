@@ -56,13 +56,13 @@ exports.zipCode = function (req, res) {
                             results = {
                                 lat : bodyResult.results[0].geometry.location.lat,
                                 lng : bodyResult.results[0].geometry.location.lng,
-                                status : bodyResult.status
+                                status : true
                             };
                         }else{
                             results = {
-                                lat : null,
-                                lng : null,
-                                status : bodyResult.status
+                                lat : 0,
+                                lng : 0,
+                                status : false
                             };
                         }
 

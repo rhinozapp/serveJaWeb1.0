@@ -17,8 +17,11 @@ let mongoose = require('mongoose'),
         neighborhood : { type: String, required: true },
         city : { type: String, required: true },
         uf : { type: String, required: true },
-        lat : { type: String, required: true },
-        long : { type: String, required: true },
+        loc: {
+            type : { type: String },
+            coordinates: [Number]
+        },
+        statusLoc : {type : Boolean},
         sunday : {
             status : { type : Boolean },
             timeStart : { type: String },
@@ -62,5 +65,7 @@ let mongoose = require('mongoose'),
             saturdayMenu : { type: String }
         }
     });
+
+objSchema.index({ loc: '2dsphere' });
 
 module.exports = mongoose.model('userAdminProfile', objSchema);

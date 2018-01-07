@@ -192,6 +192,7 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
                     signUP.vars.uf = data.address.uf;
                     signUP.vars.lat = data.latlong.lat;
                     signUP.vars.long = data.latlong.lng;
+                    signUP.vars.status = data.latlong.status;
                 });
             }
         },
@@ -270,234 +271,6 @@ function authInterceptor($q, $window) {
             return response || $q.when(response);
         }
     };
-}
-})();
-(function(){
-"use strict";
-angular.module('mainControl', [])
-    .controller('mainControlController', mainControl);
-
-function mainControl() {
-    var mainControl = this;
-
-    console.log(mainControl);
-}
-})();
-(function(){
-"use strict";
-angular.module('menu', [])
-    .controller('menuController', menu);
-
-function menu($scope, $filter, menuService, profileGet, dialogAdvanced, dialogAlert, dialogConfirm) {
-    var menu = this;
-    menu.vars = {};
-
-    menu.functions = {
-        core : function () {
-            menu.functions.get.getMenu();
-            menu.functions.search();
-            menu.functions.defineVars();
-        },
-
-        defineVars : function () {
-            menu.vars.filter = false;
-            menu.vars.query = {
-                order: '-menuName',
-                limit: 25,
-                page: 1
-            };
-        },
-
-        closeFilter : function () {
-            menu.vars.filter = false;
-            menu.vars.search = "";
-        },
-
-        search : function () {
-            $scope.$watch('menu.vars.search', function (newvalue, oldvalue) {
-                if(newvalue < oldvalue){
-                    menu.vars.listMenuFilter = menu.vars.listMenu
-                }else{
-                    menu.vars.listMenuFilter = $filter('filter')(menu.vars.listMenu, {
-                        menuName : newvalue
-                    });
-                }
-            });
-        },
-
-        get : {
-            getMenu : function () {
-                menuService.getMenu.save({id : profileGet.id}, menu.functions.get.successGetMenu);
-            },
-
-            successGetMenu : function (data) {
-                menu.vars.listMenu = data.data;
-                menu.vars.listMenuFilter = menu.vars.listMenu;
-            }
-        },
-
-        saveMenu : function(data) {
-            dialogAdvanced.show({
-                controller : saveMenuController,
-                controllerAs : 'saveMenu',
-                templateUrl : 'templates/modules/menu/saveMenu.html',
-                clickOutsideToClose : false,
-                dataToDialog : data,
-                functionThen : function (edit) {
-                    menu.functions.get.getMenu();
-
-                    if(edit){
-                        dialogAlert.show({
-                            title : 'Sucesso!',
-                            content : 'Seu cardápio foi atualizado com sucesso!',
-                            ok : 'OK!'
-                        });
-                    }else{
-                        dialogAlert.show({
-                            title : 'Sucesso!',
-                            content : 'Seu cardápio foi criado com sucesso!',
-                            ok : 'OK!'
-                        });
-                    }
-                }
-            });
-        },
-
-        deleteMenu : function (data) {
-            dialogConfirm.show({
-                title : 'Atenção!',
-                textContent : 'Deseja realmente deletar este cardápio?',
-                ok : 'Sim',
-                cancel : 'Cancelar',
-                confirmFunction : function () {
-                    menuService.deleteMenu.save({menuID : data}, function () {
-                        dialogAlert.show({
-                            title : 'Cardápio deletado!',
-                            content : 'Seu cardápio foi deletado com sucesso.',
-                            ok : 'OK'
-                        });
-                        menu.functions.get.getMenu();
-                    });
-                }
-            });
-        }
-    };
-
-    menu.functions.core();
-}
-
-function saveMenuController(dialogAdvanced, menuService, productsService, profileGet, data) {
-    var saveMenu = this;
-    saveMenu.vars = {};
-
-    saveMenu.functions = {
-        core : function () {
-            saveMenu.functions.defineVars();
-            saveMenu.functions.getCategory.getCategory();
-            saveMenu.functions.getProduct.getProduct();
-        },
-
-        defineVars : function () {
-            saveMenu.vars.listOrder = [];
-            if(data){
-                saveMenu.vars.menuName = data.menuName;
-                saveMenu.vars.menuID = data._id;
-                saveMenu.vars.dataList = [];
-                saveMenu.vars.edit = true;
-
-                data.productsID.forEach(function (valueData) {
-                    saveMenu.vars.dataList.push(valueData.productID);
-                });
-            }
-        },
-
-        hide : function () {
-            dialogAdvanced.hide();
-        },
-
-        cancel : function () {
-            dialogAdvanced.cancel();
-        },
-
-        getCategory : {
-            getCategory : function () {
-                productsService.getCategory.save({id : profileGet.id}, saveMenu.functions.getCategory.successGetCategory);
-            },
-
-            successGetCategory : function (data) {
-                saveMenu.vars.listCategory = data.data;
-            }
-        },
-
-        getProduct : {
-            getProduct : function () {
-                productsService.getProducts.save({id : profileGet.id}, saveMenu.functions.getProduct.successGetProducts);
-            },
-
-            successGetProducts : function (result) {
-                saveMenu.vars.listProducts = result.data;
-
-                if(saveMenu.vars.listCategory){
-                    saveMenu.vars.listCategory.forEach(function (valueCat, keyCat) {
-
-                        saveMenu.vars.listOrder.push({
-                            categoryName : valueCat.categoryName,
-                            products: []
-                        });
-
-                        saveMenu.vars.listProducts.forEach(function (valueProd) {
-                            if(valueCat._id === valueProd.categoryID){
-                                if(data){
-                                    if(saveMenu.vars.dataList.indexOf(valueProd._id) >= 0){
-                                        saveMenu.vars.listOrder[keyCat].products.push({
-                                            productID : valueProd._id,
-                                            productName : valueProd.productName,
-                                            statusInMenu : true
-                                        });
-                                    }else{
-                                        saveMenu.vars.listOrder[keyCat].products.push({
-                                            productID : valueProd._id,
-                                            productName : valueProd.productName
-                                        });
-                                    }
-                                }else{
-                                    saveMenu.vars.listOrder[keyCat].products.push({
-                                        productID : valueProd._id,
-                                        productName : valueProd.productName
-                                    });
-                                }
-                            }
-                        });
-                    });
-                }
-            }
-        },
-
-        save : {
-            doSave : function () {
-                menuService.updateMenu.save({id : profileGet.id, data : saveMenu.vars.listOrder, name : saveMenu.vars.menuName, menuID : saveMenu.vars.menuID}, saveMenu.functions.save.successSaveProducts);
-            },
-
-            successSaveProducts : function (data) {
-                saveMenu.functions.hide(saveMenu.vars.edit);
-            }
-        }
-    };
-
-    saveMenu.functions.core();
-}
-})();
-(function(){
-"use strict";
-angular.module('menu')
-    .service('menuService', menuService);
-
-function menuService($resource) {
-    return {
-        updateMenu : $resource('web/updateMenu'),
-        getMenu : $resource('web/getMenu'),
-        deleteMenu : $resource('web/deleteMenu')
-    }
 }
 })();
 (function(){
@@ -811,6 +584,558 @@ function productsService($resource) {
 })();
 (function(){
 "use strict";
+angular.module('mainControl', [])
+    .controller('mainControlController', mainControl);
+
+function mainControl() {
+    var mainControl = this;
+
+    console.log(mainControl);
+}
+})();
+(function(){
+"use strict";
+angular.module('menu', [])
+    .controller('menuController', menu);
+
+function menu($scope, $filter, menuService, profileGet, dialogAdvanced, dialogAlert, dialogConfirm) {
+    var menu = this;
+    menu.vars = {};
+
+    menu.functions = {
+        core : function () {
+            menu.functions.get.getMenu();
+            menu.functions.search();
+            menu.functions.defineVars();
+        },
+
+        defineVars : function () {
+            menu.vars.filter = false;
+            menu.vars.query = {
+                order: '-menuName',
+                limit: 25,
+                page: 1
+            };
+        },
+
+        closeFilter : function () {
+            menu.vars.filter = false;
+            menu.vars.search = "";
+        },
+
+        search : function () {
+            $scope.$watch('menu.vars.search', function (newvalue, oldvalue) {
+                if(newvalue < oldvalue){
+                    menu.vars.listMenuFilter = menu.vars.listMenu
+                }else{
+                    menu.vars.listMenuFilter = $filter('filter')(menu.vars.listMenu, {
+                        menuName : newvalue
+                    });
+                }
+            });
+        },
+
+        get : {
+            getMenu : function () {
+                menuService.getMenu.save({id : profileGet.id}, menu.functions.get.successGetMenu);
+            },
+
+            successGetMenu : function (data) {
+                menu.vars.listMenu = data.data;
+                menu.vars.listMenuFilter = menu.vars.listMenu;
+            }
+        },
+
+        saveMenu : function(data) {
+            dialogAdvanced.show({
+                controller : saveMenuController,
+                controllerAs : 'saveMenu',
+                templateUrl : 'templates/modules/menu/saveMenu.html',
+                clickOutsideToClose : false,
+                dataToDialog : data,
+                functionThen : function (edit) {
+                    menu.functions.get.getMenu();
+
+                    if(edit){
+                        dialogAlert.show({
+                            title : 'Sucesso!',
+                            content : 'Seu cardápio foi atualizado com sucesso!',
+                            ok : 'OK!'
+                        });
+                    }else{
+                        dialogAlert.show({
+                            title : 'Sucesso!',
+                            content : 'Seu cardápio foi criado com sucesso!',
+                            ok : 'OK!'
+                        });
+                    }
+                }
+            });
+        },
+
+        deleteMenu : function (data) {
+            dialogConfirm.show({
+                title : 'Atenção!',
+                textContent : 'Deseja realmente deletar este cardápio?',
+                ok : 'Sim',
+                cancel : 'Cancelar',
+                confirmFunction : function () {
+                    menuService.deleteMenu.save({menuID : data}, function () {
+                        dialogAlert.show({
+                            title : 'Cardápio deletado!',
+                            content : 'Seu cardápio foi deletado com sucesso.',
+                            ok : 'OK'
+                        });
+                        menu.functions.get.getMenu();
+                    });
+                }
+            });
+        }
+    };
+
+    menu.functions.core();
+}
+
+function saveMenuController(dialogAdvanced, menuService, productsService, profileGet, data) {
+    var saveMenu = this;
+    saveMenu.vars = {};
+
+    saveMenu.functions = {
+        core : function () {
+            saveMenu.functions.defineVars();
+            saveMenu.functions.getCategory.getCategory();
+            saveMenu.functions.getProduct.getProduct();
+        },
+
+        defineVars : function () {
+            saveMenu.vars.listOrder = [];
+            if(data){
+                saveMenu.vars.menuName = data.menuName;
+                saveMenu.vars.menuID = data._id;
+                saveMenu.vars.dataList = [];
+                saveMenu.vars.edit = true;
+
+                data.productsID.forEach(function (valueData) {
+                    saveMenu.vars.dataList.push(valueData.productID);
+                });
+            }
+        },
+
+        hide : function () {
+            dialogAdvanced.hide();
+        },
+
+        cancel : function () {
+            dialogAdvanced.cancel();
+        },
+
+        getCategory : {
+            getCategory : function () {
+                productsService.getCategory.save({id : profileGet.id}, saveMenu.functions.getCategory.successGetCategory);
+            },
+
+            successGetCategory : function (data) {
+                saveMenu.vars.listCategory = data.data;
+            }
+        },
+
+        getProduct : {
+            getProduct : function () {
+                productsService.getProducts.save({id : profileGet.id}, saveMenu.functions.getProduct.successGetProducts);
+            },
+
+            successGetProducts : function (result) {
+                saveMenu.vars.listProducts = result.data;
+
+                if(saveMenu.vars.listCategory){
+                    saveMenu.vars.listCategory.forEach(function (valueCat, keyCat) {
+
+                        saveMenu.vars.listOrder.push({
+                            categoryName : valueCat.categoryName,
+                            products: []
+                        });
+
+                        saveMenu.vars.listProducts.forEach(function (valueProd) {
+                            if(valueCat._id === valueProd.categoryID){
+                                if(data){
+                                    if(saveMenu.vars.dataList.indexOf(valueProd._id) >= 0){
+                                        saveMenu.vars.listOrder[keyCat].products.push({
+                                            productID : valueProd._id,
+                                            productName : valueProd.productName,
+                                            statusInMenu : true
+                                        });
+                                    }else{
+                                        saveMenu.vars.listOrder[keyCat].products.push({
+                                            productID : valueProd._id,
+                                            productName : valueProd.productName
+                                        });
+                                    }
+                                }else{
+                                    saveMenu.vars.listOrder[keyCat].products.push({
+                                        productID : valueProd._id,
+                                        productName : valueProd.productName
+                                    });
+                                }
+                            }
+                        });
+                    });
+                }
+            }
+        },
+
+        save : {
+            doSave : function () {
+                menuService.updateMenu.save({id : profileGet.id, data : saveMenu.vars.listOrder, name : saveMenu.vars.menuName, menuID : saveMenu.vars.menuID}, saveMenu.functions.save.successSaveProducts);
+            },
+
+            successSaveProducts : function (data) {
+                saveMenu.functions.hide(saveMenu.vars.edit);
+            }
+        }
+    };
+
+    saveMenu.functions.core();
+}
+})();
+(function(){
+"use strict";
+angular.module('menu')
+    .service('menuService', menuService);
+
+function menuService($resource) {
+    return {
+        updateMenu : $resource('web/updateMenu'),
+        getMenu : $resource('web/getMenu'),
+        deleteMenu : $resource('web/deleteMenu')
+    }
+}
+})();
+(function(){
+"use strict";
+angular.module('tables', [])
+    .controller('tablesController', tables);
+
+function tables($scope, $filter, profileGet, tablesService, dialogAdvanced, dialogAlert, dialogConfirm) {
+    var tables = this;
+    tables.vars = {};
+
+    tables.functions = {
+        core : function () {
+            tables.functions.getTables.getTables();
+            tables.functions.search();
+            tables.functions.defineVars();
+        },
+
+        defineVars : function () {
+            tables.vars.filter = false;
+            tables.vars.query = {
+                order: '-tablesName',
+                limit: 25,
+                page: 1
+            };
+        },
+
+        closeFilter : function () {
+            tables.vars.filter = false;
+            tables.vars.search = "";
+        },
+
+        search : function () {
+            $scope.$watch('tables.vars.search', function (newvalue, oldvalue) {
+                if(newvalue < oldvalue){
+                    tables.vars.listTablesFilter = tables.vars.listTables
+                }else{
+                    tables.vars.listTablesFilter = $filter('filter')(tables.vars.listTables, {
+                        tablesName : newvalue
+                    });
+                }
+            });
+        },
+
+        getTables : {
+            getTables : function () {
+                tablesService.getTables.save({id : profileGet.id}, tables.functions.getTables.successGetTables);
+            },
+
+            successGetTables : function (data) {
+                tables.vars.listTables = data.data;
+                tables.vars.listTablesFilter = tables.vars.listTables;
+            }
+        },
+
+        saveTable : function(data) {
+            dialogAdvanced.show({
+                controller : saveTableController,
+                controllerAs : 'saveTable',
+                templateUrl : 'templates/modules/tables/saveTable.html',
+                clickOutsideToClose : false,
+                dataToDialog : data,
+                functionThen : function (edit) {
+                    tables.functions.getTables.getTables();
+
+                    if(edit){
+                        dialogAlert.show({
+                            title : 'Sucesso!',
+                            content : 'Sua mesa foi atualizada com sucesso!',
+                            ok : 'OK!'
+                        });
+                    }else{
+                        dialogAlert.show({
+                            title : 'Sucesso!',
+                            content : 'Sua mesa foi criada com sucesso!',
+                            ok : 'OK!'
+                        });
+                    }
+                }
+            });
+        },
+
+        deleteTable : function (data) {
+            dialogConfirm.show({
+                title : 'Atenção!',
+                textContent : 'Deseja realmente deletar esta Mesa?',
+                ok : 'Sim',
+                cancel : 'Cancelar',
+                confirmFunction : function () {
+                    tablesService.deleteTables.save({tablesID : data}, function () {
+                        dialogAlert.show({
+                            title : 'Mesa deletada!',
+                            content : 'Sua mesa foi deletada com sucesso.',
+                            ok : 'OK'
+                        });
+                        tables.functions.getTables.getTables();
+                    });
+                }
+            });
+        },
+
+        printQRCode : function (data) {
+            dialogAdvanced.show({
+                controller : printQRCode,
+                controllerAs : 'printQRCode',
+                templateUrl : 'templates/modules/tables/tablesPrint.html',
+                clickOutsideToClose : false,
+                dataToDialog : data,
+                functionThen : function () {}
+            });
+        }
+    };
+
+    tables.functions.core();
+}
+
+function saveTableController(dialogAdvanced, tablesService, profileGet, data) {
+    var saveTable = this;
+    saveTable.vars = {};
+
+    saveTable.functions = {
+        core: function () {
+            saveTable.functions.defineVars();
+        },
+
+        defineVars : function () {
+            if(data){
+                saveTable.vars.tableName = data.tableName;
+                saveTable.vars.tablesID = data._id;
+            }
+        },
+
+        hide : function () {
+            dialogAdvanced.hide();
+        },
+
+        cancel : function () {
+            dialogAdvanced.cancel();
+        },
+
+        save : {
+            doSave : function () {
+                tablesService.updateTables.save({id : profileGet.id, data : saveTable.vars}, saveTable.functions.save.successSaveTables);
+            },
+
+            successSaveTables : function (data) {
+                saveTable.functions.hide(saveTable.vars.edit);
+            }
+        }
+    };
+
+    saveTable.functions.core();
+}
+
+function printQRCode(data, dialogAdvanced, profileGet) {
+    var printQRCode = this;
+    printQRCode.vars = {};
+
+    printQRCode.functions = {
+        core: function () {
+            printQRCode.functions.defineVars();
+        },
+
+        defineVars : function () {
+            printQRCode.vars = data;
+            printQRCode.vars.profile = profileGet;
+        },
+
+        print : function () {
+            printQRCode.vars.printContents = document.getElementById('print').innerHTML;
+            printQRCode.vars.popupWin = window.open('', '_blank');
+            printQRCode.vars.popupWin.document.open();
+            printQRCode.vars.popupWin.document.write('<body onload="window.print()">' + printQRCode.vars.printContents + '</body>');
+            printQRCode.vars.popupWin.document.close();
+        },
+
+        cancel : function () {
+            dialogAdvanced.cancel();
+        },
+
+        hide : function () {
+            dialogAdvanced.hide();
+        }
+    };
+
+    printQRCode.functions.core();
+}
+
+})();
+(function(){
+"use strict";
+angular.module('tables')
+    .service('tablesService', tablesService);
+
+function tablesService($resource) {
+    return {
+        updateTables : $resource('web/updateTables'),
+        getTables : $resource('web/getTables'),
+        deleteTables : $resource('web/deleteTables')
+    }
+}
+})();
+(function(){
+"use strict";
+angular.module('recoveryPassword', [])
+    .controller('recoveryPasswordController', recoveryPassword);
+
+function recoveryPassword($scope, recoveryPasswordService, dialogAlert, $stateParams, $state) {
+    var recoveryPassword = this;
+    recoveryPassword.vars = {};
+
+    if(!$stateParams.q){
+        $state.go('home');
+    }else{
+        recoveryPassword.functions = {
+            core : function () {
+                recoveryPassword.functions.defineVars();
+                recoveryPassword.functions.watchMatch();
+                recoveryPassword.functions.getHash.get();
+            },
+
+            defineVars : function () {
+                recoveryPassword.vars.hashRecovery = $stateParams.q;
+            },
+
+            watchMatch : function () {
+                $scope.$watchGroup(['recoveryPassword.vars.password', 'recoveryPassword.vars.repPassword'], function (value) {
+                    if(value[0] !== value[1]){
+                        $scope.formReset.password.$setValidity('notMatch', false);
+                        $scope.formReset.repPassword.$setValidity('notMatch', false);
+                    }else{
+                        $scope.formReset.password.$setValidity('notMatch', true);
+                        $scope.formReset.repPassword.$setValidity('notMatch', true);
+                    }
+                });
+            },
+
+            getHash : {
+                get : function () {
+                    recoveryPasswordService.recoveryPasswordGetHash.save(recoveryPassword.vars, recoveryPassword.functions.getHash.getSuccess);
+                },
+
+                getSuccess : function (data) {
+                    switch (true){
+                        case data.status === true:
+                            recoveryPassword.vars.alert = false;
+                            break;
+
+                        case data.status === false:
+                            recoveryPassword.vars.alert = true;
+                            break;
+
+                        default:
+                            recoveryPassword.vars.alert = true;
+                    }
+
+                    if(recoveryPassword.vars.alert){
+                        dialogAlert.show({
+                            title : 'Atenção',
+                            content : 'Você já atualizou sua senha, faça o login ou clique em "Esqueci minha senha"',
+                            ok : 'Ok'
+                        });
+
+                        $state.go('home');
+                    }
+                }
+            },
+
+            resetPassword : {
+                action : function () {
+                    recoveryPasswordService.recoveryPassword.save(recoveryPassword.vars, recoveryPassword.functions.resetPassword.recoverySuccess);
+                },
+
+                recoverySuccess : function (data) {
+                    switch (true){
+                        case data.status === true:
+                            recoveryPassword.vars.alert = true;
+                            recoveryPassword.vars.alertError = false;
+                            break;
+
+                        case data.status === false:
+                            recoveryPassword.vars.alert = false;
+                            recoveryPassword.vars.alertError = true;
+                            break;
+
+                        default:
+                            recoveryPassword.vars.alert = false;
+                            recoveryPassword.vars.alertError = true;
+                    }
+
+                    if(recoveryPassword.vars.alertError){
+                        dialogAlert.show({
+                            title : 'Atenção',
+                            content : 'Sua senha não foi atualizada, tente novamente"',
+                            ok : 'Ok'
+                        });
+                    }else if(recoveryPassword.vars.alert){
+                        dialogAlert.show({
+                            title : 'Atenção',
+                            content : 'Sua senha foi atualizada com sucesso! Faça o login com a nova senha"',
+                            ok : 'Ok'
+                        });
+
+                        $state.go('home');
+                    }
+                }
+            }
+        };
+
+        recoveryPassword.functions.core();
+    }
+}
+})();
+(function(){
+"use strict";
+angular.module('recoveryPassword')
+    .service('recoveryPasswordService', recoveryPasswordService);
+
+function recoveryPasswordService($resource) {
+    return {
+        recoveryPasswordSend: $resource('web/recoveryPasswordSend'),
+        recoveryPasswordGetHash: $resource('web/recoveryPasswordGetHash'),
+        recoveryPassword: $resource('web/recoveryPassword')
+    }
+}
+})();
+(function(){
+"use strict";
 angular.module('profile', [])
     .controller('profileController', profile);
 
@@ -1028,6 +1353,7 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.uf = data.address.uf;
                     profile.vars.lat = data.latlong.lat;
                     profile.vars.long = data.latlong.lng;
+                    profile.vars.status = data.latlong.status;
                 });
             }
         },
@@ -1064,330 +1390,6 @@ function profileService($resource) {
     return {
         updateProfile : $resource('web/updateProfile'),
         getProfile : $resource('web/getProfile')
-    }
-}
-})();
-(function(){
-"use strict";
-angular.module('recoveryPassword', [])
-    .controller('recoveryPasswordController', recoveryPassword);
-
-function recoveryPassword($scope, recoveryPasswordService, dialogAlert, $stateParams, $state) {
-    var recoveryPassword = this;
-    recoveryPassword.vars = {};
-
-    if(!$stateParams.q){
-        $state.go('home');
-    }else{
-        recoveryPassword.functions = {
-            core : function () {
-                recoveryPassword.functions.defineVars();
-                recoveryPassword.functions.watchMatch();
-                recoveryPassword.functions.getHash.get();
-            },
-
-            defineVars : function () {
-                recoveryPassword.vars.hashRecovery = $stateParams.q;
-            },
-
-            watchMatch : function () {
-                $scope.$watchGroup(['recoveryPassword.vars.password', 'recoveryPassword.vars.repPassword'], function (value) {
-                    if(value[0] !== value[1]){
-                        $scope.formReset.password.$setValidity('notMatch', false);
-                        $scope.formReset.repPassword.$setValidity('notMatch', false);
-                    }else{
-                        $scope.formReset.password.$setValidity('notMatch', true);
-                        $scope.formReset.repPassword.$setValidity('notMatch', true);
-                    }
-                });
-            },
-
-            getHash : {
-                get : function () {
-                    recoveryPasswordService.recoveryPasswordGetHash.save(recoveryPassword.vars, recoveryPassword.functions.getHash.getSuccess);
-                },
-
-                getSuccess : function (data) {
-                    switch (true){
-                        case data.status === true:
-                            recoveryPassword.vars.alert = false;
-                            break;
-
-                        case data.status === false:
-                            recoveryPassword.vars.alert = true;
-                            break;
-
-                        default:
-                            recoveryPassword.vars.alert = true;
-                    }
-
-                    if(recoveryPassword.vars.alert){
-                        dialogAlert.show({
-                            title : 'Atenção',
-                            content : 'Você já atualizou sua senha, faça o login ou clique em "Esqueci minha senha"',
-                            ok : 'Ok'
-                        });
-
-                        $state.go('home');
-                    }
-                }
-            },
-
-            resetPassword : {
-                action : function () {
-                    recoveryPasswordService.recoveryPassword.save(recoveryPassword.vars, recoveryPassword.functions.resetPassword.recoverySuccess);
-                },
-
-                recoverySuccess : function (data) {
-                    switch (true){
-                        case data.status === true:
-                            recoveryPassword.vars.alert = true;
-                            recoveryPassword.vars.alertError = false;
-                            break;
-
-                        case data.status === false:
-                            recoveryPassword.vars.alert = false;
-                            recoveryPassword.vars.alertError = true;
-                            break;
-
-                        default:
-                            recoveryPassword.vars.alert = false;
-                            recoveryPassword.vars.alertError = true;
-                    }
-
-                    if(recoveryPassword.vars.alertError){
-                        dialogAlert.show({
-                            title : 'Atenção',
-                            content : 'Sua senha não foi atualizada, tente novamente"',
-                            ok : 'Ok'
-                        });
-                    }else if(recoveryPassword.vars.alert){
-                        dialogAlert.show({
-                            title : 'Atenção',
-                            content : 'Sua senha foi atualizada com sucesso! Faça o login com a nova senha"',
-                            ok : 'Ok'
-                        });
-
-                        $state.go('home');
-                    }
-                }
-            }
-        };
-
-        recoveryPassword.functions.core();
-    }
-}
-})();
-(function(){
-"use strict";
-angular.module('recoveryPassword')
-    .service('recoveryPasswordService', recoveryPasswordService);
-
-function recoveryPasswordService($resource) {
-    return {
-        recoveryPasswordSend: $resource('web/recoveryPasswordSend'),
-        recoveryPasswordGetHash: $resource('web/recoveryPasswordGetHash'),
-        recoveryPassword: $resource('web/recoveryPassword')
-    }
-}
-})();
-(function(){
-"use strict";
-angular.module('tables', [])
-    .controller('tablesController', tables);
-
-function tables($scope, $filter, profileGet, tablesService, dialogAdvanced, dialogAlert, dialogConfirm) {
-    var tables = this;
-    tables.vars = {};
-
-    tables.functions = {
-        core : function () {
-            tables.functions.getTables.getTables();
-            tables.functions.search();
-            tables.functions.defineVars();
-        },
-
-        defineVars : function () {
-            tables.vars.filter = false;
-            tables.vars.query = {
-                order: '-tablesName',
-                limit: 25,
-                page: 1
-            };
-        },
-
-        closeFilter : function () {
-            tables.vars.filter = false;
-            tables.vars.search = "";
-        },
-
-        search : function () {
-            $scope.$watch('tables.vars.search', function (newvalue, oldvalue) {
-                if(newvalue < oldvalue){
-                    tables.vars.listTablesFilter = tables.vars.listTables
-                }else{
-                    tables.vars.listTablesFilter = $filter('filter')(tables.vars.listTables, {
-                        tablesName : newvalue
-                    });
-                }
-            });
-        },
-
-        getTables : {
-            getTables : function () {
-                tablesService.getTables.save({id : profileGet.id}, tables.functions.getTables.successGetTables);
-            },
-
-            successGetTables : function (data) {
-                tables.vars.listTables = data.data;
-                tables.vars.listTablesFilter = tables.vars.listTables;
-            }
-        },
-
-        saveTable : function(data) {
-            dialogAdvanced.show({
-                controller : saveTableController,
-                controllerAs : 'saveTable',
-                templateUrl : 'templates/modules/tables/saveTable.html',
-                clickOutsideToClose : false,
-                dataToDialog : data,
-                functionThen : function (edit) {
-                    tables.functions.getTables.getTables();
-
-                    if(edit){
-                        dialogAlert.show({
-                            title : 'Sucesso!',
-                            content : 'Sua mesa foi atualizada com sucesso!',
-                            ok : 'OK!'
-                        });
-                    }else{
-                        dialogAlert.show({
-                            title : 'Sucesso!',
-                            content : 'Sua mesa foi criada com sucesso!',
-                            ok : 'OK!'
-                        });
-                    }
-                }
-            });
-        },
-
-        deleteTable : function (data) {
-            dialogConfirm.show({
-                title : 'Atenção!',
-                textContent : 'Deseja realmente deletar esta Mesa?',
-                ok : 'Sim',
-                cancel : 'Cancelar',
-                confirmFunction : function () {
-                    tablesService.deleteTables.save({tablesID : data}, function () {
-                        dialogAlert.show({
-                            title : 'Mesa deletada!',
-                            content : 'Sua mesa foi deletada com sucesso.',
-                            ok : 'OK'
-                        });
-                        tables.functions.getTables.getTables();
-                    });
-                }
-            });
-        },
-
-        printQRCode : function (data) {
-            dialogAdvanced.show({
-                controller : printQRCode,
-                controllerAs : 'printQRCode',
-                templateUrl : 'templates/modules/tables/tablesPrint.html',
-                clickOutsideToClose : false,
-                dataToDialog : data,
-                functionThen : function () {}
-            });
-        }
-    };
-
-    tables.functions.core();
-}
-
-function saveTableController(dialogAdvanced, tablesService, profileGet, data) {
-    var saveTable = this;
-    saveTable.vars = {};
-
-    saveTable.functions = {
-        core: function () {
-            saveTable.functions.defineVars();
-        },
-
-        defineVars : function () {
-            if(data){
-                saveTable.vars.tableName = data.tableName;
-                saveTable.vars.tablesID = data._id;
-            }
-        },
-
-        hide : function () {
-            dialogAdvanced.hide();
-        },
-
-        cancel : function () {
-            dialogAdvanced.cancel();
-        },
-
-        save : {
-            doSave : function () {
-                tablesService.updateTables.save({id : profileGet.id, data : saveTable.vars}, saveTable.functions.save.successSaveTables);
-            },
-
-            successSaveTables : function (data) {
-                saveTable.functions.hide(saveTable.vars.edit);
-            }
-        }
-    };
-
-    saveTable.functions.core();
-}
-
-function printQRCode(data, dialogAdvanced, profileGet) {
-    var printQRCode = this;
-    printQRCode.vars = {};
-
-    printQRCode.functions = {
-        core: function () {
-            printQRCode.functions.defineVars();
-        },
-
-        defineVars : function () {
-            printQRCode.vars = data;
-            printQRCode.vars.profile = profileGet;
-        },
-
-        print : function () {
-            printQRCode.vars.printContents = document.getElementById('print').innerHTML;
-            printQRCode.vars.popupWin = window.open('', '_blank');
-            printQRCode.vars.popupWin.document.open();
-            printQRCode.vars.popupWin.document.write('<body onload="window.print()">' + printQRCode.vars.printContents + '</body>');
-            printQRCode.vars.popupWin.document.close();
-        },
-
-        cancel : function () {
-            dialogAdvanced.cancel();
-        },
-
-        hide : function () {
-            dialogAdvanced.hide();
-        }
-    };
-
-    printQRCode.functions.core();
-}
-
-})();
-(function(){
-"use strict";
-angular.module('tables')
-    .service('tablesService', tablesService);
-
-function tablesService($resource) {
-    return {
-        updateTables : $resource('web/updateTables'),
-        getTables : $resource('web/getTables'),
-        deleteTables : $resource('web/deleteTables')
     }
 }
 })();
