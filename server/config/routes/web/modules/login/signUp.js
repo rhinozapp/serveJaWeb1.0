@@ -38,12 +38,12 @@ exports.signup = function(req, res) {
             });
 
         }, function(err) {
-            console.log(err);
+            logger.log('error', err);
             res.json({ status: false });
         });
 
     }, function(err) {
-        console.log(err);
+        logger.log('error', err);
         res.json({ status: false });
 
     });
