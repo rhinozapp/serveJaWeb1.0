@@ -67,5 +67,4 @@ let mongoose = require('mongoose'),
     });
 
 objSchema.index({ loc: '2dsphere' });
-
 module.exports = mongoose.model('userAdminProfile', objSchema);
