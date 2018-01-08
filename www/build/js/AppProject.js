@@ -33,7 +33,9 @@ angular.module('core', [
     'uiRouterStyles',
     'angular-loading-bar',
 
-    'ngCordovaOauth'
+    'ngCordovaOauth',
+
+    'benharold.haversine'
 ]);
 
 })();

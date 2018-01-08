@@ -89,7 +89,9 @@ gulp.task('vendor', function () {
         bower + 'angular-ui-router-styles/ui-router-styles.js',
         bower + 'angular-ui-router.stateHelper/statehelper.js',
 
-        bower + 'ng-cordova-oauth/dist/ng-cordova-oauth.js'
+        bower + 'ng-cordova-oauth/dist/ng-cordova-oauth.js',
+
+        bower + 'angular-haversine/angular-haversine.js'
     ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest(dest + 'js'));

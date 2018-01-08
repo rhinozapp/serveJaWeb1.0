@@ -1,3 +1,15 @@
-<br><br>--List pubs<br>
+<br><br>
+-- search pubs per name (type to search)
+<br><input ng-model="mainList.vars.search">
 
-<br>--List pubs
+<br>
+-- search pubs per name (type to search)
+
+<br><br>
+--List pubs<br>
+<div ng-repeat="item in mainList.vars.listFilter">
+    <div>{{item.name}}</div>
+    <div>{{item.distance | number:2}}KM</div>
+    <br>
+</div>
+--List pubs

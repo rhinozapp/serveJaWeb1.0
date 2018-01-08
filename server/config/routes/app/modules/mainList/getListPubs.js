@@ -4,13 +4,18 @@ exports.getListPubs = function (req, res) {
 
     userAdminProfile.find({
         loc : {
-            $nearSphere: [Number(req.body.long), Number(req.body.lat)],
-            $maxDistance : 10000
-        },
-        statusLoc : true
+            $nearSphere: {
+                $geometry: {
+                    type : 'Point',
+                    coordinates : [Number(req.body.long), Number(req.body.lat)]
+                },
+                $maxDistance: 15 * 1000
+            }
+        }
     }).limit(100).exec(function(err, locations) {
         if (err) {
             res.json({
+                data : err,
                 status : false
             });
         }else{
@@ -20,25 +25,4 @@ exports.getListPubs = function (req, res) {
             });
         }
     });
-
-    /*userAdminProfile.aggregate(
-        [
-            {
-                "$geoNear": {
-                    "near": {
-                        "type": "Point",
-                        "coordinates": [req.body.long, req.body.lat]
-                    },
-                    "distanceField": "distance",
-                    "maxDistance": 10000,
-                    "spherical": true,
-                }
-            }
-        ], function(err,results) {
-            if(err){
-                console.log(err)
-            }else{
-                console.log(results)
-            }
-        })*/
 };
