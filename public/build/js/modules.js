@@ -12,6 +12,17 @@ angular.module('modules', [
 })();
 (function(){
 "use strict";
+angular.module('mainControl', [])
+    .controller('mainControlController', mainControl);
+
+function mainControl() {
+    var mainControl = this;
+
+    console.log(mainControl);
+}
+})();
+(function(){
+"use strict";
 angular.module('home', [])
     .controller('homeController', home);
 
@@ -271,17 +282,6 @@ function authInterceptor($q, $window) {
             return response || $q.when(response);
         }
     };
-}
-})();
-(function(){
-"use strict";
-angular.module('mainControl', [])
-    .controller('mainControlController', mainControl);
-
-function mainControl() {
-    var mainControl = this;
-
-    console.log(mainControl);
 }
 })();
 (function(){
