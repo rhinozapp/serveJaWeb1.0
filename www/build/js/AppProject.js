@@ -165,6 +165,14 @@ angular
 (function(){
 "use strict";
 /**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular.module('layout', []);
+})();
+(function(){
+"use strict";
+/**
  * Created by Guilherme Assis on 19/09/2016.
  */
 
@@ -261,14 +269,6 @@ angular
             hue: '200' // Default is '800'
         });
     });
-})();
-(function(){
-"use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
-angular.module('layout', []);
 })();
 (function(){
 "use strict";
