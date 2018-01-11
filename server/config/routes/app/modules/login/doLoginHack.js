@@ -11,7 +11,7 @@ exports.doLoginHack = function (req, res) {
             new userApp({
                 email: 'hack@hack.com',
                 name : 'hack',
-                photo : '/files/img/',
+                photo : '158dmbw4pTgCxPLjelakbFiL.jpg',
                 token : 'hack',
                 idFace : 'hack'
             }).save().then(function (data) {
@@ -33,7 +33,7 @@ exports.doLoginHack = function (req, res) {
             token = jwt.sign({
                 email: 'hack@hack.com',
                 name : 'hack',
-                photo : '/files/img/',
+                photo : '158dmbw4pTgCxPLjelakbFiL.jpg',
                 token : 'hack',
                 idFace : 'hack'
             }, 'rhinoz');
@@ -43,7 +43,7 @@ exports.doLoginHack = function (req, res) {
             }, {
                 email: 'hack@hack.com',
                 name : 'hack',
-                photo : '/files/img/',
+                photo : '158dmbw4pTgCxPLjelakbFiL.jpg',
                 token : 'hack',
                 idFace : 'hack'
             }, {

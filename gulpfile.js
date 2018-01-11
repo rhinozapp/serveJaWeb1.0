@@ -89,6 +89,8 @@ gulp.task('vendor', function () {
         bower + 'angular-ui-router-styles/ui-router-styles.js',
         bower + 'angular-ui-router.stateHelper/statehelper.js',
 
+        bower + 'angular-jwt/dist/angular-jwt.js',
+
         bower + 'ng-cordova-oauth/dist/ng-cordova-oauth.js',
 
         bower + 'angular-haversine/angular-haversine.js'

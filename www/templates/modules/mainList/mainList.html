@@ -1,15 +1,26 @@
 <br><br>
--- search pubs per name (type to search)
-<br><input ng-model="mainList.vars.search">
 
-<br>
--- search pubs per name (type to search)
+<p>-- search local (type to search)</p>
+<div ng-if="mainList.vars.actionFindLocal">
+    <input ng-model="mainList.vars.searchLocal">
+</div>
+<p>-- search local (type to search)</p><br><br>
 
-<br><br>
---List pubs<br>
-<div ng-repeat="item in mainList.vars.listFilter">
+
+<p>-- search pubs per name (type to search)</p>
+<div>
+    <input id="pac-input" class="controls" ng-model="mainList.vars.search">
+</div>
+<p>-- search pubs per name (type to search)</p><br><br>
+
+
+<p>--List pubs</p>
+<p>Próximos à {{}}</p>
+
+<div ng-repeat="item in mainList.vars.listFilter" ui-sref="place({idPlace : item})">
+    <div><img ng-src="http://localhost/files/logoProfile/{{item.logoPath}}" style="width: 50px; height: 50px"></div>
     <div>{{item.name}}</div>
     <div>{{item.distance | number:2}}KM</div>
     <br>
 </div>
---List pubs
+<p>--List pubs</p><br><br>

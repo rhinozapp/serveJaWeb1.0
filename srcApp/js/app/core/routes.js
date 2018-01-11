@@ -11,15 +11,22 @@ angular
             })
             .state('user.mainList', {
                 url: '/mainList',
+                params : {
+                    action : ''
+                },
                 templateUrl: 'templates/modules/mainList/mainList.html',
                 controller: 'mainListController',
                 controllerAs : 'mainList'
             })
-            .state('user.profile', {
-                url: '/profile',
-                templateUrl: 'templates/modules/profile/profile.html',
-                controller: 'profileController',
-                controllerAs : 'profile'
+
+            .state('place', {
+                url: '/place',
+                params : {
+                    idPlace : {}
+                },
+                templateUrl: 'templates/modules/place/place.html',
+                controller: 'placeController',
+                controllerAs: 'place',
             })
 
             .state('login', {

@@ -1,24 +1,34 @@
-/**
- * Created by guiga on 04/02/2017.
- */
-
 angular.module('mainList', [])
     .controller('mainListController', mainListController);
 
-function mainListController(loginService, getCoordinates, $window, mainListService, haversine, $scope, $filter) {
+function mainListController(loginService, getCoordinates, mainListService, haversine, $scope, $filter, $stateParams, getProfile) {
     var mainList = this;
     mainList.vars = {};
 
     mainList.functions = {
         core : function () {
-            mainList.functions.getCoordinates();
-            mainList.functions.getList.get();
+            mainList.functions.defineVars();
+            mainList.functions.checkParams();
             mainList.functions.search();
         },
 
-        getCoordinates : function () {
-            if(!$window.localStorage.lat){
-                getCoordinates.getPos();
+        defineVars : function () {
+            mainList.vars.profile = getProfile;
+        },
+
+        checkParams : function () {
+            if($stateParams.action.length === 0 || $stateParams.action === 'nearToMe'){
+                getCoordinates.getPos().then(function (data) {
+                    mainList.vars.lat = data.lat;
+                    mainList.vars.long = data.long;
+
+                    mainList.functions.getList.getNear();
+                });
+            }else if($stateParams.action === 'favorites'){
+                mainList.functions.getList.getFavorite();
+
+            }else if($stateParams.action === 'findLocal'){
+                mainList.vars.actionFindLocal = true;
             }
         },
 
@@ -35,19 +45,21 @@ function mainListController(loginService, getCoordinates, $window, mainListServi
         },
 
         getList : {
-            get : function () {
+            getNear : function () {
                 mainListService.get.save({
-                    lat : $window.localStorage.lat,
-                    long : $window.localStorage.long
+                    lat : mainList.vars.lat,
+                    long : mainList.vars.long
                 }, mainList.functions.getList.success)
             },
+
+            getFavorite : function () {},
 
             success : function (data) {
                 mainList.vars.list = data.data;
                 angular.forEach(mainList.vars.list, function (value) {
                     value.distance = haversine({
-                        latitude : $window.localStorage.lat,
-                        longitude : $window.localStorage.long
+                        latitude : mainList.vars.lat,
+                        longitude : mainList.vars.long
                     }, {
                         latitude : value.loc.coordinates[1],
                         longitude : value.loc.coordinates[0]

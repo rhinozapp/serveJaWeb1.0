@@ -1,19 +1,28 @@
+<!--
+quando header.vars.profile.status for TRUE ele estará logado com face
+
+-->
+
 -- HEADER<br>
 
-<button ui-sref="user.mainList">
-    main list
-</button>
+<img ng-if="header.vars.profile.status"
+     ng-src="http://localhost/files/logoProfile/{{header.vars.profile.photo}}"
+     style="width: 50px; height: 50px">
 
-<button ui-sref="null">
-    favorites
-</button>
-
-<button ui-sref="null">
+<button ui-sref="user.mainList({action : 'nearToMe'})">
     near to me
 </button>
 
-<button ui-sref="null">
-    find
+<button ui-sref="user.mainList({action : 'favorites'})">
+    favorites
+</button>
+
+<button ui-sref="user.mainList({action : 'findLocal'})">
+    find a local
+</button>
+
+<button ng-if="!header.vars.profile.status" ui-sref="login">
+    login
 </button>
 
 <br>-- HEADER
