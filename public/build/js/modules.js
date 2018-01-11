@@ -203,6 +203,7 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
                     signUP.vars.uf = data.address.uf;
                     signUP.vars.lat = data.latlong.lat;
                     signUP.vars.long = data.latlong.lng;
+                    signUP.vars.status = data.latlong.status;
                 });
             }
         },
@@ -820,12 +821,12 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
     profile.vars.charge = true;
 
     profile.functions = {
-        core : function () {
+        core: function() {
             profile.functions.getProfile.get();
             profile.functions.getMenu.getMenu();
         },
 
-        defineVars : function () {
+        defineVars: function() {
             profile.vars.hours = [
                 '00:00',
                 '00:30',
@@ -906,11 +907,11 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                 'TO'
             ];
 
-            if(profile.vars._id){
-                if(profile.vars.sunday.status === false){
+            if (profile.vars._id) {
+                if (profile.vars.sunday.status === false) {
                     profile.vars.sundayClosed = true;
-                }else{
-                    if(profile.vars.sunday.timeStart === profile.vars.sunday.timeEnd){
+                } else {
+                    if (profile.vars.sunday.timeStart === profile.vars.sunday.timeEnd) {
                         profile.vars.sundayAllDay = true;
                     }
 
@@ -918,10 +919,10 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.sundayEnd = profile.vars.sunday.timeEnd;
                 }
 
-                if(profile.vars.monday.status === false){
+                if (profile.vars.monday.status === false) {
                     profile.vars.mondayClosed = true;
-                }else{
-                    if(profile.vars.monday.timeStart === profile.vars.monday.timeEnd){
+                } else {
+                    if (profile.vars.monday.timeStart === profile.vars.monday.timeEnd) {
                         profile.vars.mondayAllDay = true;
                     }
 
@@ -929,10 +930,10 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.mondayEnd = profile.vars.monday.timeEnd;
                 }
 
-                if(profile.vars.tuesday.status === false){
+                if (profile.vars.tuesday.status === false) {
                     profile.vars.tuesdayClosed = true;
-                }else{
-                    if(profile.vars.tuesday.timeStart === profile.vars.tuesday.timeEnd){
+                } else {
+                    if (profile.vars.tuesday.timeStart === profile.vars.tuesday.timeEnd) {
                         profile.vars.tuesdayAllDay = true;
                     }
 
@@ -940,10 +941,10 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.tuesdayEnd = profile.vars.tuesday.timeEnd;
                 }
 
-                if(profile.vars.wednesday.status === false){
+                if (profile.vars.wednesday.status === false) {
                     profile.vars.wednesdayClosed = true;
-                }else{
-                    if(profile.vars.wednesday.timeStart === profile.vars.wednesday.timeEnd){
+                } else {
+                    if (profile.vars.wednesday.timeStart === profile.vars.wednesday.timeEnd) {
                         profile.vars.wednesdayAllDay = true;
                     }
 
@@ -951,10 +952,10 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.wednesdayEnd = profile.vars.wednesday.timeEnd;
                 }
 
-                if(profile.vars.thursday.status === false){
+                if (profile.vars.thursday.status === false) {
                     profile.vars.thursdayClosed = true;
-                }else{
-                    if(profile.vars.thursday.timeStart === profile.vars.thursday.timeEnd){
+                } else {
+                    if (profile.vars.thursday.timeStart === profile.vars.thursday.timeEnd) {
                         profile.vars.thursdayAllDay = true;
                     }
 
@@ -962,10 +963,10 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.thursdayEnd = profile.vars.thursday.timeEnd;
                 }
 
-                if(profile.vars.friday.status === false){
+                if (profile.vars.friday.status === false) {
                     profile.vars.fridayClosed = true;
-                }else{
-                    if(profile.vars.friday.timeStart === profile.vars.friday.timeEnd){
+                } else {
+                    if (profile.vars.friday.timeStart === profile.vars.friday.timeEnd) {
                         profile.vars.fridayAllDay = true;
                     }
 
@@ -973,10 +974,10 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.fridayEnd = profile.vars.friday.timeEnd;
                 }
 
-                if(profile.vars.saturday.status === false){
+                if (profile.vars.saturday.status === false) {
                     profile.vars.saturdayClosed = true;
-                }else{
-                    if(profile.vars.saturday.timeStart === profile.vars.saturday.timeEnd){
+                } else {
+                    if (profile.vars.saturday.timeStart === profile.vars.saturday.timeEnd) {
                         profile.vars.saturdayAllDay = true;
                     }
 
@@ -994,22 +995,22 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
             }
         },
 
-        getMenu : {
-            getMenu : function () {
-                menuService.getMenu.save({id : profileGet.id}, profile.functions.getMenu.successGetMenu);
+        getMenu: {
+            getMenu: function() {
+                menuService.getMenu.save({ id: profileGet.id }, profile.functions.getMenu.successGetMenu);
             },
 
-            successGetMenu : function (data) {
+            successGetMenu: function(data) {
                 profile.vars.listMenu = data.data;
             }
         },
 
-        getProfile : {
-            get : function () {
-                profileService.getProfile.save({id : profileGet.id}, profile.functions.getProfile.success)
+        getProfile: {
+            get: function() {
+                profileService.getProfile.save({ id: profileGet.id }, profile.functions.getProfile.success)
             },
 
-            success : function (data) {
+            success: function(data) {
                 profile.vars.charge = false;
                 profile.vars = data.data;
 
@@ -1017,10 +1018,10 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
             }
         },
 
-        zipCodeChange : function () {
+        zipCodeChange: function() {
             profile.vars.zipCode = profile.vars.zipCode.replace('-', '');
-            if(profile.vars.zipCode.length >= 8){
-                zipCodeSearch.getDataBack.save(profile.vars, function (data) {
+            if (profile.vars.zipCode.length >= 8) {
+                zipCodeSearch.getDataBack.save(profile.vars, function(data) {
                     profile.vars.address = data.address.logradouro;
                     profile.vars.complement = data.address.complemento;
                     profile.vars.neighborhood = data.address.bairro;
@@ -1028,23 +1029,24 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.uf = data.address.uf;
                     profile.vars.lat = data.latlong.lat;
                     profile.vars.long = data.latlong.lng;
+                    profile.vars.status = data.latlong.status;
                 });
             }
         },
 
-        upload : function () {
+        upload: function() {
             Upload.upload({
                 url: '/web/updateProfile',
                 method: 'POST',
                 data: {
                     file: profile.vars.files,
-                    vars : profile.vars
+                    vars: profile.vars
                 }
-            }).then(function () {
+            }).then(function() {
                 dialogAlert.show({
-                    title : 'Sucesso!',
-                    content : 'Seu perfil foi atualizado com sucesso!',
-                    ok : 'OK!'
+                    title: 'Sucesso!',
+                    content: 'Seu perfil foi atualizado com sucesso!',
+                    ok: 'OK!'
                 });
 
                 profile.functions.core();

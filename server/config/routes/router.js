@@ -93,6 +93,11 @@ module.exports = function (app) {
     let doLoginHack = require('./app/modules/login/doLoginHack');
     app.post('/app/doLoginHack', doLoginHack.doLoginHack);
     //endregion
+
+    //region List Pubs
+    let getListPubs = require('./app/modules/mainList/getListPubs');
+    app.post('/app/getListPubs', getListPubs.getListPubs);
+    //endregion
     //endregion
 
     //region Response

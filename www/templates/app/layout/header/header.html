@@ -1,66 +1,28 @@
-<!--HEADER-->
-<md-toolbar class="md-primary">
-    <div class="md-toolbar-tools">
-        <md-button class="md-icon-button" aria-label="Menu" ng-click="header.functions.openNav()">
-            <md-icon class="icon-24">menu</md-icon>
-        </md-button>
+<!--
+quando header.vars.profile.status for TRUE ele estará logado com face
 
-        <span flex></span>
+-->
 
-        <md-button class="md-icon-button" aria-label="Favorite" ng-click="null">
-            <md-icon class="icon-24">star</md-icon>
-        </md-button>
+-- HEADER<br>
 
-        <span flex></span>
+<img ng-if="header.vars.profile.status"
+     ng-src="http://localhost/files/logoProfile/{{header.vars.profile.photo}}"
+     style="width: 50px; height: 50px">
 
-        <md-button class="md-icon-button" aria-label="Search" ng-click="null">
-            <md-icon class="icon-24">search</md-icon>
-        </md-button>
+<button ui-sref="user.mainList({action : 'nearToMe'})">
+    near to me
+</button>
 
-        <!--<h2>
-            <span>RhinozApp</span>
-        </h2>-->
-    </div>
-</md-toolbar>
+<button ui-sref="user.mainList({action : 'favorites'})">
+    favorites
+</button>
 
+<button ui-sref="user.mainList({action : 'findLocal'})">
+    find a local
+</button>
 
-<!--NAV-->
-<md-sidenav class="md-sidenav-left md-whiteframe-4dp" md-component-id="left">
-    <md-toolbar class="md-theme-light"> <!--nav-background-->
-        <!--<div class="md-toolbar-tools" ui-sref="user.profile" ui-sref-active="current" ng-click="header.functions.closeNav()">
-            <md-button class="md-icon-button">
-                <md-icon class="icon-24">person</md-icon>
-            </md-button>
-            <h2 ng-if="!header.vars.userProfile.displayName">Seu perfil</h2>
-            <h2 ng-if="header.vars.userProfile.displayName">{{header.vars.userProfile.displayName}}</h2>
-        </div>-->
-    </md-toolbar>
+<button ng-if="!header.vars.profile.status" ui-sref="login">
+    login
+</button>
 
-    <md-list class="sideNav">
-        <!--mainList-->
-        <md-list-item
-                ui-sref="user.mainList"
-                ui-sref-active="current"
-                ng-click="header.functions.closeNav()">
-            <md-icon class="icon-18">list</md-icon>
-            <p>Restaurantes / bares</p>
-        </md-list-item>
-
-        <!--Profile-->
-        <md-list-item
-                ui-sref="user.profile"
-                ui-sref-active="current"
-                ng-click="header.functions.closeNav()">
-            <md-icon class="icon-18">person</md-icon>
-            <p>Perfil</p>
-        </md-list-item>
-
-        <!--logOut-->
-        <md-list-item
-                ng-click="header.functions.doLogout()">
-            <md-icon class="icon-18">power_settings_new</md-icon>
-            <p>Sair</p>
-        </md-list-item>
-    </md-list>
-</md-sidenav>
-
+<br>-- HEADER

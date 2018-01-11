@@ -6,12 +6,18 @@ angular
     .module('layout')
     .controller('headerController', headerController);
 
-function headerController(loginService, $mdSidenav) {
+function headerController(loginService, $mdSidenav, getProfile) {
     var header = this;
     header.vars = {};
 
     header.functions = {
-        core : function () {},
+        core : function () {
+            header.functions.defineVars();
+        },
+
+        defineVars : function () {
+            header.vars.profile = getProfile;
+        },
 
         doLogout : function () {
             loginService.doLogout();

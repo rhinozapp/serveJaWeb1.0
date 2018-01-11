@@ -19,5 +19,9 @@ angular.module('core', [
     'uiRouterStyles',
     'angular-loading-bar',
 
-    'ngCordovaOauth'
+    'angular-jwt',
+
+    'ngCordovaOauth',
+
+    'benharold.haversine'
 ]);

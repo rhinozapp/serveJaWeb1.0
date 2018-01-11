@@ -5,6 +5,7 @@ exports.signup = function (req, res) {
         jwt = require('jsonwebtoken'),
         bcrypt = require('bcrypt'),
         salt = bcrypt.genSaltSync(10),
+        logger = require('../../../../logger'),
         token;
 
     new userAdmin({
@@ -22,8 +23,11 @@ exports.signup = function (req, res) {
             neighborhood : req.body.neighborhood ,
             city : req.body.city ,
             uf : req.body.uf ,
-            lat : req.body.lat ,
-            long : req.body.long
+            loc : {
+                'type' : 'Point',
+                coordinates: [req.body.long, req.body.lat]
+            },
+            statusLoc : req.body.status,
         }).save().then(function (data) {
             token = jwt.sign({
                 id : data.userID,
@@ -37,12 +41,12 @@ exports.signup = function (req, res) {
             });
 
         }, function (err) {
-            console.log(err);
+            logger.log('error', err);
             res.json({status : false});
         });
 
     }, function (err) {
-        console.log(err);
+        logger.log('error', err);
         res.json({status : false});
 
     });

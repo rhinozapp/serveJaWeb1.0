@@ -1,20 +1,26 @@
-<md-content>
-    <div layout="row">
-        <md-button flex="50" class="md-raised md-accent">Perto de mim</md-button>
-        <md-button flex="50" class="md-raised md-accent">Encontrar local</md-button>
-    </div>
+<br><br>
 
-    <md-list flex>
-        <md-subheader class="md-no-sticky" style="text-align: center">Locais perto de AVENIDA PAULISTA</md-subheader>
+<p>-- search local (type to search)</p>
+<div ng-if="mainList.vars.actionFindLocal">
+    <input ng-model="mainList.vars.searchLocal">
+</div>
+<p>-- search local (type to search)</p><br><br>
 
-        <md-list-item class="md-2-line" ng-click="null">
-            <img ng-src="files/examples/pub/pub1.jpg" class="md-avatar" alt="" />
-            <div class="md-list-item-text" layout="column">
-                <h3>Bar do Zé</h3>
-                <h4>2.4Km  - 60min</h4>
-            </div>
-        </md-list-item>
-        <md-divider></md-divider>
 
-    </md-list>
-</md-content>
+<p>-- search pubs per name (type to search)</p>
+<div>
+    <input id="pac-input" class="controls" ng-model="mainList.vars.search">
+</div>
+<p>-- search pubs per name (type to search)</p><br><br>
+
+
+<p>--List pubs</p>
+<p>Próximos à {{}}</p>
+
+<div ng-repeat="item in mainList.vars.listFilter" ui-sref="place({idPlace : item})">
+    <div><img ng-src="http://localhost/files/logoProfile/{{item.logoPath}}" style="width: 50px; height: 50px"></div>
+    <div>{{item.name}}</div>
+    <div>{{item.distance | number:2}}KM</div>
+    <br>
+</div>
+<p>--List pubs</p><br><br>

@@ -1,5 +1,5 @@
 angular.module('modules', [
     'login',
-    'profile',
-    'mainList'
+    'mainList',
+    'place'
 ]);

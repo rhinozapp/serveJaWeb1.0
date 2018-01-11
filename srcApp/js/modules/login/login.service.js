@@ -41,9 +41,9 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
             });
         },
 
-        doLoginHack : $resource(/*defineHost.host +*/ '/app/doLoginHack'),
+        doLoginHack : $resource(defineHost.host + '/app/doLoginHack'),
 
-        recordData : $resource(defineHost.host + 'app/doLogin'),
+        recordData : $resource(defineHost.host + '/app/doLogin'),
 
         doLogout : function () {
             $window.localStorage.clear();
