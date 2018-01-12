@@ -167,12 +167,18 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
             });
         },
 
+        checkCNPJ : function () {
+            if(signUP.vars.cnpj==='00000000000000'){
+                $scope.adminSignUp.cnpj.$setValidity('void', false);
+            }
+        },
+
         zipCodeChange : function () {
             signUP.vars.zipCode = signUP.vars.zipCode.replace('-', '');
             if(signUP.vars.zipCode.length >= 8){
                 zipCodeSearch.getData(signUP.vars).then(function (data) {
                     signUP.vars.address = data.address.logradouro;
-                    signUP.vars.complement = data.address.complemento;
+                    /*signUP.vars.complement = data.address.complemento;*/
                     signUP.vars.neighborhood = data.address.bairro;
                     signUP.vars.city = data.address.localidade;
                     signUP.vars.uf = data.address.uf;

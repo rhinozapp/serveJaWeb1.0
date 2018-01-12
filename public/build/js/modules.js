@@ -12,17 +12,6 @@ angular.module('modules', [
 })();
 (function(){
 "use strict";
-angular.module('mainControl', [])
-    .controller('mainControlController', mainControl);
-
-function mainControl() {
-    var mainControl = this;
-
-    console.log(mainControl);
-}
-})();
-(function(){
-"use strict";
 angular.module('home', [])
     .controller('homeController', home);
 
@@ -192,12 +181,18 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
             });
         },
 
+        checkCNPJ : function () {
+            if(signUP.vars.cnpj==='00000000000000'){
+                $scope.adminSignUp.cnpj.$setValidity('void', false);
+            }
+        },
+
         zipCodeChange : function () {
             signUP.vars.zipCode = signUP.vars.zipCode.replace('-', '');
             if(signUP.vars.zipCode.length >= 8){
                 zipCodeSearch.getData(signUP.vars).then(function (data) {
                     signUP.vars.address = data.address.logradouro;
-                    signUP.vars.complement = data.address.complemento;
+                    /*signUP.vars.complement = data.address.complemento;*/
                     signUP.vars.neighborhood = data.address.bairro;
                     signUP.vars.city = data.address.localidade;
                     signUP.vars.uf = data.address.uf;
@@ -282,6 +277,17 @@ function authInterceptor($q, $window) {
             return response || $q.when(response);
         }
     };
+}
+})();
+(function(){
+"use strict";
+angular.module('mainControl', [])
+    .controller('mainControlController', mainControl);
+
+function mainControl() {
+    var mainControl = this;
+
+    console.log(mainControl);
 }
 })();
 (function(){
@@ -1023,7 +1029,7 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
             if (profile.vars.zipCode.length >= 8) {
                 zipCodeSearch.getDataBack.save(profile.vars, function(data) {
                     profile.vars.address = data.address.logradouro;
-                    profile.vars.complement = data.address.complemento;
+                    /*profile.vars.complement = data.address.complemento;*/
                     profile.vars.neighborhood = data.address.bairro;
                     profile.vars.city = data.address.localidade;
                     profile.vars.uf = data.address.uf;
