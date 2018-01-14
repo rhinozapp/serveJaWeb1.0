@@ -33,9 +33,13 @@ angular.module('core', [
     'uiRouterStyles',
     'angular-loading-bar',
 
+    'angular-jwt',
+
     'ngCordovaOauth',
 
-    'benharold.haversine'
+    'benharold.haversine',
+
+    'google.places'
 ]);
 
 })();
@@ -77,15 +81,22 @@ angular
             })
             .state('user.mainList', {
                 url: '/mainList',
+                params : {
+                    action : ''
+                },
                 templateUrl: 'templates/modules/mainList/mainList.html',
                 controller: 'mainListController',
                 controllerAs : 'mainList'
             })
-            .state('user.profile', {
-                url: '/profile',
-                templateUrl: 'templates/modules/profile/profile.html',
-                controller: 'profileController',
-                controllerAs : 'profile'
+
+            .state('place', {
+                url: '/place',
+                params : {
+                    place : {}
+                },
+                templateUrl: 'templates/modules/place/place.html',
+                controller: 'placeController',
+                controllerAs: 'place',
             })
 
             .state('login', {
@@ -145,7 +156,7 @@ angular
     .module('core')
     .service('defineHost', function () {
         return {
-            host : 'http://192.168.1.103:80/'
+            host : 'https://rhinozapp.herokuapp.com/:80'
         };
     });
 })();
@@ -156,20 +167,51 @@ angular
     .service('getCoordinates', function ($window) {
         return {
             getPos : function () {
-                if(window.navigator && window.navigator.geolocation){
-                    window.navigator.geolocation.getCurrentPosition(function (data) {
-                        $window.localStorage.lat = data.coords.latitude;
-                        $window.localStorage.long = data.coords.longitude;
-                    }, function () {
-                        $window.localStorage.lat = '-23.533773';
-                        $window.localStorage.long = '-46.625290';
-                    });
-                }else{
-                    $window.localStorage.lat = '-23.533773';
-                    $window.localStorage.long = '-46.625290';
-                }
+                return new Promise(function (success) {
+                    if(window.navigator && window.navigator.geolocation){
+                        window.navigator.geolocation.getCurrentPosition(function (data) {
+                            success({
+                                lat : data.coords.latitude,
+                                long : data.coords.longitude
+                            });
+                        }, function () {
+                            success({
+                                lat : '-23.533773',
+                                long : '-46.625290'
+                            });
+                        });
+                    }else{
+                        success({
+                            lat : '-23.533773',
+                            long : '-46.625290'
+                        });
+                    }
+                });
             }
         }
+    });
+})();
+(function(){
+"use strict";
+angular
+    .module('core')
+    .service('getProfile', function ($window, jwtHelper) {
+        if($window.localStorage.token){
+            var profile = jwtHelper.decodeToken($window.localStorage.token);
+            return {
+                email:profile.email,
+                idFace:profile.idFace,
+                name:profile.name,
+                photo:profile.photo,
+                token:profile.token,
+                status : true
+            }
+        }else{
+            return {
+                status : false
+            }
+        }
+
     });
 })();
 (function(){
@@ -349,12 +391,18 @@ angular
     .module('layout')
     .controller('headerController', headerController);
 
-function headerController(loginService, $mdSidenav) {
+function headerController(loginService, $mdSidenav, getProfile) {
     var header = this;
     header.vars = {};
 
     header.functions = {
-        core : function () {},
+        core : function () {
+            header.functions.defineVars();
+        },
+
+        defineVars : function () {
+            header.vars.profile = getProfile;
+        },
 
         doLogout : function () {
             loginService.doLogout();

@@ -9,10 +9,10 @@ angular.module('home')
         $httpProvider.interceptors.push('authInterceptor');
     });
 
-function loginService($window, $resource) {
+function loginService($window, $resource, defineHost) {
     return {
-        signUP : $resource('web/signUp'),
-        doLogin: $resource('web/doLogin'),
+        signUP : $resource(defineHost.host + 'web/signUp'),
+        doLogin: $resource(defineHost.host + 'web/doLogin'),
         doLogout : function () {
             $window.localStorage.clear();
             $window.location.reload();

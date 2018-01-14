@@ -1,0 +1,73 @@
+.modal__centralizer {
+    width: 600px;
+    padding: 10px 20px;
+}
+
+.modal {
+    .modal__header {
+        background: $main-color;
+        padding: 15px 0;
+        position: relative;
+        .modal__title {
+            color: $secundary-color;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .modal__close-icon {
+            position: absolute;
+            color: $secundary-color;
+            top: 0;
+            bottom: 0;
+            right: 10px;
+            display: block;
+            margin: auto;
+            height: 28px;
+            cursor: pointer;
+        }
+    }
+    .modal__half{
+        width: 45%;
+        display: inline-block;
+        margin-right: 52px;
+        &:nth-child(even){
+            margin-right: 0;
+        }
+    }
+    .modal__label {
+        font-weight: bold;
+        color: #aaa;
+        display: block;
+    }
+    .modal__input {
+        width: 100%;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-image: initial;
+        outline: none;
+        border-bottom: 1px solid #aaa;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    .modal__obs {
+        font-size: 0.8em;
+        margin: 15px 0;
+        color: #aaa;
+        display: block;
+    }
+    .modal__form {
+        padding: 10px 0;
+    }
+    .actions {
+        margin: 0 auto;
+        text-align: center;
+        .actions__action {
+            margin-bottom: 30px;
+            .other-link {
+                color: #aaa;
+                text-decoration: underline;
+                font-weight: bold;
+            }
+        }
+    }
+}

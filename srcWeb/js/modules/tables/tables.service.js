@@ -1,10 +1,10 @@
 angular.module('tables')
     .service('tablesService', tablesService);
 
-function tablesService($resource) {
+function tablesService($resource, defineHost) {
     return {
-        updateTables : $resource('web/updateTables'),
-        getTables : $resource('web/getTables'),
-        deleteTables : $resource('web/deleteTables')
+        updateTables : $resource(defineHost.host + 'web/updateTables'),
+        getTables : $resource(defineHost.host + 'web/getTables'),
+        deleteTables : $resource(defineHost.host + 'web/deleteTables')
     }
 }

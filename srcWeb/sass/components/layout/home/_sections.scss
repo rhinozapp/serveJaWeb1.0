@@ -1,13 +1,23 @@
 .welcome {
-    background: url(https://www.opas.org.br/wp-content/uploads/2017/06/cerveja-e-sa%C3%BAde.jpg);
-    background-size: cover;
-    background-attachment: fixed;
-    padding: 20% 0;
+    position: relative;
+    .welcome__video {
+        max-width: 1500px;
+        width: 100%;
+        opacity: .8;
+    }
     .welcome__msg {
         font-size: 4em;
-        color: $secundary-color;
+        color: #fff;
         display: block;
-        width: 500px;
+        text-align: center;
+        position: absolute;
+        text-shadow: 1px 1px 1px #000;
+        right: 0;
+        left: 0;
+        bottom: 315px;
+        margin: auto;
+        -webkit-animation: text-appears 2.5s ease;
+        animation: text-appears 2.5s ease;
     }
 }
 
@@ -76,7 +86,29 @@
         margin-bottom: 20px;
         font-weight: bold;
     }
-    .footer__span{
+    .footer__span {
         font-size: 1.2em;
+    }
+}
+
+@keyframes text-appears {
+    0% {
+        left: -20px;
+        opacity: 0;
+    }
+    100% {
+        left: 0px;
+        opacity: 1;
+    }
+}
+
+@keyframes text-appears {
+    0% {
+        left: -20px;
+        opacity: 0;
+    }
+    100% {
+        left: 0px;
+        opacity: 1;
     }
 }

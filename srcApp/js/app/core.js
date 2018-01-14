@@ -19,7 +19,11 @@ angular.module('core', [
     'uiRouterStyles',
     'angular-loading-bar',
 
+    'angular-jwt',
+
     'ngCordovaOauth',
 
-    'benharold.haversine'
+    'benharold.haversine',
+
+    'google.places'
 ]);

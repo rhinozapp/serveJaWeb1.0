@@ -1,9 +1,9 @@
 angular.module('profile')
     .service('profileService', profileService);
 
-function profileService($resource) {
+function profileService($resource, defineHost) {
     return {
-        updateProfile : $resource('web/updateProfile'),
-        getProfile : $resource('web/getProfile')
+        updateProfile : $resource(defineHost.host + 'web/updateProfile'),
+        getProfile : $resource(defineHost.host + 'web/getProfile')
     }
 }

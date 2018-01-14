@@ -89,9 +89,13 @@ gulp.task('vendor', function () {
         bower + 'angular-ui-router-styles/ui-router-styles.js',
         bower + 'angular-ui-router.stateHelper/statehelper.js',
 
+        bower + 'angular-jwt/dist/angular-jwt.js',
+
         bower + 'ng-cordova-oauth/dist/ng-cordova-oauth.js',
 
-        bower + 'angular-haversine/angular-haversine.js'
+        bower + 'angular-haversine/angular-haversine.js',
+
+        bower + 'angular-google-places-autocomplete/src/autocomplete.js'
     ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest(dest + 'js'));
@@ -140,7 +144,8 @@ gulp.task('css', function () {
     console.log('Compiling the project CSS in Bower');
     return gulp.src([
         bower + 'angular-material/angular-material.css',
-        bower + 'angular-loading-bar/build/loading-bar.css'
+        bower + 'angular-loading-bar/build/loading-bar.css',
+        bower + 'angular-google-places-autocomplete/src/autocomplete.css'
     ])
         .pipe(concatCss('bowerCssComponents.css'))
         .pipe(gulp.dest(dest + 'css'));

@@ -45,7 +45,7 @@ function home(dialogAdvanced) {
     home.functions.core();
 }
 
-function loginController(dialogAdvanced, loginService, recoveryPasswordService, dialogAlert, $window) {
+function loginController($scope, dialogAdvanced, loginService, recoveryPasswordService, dialogAlert, $window) {
     var login = this;
     login.vars = {};
 
@@ -64,21 +64,13 @@ function loginController(dialogAdvanced, loginService, recoveryPasswordService, 
                         break;
 
                     case data.status === false:
-                        login.vars.alert = true;
-                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                        $scope.loginForm.username.$setValidity('userPassFound', false);
+                        $scope.loginForm.password.$setValidity('userPassFound', false);
                         break;
 
                     default:
-                        login.vars.alert = true;
-                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                }
-
-                if(login.vars.alert){
-                    dialogAlert.show({
-                        title : 'Atenção',
-                        content : login.vars.message,
-                        ok : 'Ok'
-                    });
+                        $scope.loginForm.username.$setValidity('userPassFound', false);
+                        $scope.loginForm.password.$setValidity('userPassFound', false);
                 }
             });
         },
@@ -92,21 +84,11 @@ function loginController(dialogAdvanced, loginService, recoveryPasswordService, 
                         break;
 
                     case data.status === false:
-                        login.vars.alert = true;
-                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                        $scope.loginForm.forgotPass.$setValidity('userFound', false);
                         break;
 
                     default:
-                        login.vars.alert = true;
-                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                }
-
-                if(login.vars.alert){
-                    dialogAlert.show({
-                        title : 'Atenção',
-                        content : login.vars.message,
-                        ok : 'Ok'
-                    });
+                        $scope.loginForm.forgotPass.$setValidity('userFound', false);
                 }
             });
         },
@@ -181,12 +163,18 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
             });
         },
 
+        checkCNPJ : function () {
+            if(signUP.vars.cnpj==='00000000000000'){
+                $scope.adminSignUp.cnpj.$setValidity('void', false);
+            }
+        },
+
         zipCodeChange : function () {
             signUP.vars.zipCode = signUP.vars.zipCode.replace('-', '');
             if(signUP.vars.zipCode.length >= 8){
                 zipCodeSearch.getData(signUP.vars).then(function (data) {
                     signUP.vars.address = data.address.logradouro;
-                    signUP.vars.complement = data.address.complemento;
+                    /*signUP.vars.complement = data.address.complemento;*/
                     signUP.vars.neighborhood = data.address.bairro;
                     signUP.vars.city = data.address.localidade;
                     signUP.vars.uf = data.address.uf;
@@ -243,10 +231,10 @@ angular.module('home')
         $httpProvider.interceptors.push('authInterceptor');
     });
 
-function loginService($window, $resource) {
+function loginService($window, $resource, defineHost) {
     return {
-        signUP : $resource('web/signUp'),
-        doLogin: $resource('web/doLogin'),
+        signUP : $resource(defineHost.host + 'web/signUp'),
+        doLogin: $resource(defineHost.host + 'web/doLogin'),
         doLogout : function () {
             $window.localStorage.clear();
             $window.location.reload();
@@ -1023,7 +1011,7 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
             if (profile.vars.zipCode.length >= 8) {
                 zipCodeSearch.getDataBack.save(profile.vars, function(data) {
                     profile.vars.address = data.address.logradouro;
-                    profile.vars.complement = data.address.complemento;
+                    /*profile.vars.complement = data.address.complemento;*/
                     profile.vars.neighborhood = data.address.bairro;
                     profile.vars.city = data.address.localidade;
                     profile.vars.uf = data.address.uf;

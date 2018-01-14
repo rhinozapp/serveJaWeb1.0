@@ -209,7 +209,7 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
             if (profile.vars.zipCode.length >= 8) {
                 zipCodeSearch.getDataBack.save(profile.vars, function(data) {
                     profile.vars.address = data.address.logradouro;
-                    profile.vars.complement = data.address.complemento;
+                    /*profile.vars.complement = data.address.complemento;*/
                     profile.vars.neighborhood = data.address.bairro;
                     profile.vars.city = data.address.localidade;
                     profile.vars.uf = data.address.uf;

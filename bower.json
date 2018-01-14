@@ -24,6 +24,7 @@
     "angular-jwt": "^0.1.9",
     "angular-ui-mask": "^1.8.7",
     "ng-cpf-cnpj": "^0.0.5",
-    "angular-haversine": "^0.1.0"
+    "angular-haversine": "^0.1.0",
+    "angular-google-places-autocomplete": "^0.2.7"
   }
 }

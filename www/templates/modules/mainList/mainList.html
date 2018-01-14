@@ -1,15 +1,45 @@
 <br><br>
--- search pubs per name (type to search)
-<br><input ng-model="mainList.vars.search">
 
-<br>
--- search pubs per name (type to search)
-
-<br><br>
---List pubs<br>
-<div ng-repeat="item in mainList.vars.listFilter">
-    <div>{{item.name}}</div>
-    <div>{{item.distance | number:2}}KM</div>
-    <br>
+<p>-- search local (type to search)</p>
+<div ng-if="mainList.vars.actionFindLocal">
+    <input g-places-autocomplete
+           ng-model="mainList.vars.searchLocal"
+           ng-change="mainList.functions.getList.getLocal()">
 </div>
---List pubs
+<p>-- search local (type to search)</p><br><br>
+
+
+<p>-- search pubs per name (type to search)</p>
+<div>
+    <input ng-model="mainList.vars.search">
+</div>
+<p>-- search pubs per name (type to search)</p><br><br>
+
+
+<p>--List pubs</p>
+<div ng-if="mainList.vars.latSearch || mainList.vars.longSearch">
+    <p>Próximos à {{mainList.vars.nearLocal}}</p>
+</div>
+
+<div ng-repeat="item in mainList.vars.listFilter  | orderBy:['-item.distance','-openToday']">
+    <div ng-click="mainList.functions.goPub(item)">
+        <div><img ng-src="http://localhost/files/logoProfile/{{item.logoPath}}" style="width: 50px; height: 50px"></div>
+        <div>{{item.name}}</div>
+        <div>{{item.distance | number:2}}KM</div>
+        <div ng-if="item.openToday && !item.openAllDay">
+            Aberto hoje das {{item.timeStart}} às {{item.timeEnd}}.
+        </div>
+        <div ng-if="item.openToday && item.openAllDay">
+            Aberto hoje 24hs.
+        </div>
+        <div ng-if="!item.openToday">
+            Fechado hoje.
+        </div>
+        <br>
+    </div>
+</div>
+
+<div ng-if="mainList.vars.listFilter.length === 0">
+    Não achamos nenhum bar :(
+</div>
+<p>--List pubs</p><br><br>

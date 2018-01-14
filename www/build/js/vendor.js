@@ -80024,6 +80024,400 @@ angular.module('ui.router.stateHelper', [ 'ui.router' ])
     }]);
 
 (function() {
+
+
+// Create all modules and define dependencies to make sure they exist
+// and are loaded in the correct order to satisfy dependency injection
+// before all nested files are concatenated by Grunt
+
+// Modules
+angular.module('angular-jwt',
+    [
+        'angular-jwt.options',
+        'angular-jwt.interceptor',
+        'angular-jwt.jwt',
+        'angular-jwt.authManager'
+    ]);
+
+angular.module('angular-jwt.authManager', [])
+  .provider('authManager', function () {
+
+    this.$get = ["$rootScope", "$injector", "$location", "jwtHelper", "jwtInterceptor", "jwtOptions", function ($rootScope, $injector, $location, jwtHelper, jwtInterceptor, jwtOptions) {
+
+      var config = jwtOptions.getConfig();
+
+      function invokeToken(tokenGetter) {
+        var token = null;
+        if (Array.isArray(tokenGetter)) {
+          token = $injector.invoke(tokenGetter, this, {options: null});
+        } else {
+          token = tokenGetter();
+        }
+        return token;
+      }
+
+      function invokeRedirector(redirector) {
+        if (Array.isArray(redirector) || angular.isFunction(redirector)) {
+          return $injector.invoke(redirector, config, {});
+        } else {
+          throw new Error('unauthenticatedRedirector must be a function');
+        }
+      }
+
+      function isAuthenticated() {
+        var token = invokeToken(config.tokenGetter);
+        if (token) {
+          return !jwtHelper.isTokenExpired(token);
+        }
+      }
+
+      $rootScope.isAuthenticated = false;
+
+      function authenticate() {
+        $rootScope.isAuthenticated = true;
+      }
+
+      function unauthenticate() {
+        $rootScope.isAuthenticated = false;
+      }
+
+      function checkAuthOnRefresh() {
+        $rootScope.$on('$locationChangeStart', function () {
+          var token = invokeToken(config.tokenGetter);
+          if (token) {
+            if (!jwtHelper.isTokenExpired(token)) {
+              authenticate();
+            } else {
+              $rootScope.$broadcast('tokenHasExpired', token);
+            }
+          }
+        });
+      }
+
+      function redirectWhenUnauthenticated() {
+        $rootScope.$on('unauthenticated', function () {
+          invokeRedirector(config.unauthenticatedRedirector);
+          unauthenticate();
+        });
+      }
+
+      function verifyRoute(event, next) {
+        if (!next) {
+          return false;
+        }
+
+        var routeData = (next.$$route) ? next.$$route : next.data;
+
+        if (routeData && routeData.requiresLogin === true) {
+          var token = invokeToken(config.tokenGetter);
+          if (!token || jwtHelper.isTokenExpired(token)) {
+            event.preventDefault();
+            invokeRedirector(config.unauthenticatedRedirector);
+          }
+        }
+      }
+
+      var eventName = ($injector.has('$state')) ? '$stateChangeStart' : '$routeChangeStart';
+      $rootScope.$on(eventName, verifyRoute);
+
+      return {
+        authenticate: authenticate,
+        unauthenticate: unauthenticate,
+        getToken: function(){ return invokeToken(config.tokenGetter); },
+        redirect: function() { return invokeRedirector(config.unauthenticatedRedirector); },
+        checkAuthOnRefresh: checkAuthOnRefresh,
+        redirectWhenUnauthenticated: redirectWhenUnauthenticated,
+        isAuthenticated: isAuthenticated
+      }
+    }]
+  });
+
+angular.module('angular-jwt.interceptor', [])
+  .provider('jwtInterceptor', function() {
+
+    this.urlParam;
+    this.authHeader;
+    this.authPrefix;
+    this.whiteListedDomains;
+    this.tokenGetter;
+
+    var config = this;
+
+    this.$get = ["$q", "$injector", "$rootScope", "urlUtils", "jwtOptions", function($q, $injector, $rootScope, urlUtils, jwtOptions) {
+
+      var options = angular.extend({}, jwtOptions.getConfig(), config);
+
+      function isSafe (url) {
+        if (!urlUtils.isSameOrigin(url) && !options.whiteListedDomains.length) {
+          throw new Error('As of v0.1.0, requests to domains other than the application\'s origin must be white listed. Use jwtOptionsProvider.config({ whiteListedDomains: [<domain>] }); to whitelist.')
+        }
+        var hostname = urlUtils.urlResolve(url).hostname.toLowerCase();
+        for (var i = 0; i < options.whiteListedDomains.length; i++) {
+          var domain = options.whiteListedDomains[i];
+          var regexp = domain instanceof RegExp ? domain : new RegExp(domain, 'i');
+          if (hostname.match(regexp)) {
+            return true;
+          }
+        }
+
+        if (urlUtils.isSameOrigin(url)) {
+          return true;
+        }
+
+        return false;
+      }
+
+      return {
+        request: function (request) {
+          if (request.skipAuthorization || !isSafe(request.url)) {
+            return request;
+          }
+
+          if (options.urlParam) {
+            request.params = request.params || {};
+            // Already has the token in the url itself
+            if (request.params[options.urlParam]) {
+              return request;
+            }
+          } else {
+            request.headers = request.headers || {};
+            // Already has an Authorization header
+            if (request.headers[options.authHeader]) {
+              return request;
+            }
+          }
+
+          var tokenPromise = $q.when($injector.invoke(options.tokenGetter, this, {
+            options: request
+          }));
+
+          return tokenPromise.then(function(token) {
+            if (token) {
+              if (options.urlParam) {
+                request.params[options.urlParam] = token;
+              } else {
+                request.headers[options.authHeader] = options.authPrefix + token;
+              }
+            }
+            return request;
+          });
+        },
+        responseError: function (response) {
+          // handle the case where the user is not authenticated
+          if (response.status === 401) {
+            $rootScope.$broadcast('unauthenticated', response);
+          }
+          return $q.reject(response);
+        }
+      };
+    }]
+  });
+
+ angular.module('angular-jwt.jwt', [])
+  .service('jwtHelper', ["$window", function($window) {
+
+    this.urlBase64Decode = function(str) {
+      var output = str.replace(/-/g, '+').replace(/_/g, '/');
+      switch (output.length % 4) {
+        case 0: { break; }
+        case 2: { output += '=='; break; }
+        case 3: { output += '='; break; }
+        default: {
+          throw 'Illegal base64url string!';
+        }
+      }
+      return $window.decodeURIComponent(escape($window.atob(output))); //polyfill https://github.com/davidchambers/Base64.js
+    };
+
+
+    this.decodeToken = function(token) {
+      var parts = token.split('.');
+
+      if (parts.length !== 3) {
+        throw new Error('JWT must have 3 parts');
+      }
+
+      var decoded = this.urlBase64Decode(parts[1]);
+      if (!decoded) {
+        throw new Error('Cannot decode the token');
+      }
+
+      return angular.fromJson(decoded);
+    };
+
+    this.getTokenExpirationDate = function(token) {
+      var decoded = this.decodeToken(token);
+
+      if(typeof decoded.exp === "undefined") {
+        return null;
+      }
+
+      var d = new Date(0); // The 0 here is the key, which sets the date to the epoch
+      d.setUTCSeconds(decoded.exp);
+
+      return d;
+    };
+
+    this.isTokenExpired = function(token, offsetSeconds) {
+      var d = this.getTokenExpirationDate(token);
+      offsetSeconds = offsetSeconds || 0;
+      if (d === null) {
+        return false;
+      }
+
+      // Token expired?
+      return !(d.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)));
+    };
+  }]);
+
+angular.module('angular-jwt.options', [])
+  .provider('jwtOptions', function() {
+    var globalConfig = {};
+    this.config = function(value) {
+      globalConfig = value;
+    };
+    this.$get = function() {
+
+      var options = {
+        urlParam: null,
+        authHeader: 'Authorization',
+        authPrefix: 'Bearer ',
+        whiteListedDomains: [],
+        tokenGetter: function() {
+          return null;
+        },
+        loginPath: '/',
+        unauthenticatedRedirectPath: '/',
+        unauthenticatedRedirector: ['$location', function($location) {
+          $location.path(this.unauthenticatedRedirectPath);
+        }]
+      };
+
+      function JwtOptions() {
+        var config = this.config = angular.extend({}, options, globalConfig);
+      }
+
+      JwtOptions.prototype.getConfig = function() {
+        return this.config;
+      };
+
+      return new JwtOptions();
+    }
+  });
+
+ /**
+  * The content from this file was directly lifted from Angular. It is
+  * unfortunately not a public API, so the best we can do is copy it.
+  *
+  * Angular References:
+  *   https://github.com/angular/angular.js/issues/3299
+  *   https://github.com/angular/angular.js/blob/d077966ff1ac18262f4615ff1a533db24d4432a7/src/ng/urlUtils.js
+  */
+
+ angular.module('angular-jwt.interceptor')
+  .service('urlUtils', function () {
+
+    // NOTE:  The usage of window and document instead of $window and $document here is
+    // deliberate.  This service depends on the specific behavior of anchor nodes created by the
+    // browser (resolving and parsing URLs) that is unlikely to be provided by mock objects and
+    // cause us to break tests.  In addition, when the browser resolves a URL for XHR, it
+    // doesn't know about mocked locations and resolves URLs to the real document - which is
+    // exactly the behavior needed here.  There is little value is mocking these out for this
+    // service.
+    var urlParsingNode = document.createElement("a");
+    var originUrl = urlResolve(window.location.href);
+
+    /**
+     *
+     * Implementation Notes for non-IE browsers
+     * ----------------------------------------
+     * Assigning a URL to the href property of an anchor DOM node, even one attached to the DOM,
+     * results both in the normalizing and parsing of the URL.  Normalizing means that a relative
+     * URL will be resolved into an absolute URL in the context of the application document.
+     * Parsing means that the anchor node's host, hostname, protocol, port, pathname and related
+     * properties are all populated to reflect the normalized URL.  This approach has wide
+     * compatibility - Safari 1+, Mozilla 1+, Opera 7+,e etc.  See
+     * http://www.aptana.com/reference/html/api/HTMLAnchorElement.html
+     *
+     * Implementation Notes for IE
+     * ---------------------------
+     * IE <= 10 normalizes the URL when assigned to the anchor node similar to the other
+     * browsers.  However, the parsed components will not be set if the URL assigned did not specify
+     * them.  (e.g. if you assign a.href = "foo", then a.protocol, a.host, etc. will be empty.)  We
+     * work around that by performing the parsing in a 2nd step by taking a previously normalized
+     * URL (e.g. by assigning to a.href) and assigning it a.href again.  This correctly populates the
+     * properties such as protocol, hostname, port, etc.
+     *
+     * References:
+     *   http://developer.mozilla.org/en-US/docs/Web/API/HTMLAnchorElement
+     *   http://www.aptana.com/reference/html/api/HTMLAnchorElement.html
+     *   http://url.spec.whatwg.org/#urlutils
+     *   https://github.com/angular/angular.js/pull/2902
+     *   http://james.padolsey.com/javascript/parsing-urls-with-the-dom/
+     *
+     * @kind function
+     * @param {string} url The URL to be parsed.
+     * @description Normalizes and parses a URL.
+     * @returns {object} Returns the normalized URL as a dictionary.
+     *
+     *   | member name   | Description    |
+     *   |---------------|----------------|
+     *   | href          | A normalized version of the provided URL if it was not an absolute URL |
+     *   | protocol      | The protocol including the trailing colon                              |
+     *   | host          | The host and port (if the port is non-default) of the normalizedUrl    |
+     *   | search        | The search params, minus the question mark                             |
+     *   | hash          | The hash string, minus the hash symbol
+     *   | hostname      | The hostname
+     *   | port          | The port, without ":"
+     *   | pathname      | The pathname, beginning with "/"
+     *
+     */
+    function urlResolve(url) {
+      var href = url;
+
+      // Normalize before parse.  Refer Implementation Notes on why this is
+      // done in two steps on IE.
+      urlParsingNode.setAttribute("href", href);
+      href = urlParsingNode.href;
+      urlParsingNode.setAttribute('href', href);
+
+      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+      return {
+        href: urlParsingNode.href,
+        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+        host: urlParsingNode.host,
+        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+        hostname: urlParsingNode.hostname,
+        port: urlParsingNode.port,
+        pathname: (urlParsingNode.pathname.charAt(0) === '/')
+          ? urlParsingNode.pathname
+          : '/' + urlParsingNode.pathname
+      };
+    }
+
+    /**
+     * Parse a request URL and determine whether this is a same-origin request as the application document.
+     *
+     * @param {string|object} requestUrl The url of the request as a string that will be resolved
+     * or a parsed URL object.
+     * @returns {boolean} Whether the request is for the same origin as the application document.
+     */
+    function urlIsSameOrigin(requestUrl) {
+      var parsed = (angular.isString(requestUrl)) ? urlResolve(requestUrl) : requestUrl;
+      return (parsed.protocol === originUrl.protocol &&
+              parsed.host === originUrl.host);
+    }
+
+    return {
+      urlResolve: urlResolve,
+      isSameOrigin: urlIsSameOrigin
+    };
+
+  });
+
+}());
+(function() {
   'use strict';
 
   angular.module('oauth.500px', ['oauth.utils'])
@@ -83422,3 +83816,463 @@ angular.module("ngCordovaOauth", [
     })());
 
 })();
+
+/*
+ * angular-google-places-autocomplete
+ *
+ * Copyright (c) 2014 "kuhnza" David Kuhn
+ * Licensed under the MIT license.
+ * https://github.com/kuhnza/angular-google-places-autocomplete/blob/master/LICENSE
+ */
+
+ 'use strict';
+
+angular.module('google.places', [])
+	/**
+	 * DI wrapper around global google places library.
+	 *
+	 * Note: requires the Google Places API to already be loaded on the page.
+	 */
+	.factory('googlePlacesApi', ['$window', function ($window) {
+        if (!$window.google) throw 'Global `google` var missing. Did you forget to include the places API script?';
+
+		return $window.google;
+	}])
+
+	/**
+	 * Autocomplete directive. Use like this:
+	 *
+	 * <input type="text" g-places-autocomplete ng-model="myScopeVar" />
+	 */
+	.directive('gPlacesAutocomplete',
+        [ '$parse', '$compile', '$timeout', '$document', 'googlePlacesApi',
+        function ($parse, $compile, $timeout, $document, google) {
+
+            return {
+                restrict: 'A',
+                require: '^ngModel',
+                scope: {
+                    model: '=ngModel',
+                    options: '=?',
+                    forceSelection: '=?',
+                    customPlaces: '=?'
+                },
+                controller: ['$scope', function ($scope) {}],
+                link: function ($scope, element, attrs, controller) {
+                    var keymap = {
+                            tab: 9,
+                            enter: 13,
+                            esc: 27,
+                            up: 38,
+                            down: 40
+                        },
+                        hotkeys = [keymap.tab, keymap.enter, keymap.esc, keymap.up, keymap.down],
+                        autocompleteService = new google.maps.places.AutocompleteService(),
+                        placesService = new google.maps.places.PlacesService(element[0]);
+
+                    (function init() {
+                        $scope.query = '';
+                        $scope.predictions = [];
+                        $scope.input = element;
+                        $scope.options = $scope.options || {};
+
+                        initAutocompleteDrawer();
+                        initEvents();
+                        initNgModelController();
+                    }());
+
+                    function initEvents() {
+                        element.bind('keydown', onKeydown);
+                        element.bind('blur', onBlur);
+                        element.bind('submit', onBlur);
+
+                        $scope.$watch('selected', select);
+                    }
+
+                    function initAutocompleteDrawer() {
+                        // Drawer element used to display predictions
+                        var drawerElement = angular.element('<div g-places-autocomplete-drawer></div>'),
+                            body = angular.element($document[0].body),
+                            $drawer;
+
+                        drawerElement.attr({
+                            input: 'input',
+                            query: 'query',
+                            predictions: 'predictions',
+                            active: 'active',
+                            selected: 'selected'
+                        });
+
+                        $drawer = $compile(drawerElement)($scope);
+                        body.append($drawer);  // Append to DOM
+                    }
+
+                    function initNgModelController() {
+                        controller.$parsers.push(parse);
+                        controller.$formatters.push(format);
+                        controller.$render = render;
+                    }
+
+                    function onKeydown(event) {
+                        if ($scope.predictions.length === 0 || indexOf(hotkeys, event.which) === -1) {
+                            return;
+                        }
+
+                        event.preventDefault();
+
+                        if (event.which === keymap.down) {
+                            $scope.active = ($scope.active + 1) % $scope.predictions.length;
+                            $scope.$digest();
+                        } else if (event.which === keymap.up) {
+                            $scope.active = ($scope.active ? $scope.active : $scope.predictions.length) - 1;
+                            $scope.$digest();
+                        } else if (event.which === 13 || event.which === 9) {
+                            if ($scope.forceSelection) {
+                                $scope.active = ($scope.active === -1) ? 0 : $scope.active;
+                            }
+
+                            $scope.$apply(function () {
+                                $scope.selected = $scope.active;
+
+                                if ($scope.selected === -1) {
+                                    clearPredictions();
+                                }
+                            });
+                        } else if (event.which === 27) {
+                            $scope.$apply(function () {
+                                event.stopPropagation();
+                                clearPredictions();
+                            })
+                        }
+                    }
+
+                    function onBlur(event) {
+                        if ($scope.predictions.length === 0) {
+                            return;
+                        }
+
+                        if ($scope.forceSelection) {
+                            $scope.selected = ($scope.selected === -1) ? 0 : $scope.selected;
+                        }
+
+                        $scope.$digest();
+
+                        $scope.$apply(function () {
+                            if ($scope.selected === -1) {
+                                clearPredictions();
+                            }
+                        });
+                    }
+
+                    function select() {
+                        var prediction;
+
+                        prediction = $scope.predictions[$scope.selected];
+                        if (!prediction) return;
+
+                        if (prediction.is_custom) {
+                            $scope.$apply(function () {
+                                $scope.model = prediction.place;
+                                $scope.$emit('g-places-autocomplete:select', prediction.place);
+                                $timeout(function () {
+                                    controller.$viewChangeListeners.forEach(function (fn) {fn()});
+                                });
+                            });
+                        } else {
+                            placesService.getDetails({ placeId: prediction.place_id }, function (place, status) {
+                                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                                    $scope.$apply(function () {
+                                        $scope.model = place;
+                                        $scope.$emit('g-places-autocomplete:select', place);
+                                        $timeout(function () {
+                                            controller.$viewChangeListeners.forEach(function (fn) {fn()});
+                                        });
+                                    });
+                                }
+                            });
+                        }
+
+                        clearPredictions();
+                    }
+
+                    function parse(viewValue) {
+                        var request;
+
+                        if (!(viewValue && isString(viewValue))) return viewValue;
+
+                        $scope.query = viewValue;
+
+                        request = angular.extend({ input: viewValue }, $scope.options);
+                        autocompleteService.getPlacePredictions(request, function (predictions, status) {
+                            $scope.$apply(function () {
+                                var customPlacePredictions;
+
+                                clearPredictions();
+
+                                if ($scope.customPlaces) {
+                                    customPlacePredictions = getCustomPlacePredictions($scope.query);
+                                    $scope.predictions.push.apply($scope.predictions, customPlacePredictions);
+                                }
+
+                                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                                    $scope.predictions.push.apply($scope.predictions, predictions);
+                                }
+
+                                if ($scope.predictions.length > 5) {
+                                    $scope.predictions.length = 5;  // trim predictions down to size
+                                }
+                            });
+                        });
+
+                        if ($scope.forceSelection) {
+                            return controller.$modelValue;
+                        } else {
+                            return viewValue;
+                        }
+                    }
+
+                    function format(modelValue) {
+                        var viewValue = "";
+
+                        if (isString(modelValue)) {
+                            viewValue = modelValue;
+                        } else if (isObject(modelValue)) {
+                            viewValue = modelValue.formatted_address;
+                        }
+
+                        return viewValue;
+                    }
+
+                    function render() {
+                        return element.val(controller.$viewValue);
+                    }
+
+                    function clearPredictions() {
+                        $scope.active = -1;
+                        $scope.selected = -1;
+                        $scope.predictions = [];
+                    }
+
+                    function getCustomPlacePredictions(query) {
+                        var predictions = [],
+                            place, match, i;
+
+                        for (i = 0; i < $scope.customPlaces.length; i++) {
+                            place = $scope.customPlaces[i];
+
+                            match = getCustomPlaceMatches(query, place);
+                            if (match.matched_substrings.length > 0) {
+                                predictions.push({
+                                    is_custom: true,
+                                    custom_prediction_label: place.custom_prediction_label || '(Custom Non-Google Result)',  // required by https://developers.google.com/maps/terms § 10.1.1 (d)
+                                    description: place.formatted_address,
+                                    place: place,
+                                    matched_substrings: match.matched_substrings,
+                                    terms: match.terms
+                                });
+                            }
+                        }
+
+                        return predictions;
+                    }
+
+                    function getCustomPlaceMatches(query, place) {
+                        var q = query + '',  // make a copy so we don't interfere with subsequent matches
+                            terms = [],
+                            matched_substrings = [],
+                            fragment,
+                            termFragments,
+                            i;
+
+                        termFragments = place.formatted_address.split(',');
+                        for (i = 0; i < termFragments.length; i++) {
+                            fragment = termFragments[i].trim();
+
+                            if (q.length > 0) {
+                                if (fragment.length >= q.length) {
+                                    if (startsWith(fragment, q)) {
+                                        matched_substrings.push({ length: q.length, offset: i });
+                                    }
+                                    q = '';  // no more matching to do
+                                } else {
+                                    if (startsWith(q, fragment)) {
+                                        matched_substrings.push({ length: fragment.length, offset: i });
+                                        q = q.replace(fragment, '').trim();
+                                    } else {
+                                        q = '';  // no more matching to do
+                                    }
+                                }
+                            }
+
+                            terms.push({
+                                value: fragment,
+                                offset: place.formatted_address.indexOf(fragment)
+                            });
+                        }
+
+                        return {
+                            matched_substrings: matched_substrings,
+                            terms: terms
+                        };
+                    }
+
+                    function isString(val) {
+                        return Object.prototype.toString.call(val) == '[object String]';
+                    }
+
+                    function isObject(val) {
+                        return Object.prototype.toString.call(val) == '[object Object]';
+                    }
+
+                    function indexOf(array, item) {
+                        var i, length;
+
+                        if (array == null) return -1;
+
+                        length = array.length;
+                        for (i = 0; i < length; i++) {
+                            if (array[i] === item) return i;
+                        }
+                        return -1;
+                    }
+
+                    function startsWith(string1, string2) {
+                        return toLower(string1).lastIndexOf(toLower(string2), 0) === 0;
+                    }
+
+                    function toLower(string) {
+                        return (string == null) ? "" : string.toLowerCase();
+                    }
+                }
+            }
+        }
+    ])
+
+
+    .directive('gPlacesAutocompleteDrawer', ['$window', '$document', function ($window, $document) {
+        var TEMPLATE = [
+            '<div class="pac-container" ng-if="isOpen()" ng-style="{top: position.top+\'px\', left: position.left+\'px\', width: position.width+\'px\'}" style="display: block;" role="listbox" aria-hidden="{{!isOpen()}}">',
+            '  <div class="pac-item" g-places-autocomplete-prediction index="$index" prediction="prediction" query="query"',
+            '       ng-repeat="prediction in predictions track by $index" ng-class="{\'pac-item-selected\': isActive($index) }"',
+            '       ng-mouseenter="selectActive($index)" ng-click="selectPrediction($index)" role="option" id="{{prediction.id}}">',
+            '  </div>',
+            '</div>'
+        ];
+
+        return {
+            restrict: 'A',
+            scope:{
+                input: '=',
+                query: '=',
+                predictions: '=',
+                active: '=',
+                selected: '='
+            },
+            template: TEMPLATE.join(''),
+            link: function ($scope, element) {
+                element.bind('mousedown', function (event) {
+                    event.preventDefault();  // prevent blur event from firing when clicking selection
+                });
+
+                $window.onresize = function () {
+                    $scope.$apply(function () {
+                        $scope.position = getDrawerPosition($scope.input);
+                    });
+                }
+
+                $scope.isOpen = function () {
+                    return $scope.predictions.length > 0;
+                };
+
+                $scope.isActive = function (index) {
+                    return $scope.active === index;
+                };
+
+                $scope.selectActive = function (index) {
+                    $scope.active = index;
+                };
+
+                $scope.selectPrediction = function (index) {
+                    $scope.selected = index;
+                };
+
+                $scope.$watch('predictions', function () {
+                    $scope.position = getDrawerPosition($scope.input);
+                }, true);
+
+                function getDrawerPosition(element) {
+                    var domEl = element[0],
+                        rect = domEl.getBoundingClientRect(),
+                        docEl = $document[0].documentElement,
+                        body = $document[0].body,
+                        scrollTop = $window.pageYOffset || docEl.scrollTop || body.scrollTop,
+                        scrollLeft = $window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+                    return {
+                        width: rect.width,
+                        height: rect.height,
+                        top: rect.top + rect.height + scrollTop,
+                        left: rect.left + scrollLeft
+                    };
+                }
+            }
+        }
+    }])
+
+    .directive('gPlacesAutocompletePrediction', [function () {
+        var TEMPLATE = [
+            '<span class="pac-icon pac-icon-marker"></span>',
+            '<span class="pac-item-query" ng-bind-html="prediction | highlightMatched"></span>',
+            '<span ng-repeat="term in prediction.terms | unmatchedTermsOnly:prediction">{{term.value | trailingComma:!$last}}&nbsp;</span>',
+            '<span class="custom-prediction-label" ng-if="prediction.is_custom">&nbsp;{{prediction.custom_prediction_label}}</span>'
+        ];
+
+        return {
+            restrict: 'A',
+            scope:{
+                index:'=',
+                prediction:'=',
+                query:'='
+            },
+            template: TEMPLATE.join('')
+        }
+    }])
+
+    .filter('highlightMatched', ['$sce', function ($sce) {
+        return function (prediction) {
+            var matchedPortion = '',
+                unmatchedPortion = '',
+                matched;
+
+            if (prediction.matched_substrings.length > 0 && prediction.terms.length > 0) {
+                matched = prediction.matched_substrings[0];
+                matchedPortion = prediction.terms[0].value.substr(matched.offset, matched.length);
+                unmatchedPortion = prediction.terms[0].value.substr(matched.offset + matched.length);
+            }
+
+            return $sce.trustAsHtml('<span class="pac-matched">' + matchedPortion + '</span>' + unmatchedPortion);
+        }
+    }])
+
+    .filter('unmatchedTermsOnly', [function () {
+        return function (terms, prediction) {
+            var i, term, filtered = [];
+
+            for (i = 0; i < terms.length; i++) {
+                term = terms[i];
+                if (prediction.matched_substrings.length > 0 && term.offset > prediction.matched_substrings[0].length) {
+                    filtered.push(term);
+                }
+            }
+
+            return filtered;
+        }
+    }])
+
+    .filter('trailingComma', [function () {
+        return function (input, condition) {
+            return (condition) ? input + ',' : input;
+        }
+    }]);
+
+

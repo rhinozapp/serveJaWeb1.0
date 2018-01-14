@@ -1,13 +1,13 @@
 angular.module('products')
     .service('productsService', productsService);
 
-function productsService($resource) {
+function productsService($resource, defineHost) {
     return {
-        saveProducts : $resource('web/saveProducts'),
-        getProducts : $resource('web/getProducts'),
-        deleteProducts : $resource('web/deleteProducts'),
-        saveCategory : $resource('web/saveCategory'),
-        getCategory : $resource('web/getCategory'),
-        deleteCategory : $resource('web/deleteCategory')
+        saveProducts : $resource(defineHost.host + 'web/saveProducts'),
+        getProducts : $resource(defineHost.host + 'web/getProducts'),
+        deleteProducts : $resource(defineHost.host + 'web/deleteProducts'),
+        saveCategory : $resource(defineHost.host + 'web/saveCategory'),
+        getCategory : $resource(defineHost.host + 'web/getCategory'),
+        deleteCategory : $resource(defineHost.host + 'web/deleteCategory')
     }
 }

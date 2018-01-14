@@ -210,6 +210,16 @@ angular
 })();
 (function(){
 "use strict";
+angular
+    .module('core')
+    .service('defineHost', function () {
+        return {
+            host : 'https://rhinozapp.herokuapp.com/:80'
+        };
+    });
+})();
+(function(){
+"use strict";
 /**
  * Created by guilherme.assis on 02/12/2016.
  */
