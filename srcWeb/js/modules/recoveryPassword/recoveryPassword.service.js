@@ -1,10 +1,10 @@
 angular.module('recoveryPassword')
     .service('recoveryPasswordService', recoveryPasswordService);
 
-function recoveryPasswordService($resource) {
+function recoveryPasswordService($resource, defineHost) {
     return {
-        recoveryPasswordSend: $resource('web/recoveryPasswordSend'),
-        recoveryPasswordGetHash: $resource('web/recoveryPasswordGetHash'),
-        recoveryPassword: $resource('web/recoveryPassword')
+        recoveryPasswordSend: $resource(defineHost.host + 'web/recoveryPasswordSend'),
+        recoveryPasswordGetHash: $resource(defineHost.host + 'web/recoveryPasswordGetHash'),
+        recoveryPassword: $resource(defineHost.host + 'web/recoveryPassword')
     }
 }

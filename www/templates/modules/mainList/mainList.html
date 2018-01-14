@@ -21,8 +21,8 @@
     <p>Próximos à {{mainList.vars.nearLocal}}</p>
 </div>
 
-<div ng-repeat="item in mainList.vars.listFilter">
-    <div ui-sref="place({place : item})">
+<div ng-repeat="item in mainList.vars.listFilter  | orderBy:['-item.distance','-openToday']">
+    <div ng-click="mainList.functions.goPub(item)">
         <div><img ng-src="http://localhost/files/logoProfile/{{item.logoPath}}" style="width: 50px; height: 50px"></div>
         <div>{{item.name}}</div>
         <div>{{item.distance | number:2}}KM</div>

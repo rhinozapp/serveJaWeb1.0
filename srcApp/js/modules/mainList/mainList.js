@@ -1,11 +1,9 @@
 angular.module('mainList', [])
     .controller('mainListController', mainListController);
 
-function mainListController(loginService, getCoordinates, mainListService, haversine, $scope, $filter, $stateParams, getProfile) {
+function mainListController(loginService, getCoordinates, mainListService, haversine, $scope, $filter, $stateParams, getProfile, $state, dialogAlert) {
     var mainList = this;
     mainList.vars = {};
-
-    console.log(moment().get('hour'));
 
     mainList.functions = {
         core : function () {
@@ -116,30 +114,159 @@ function mainListController(loginService, getCoordinates, mainListService, haver
                             break;
 
                         case moment().weekday() === 1:
+                            if(value.monday.status){
+                                if(value.monday.timeStart === value.monday.timeEnd){
+                                    value.openToday = true;
+                                    value.openAllDay = true;
+                                    value.timeStart = value.monday.timeStart;
+                                    value.timeEnd = value.monday.timeEnd;
+                                }else{
+
+                                    if(moment().isBetween(moment(value.monday.timeStart, "HH:mm") , moment(value.monday.timeEnd, "HH:mm a"))){
+                                        value.openToday = true;
+                                        value.openAllDay = false;
+                                        value.timeStart = value.monday.timeStart;
+                                        value.timeEnd = value.monday.timeEnd;
+                                    }else{
+                                        value.openToday = false;
+                                    }
+                                }
+                            }else{
+                                value.openToday = false;
+                            }
                             break;
 
                         case moment().weekday() === 2:
+                            if(value.tuesday.status){
+                                if(value.tuesday.timeStart === value.tuesday.timeEnd){
+                                    value.openToday = true;
+                                    value.openAllDay = true;
+                                    value.timeStart = value.tuesday.timeStart;
+                                    value.timeEnd = value.tuesday.timeEnd;
+                                }else{
+
+                                    if(moment().isBetween(moment(value.tuesday.timeStart, "HH:mm") , moment(value.tuesday.timeEnd, "HH:mm a"))){
+                                        value.openToday = true;
+                                        value.openAllDay = false;
+                                        value.timeStart = value.tuesday.timeStart;
+                                        value.timeEnd = value.tuesday.timeEnd;
+                                    }else{
+                                        value.openToday = false;
+                                    }
+                                }
+                            }else{
+                                value.openToday = false;
+                            }
                             break;
 
                         case moment().weekday() === 3:
+                            if(value.wednesday.status){
+                                if(value.wednesday.timeStart === value.wednesday.timeEnd){
+                                    value.openToday = true;
+                                    value.openAllDay = true;
+                                    value.timeStart = value.wednesday.timeStart;
+                                    value.timeEnd = value.wednesday.timeEnd;
+                                }else{
+
+                                    if(moment().isBetween(moment(value.wednesday.timeStart, "HH:mm") , moment(value.wednesday.timeEnd, "HH:mm a"))){
+                                        value.openToday = true;
+                                        value.openAllDay = false;
+                                        value.timeStart = value.wednesday.timeStart;
+                                        value.timeEnd = value.wednesday.timeEnd;
+                                    }else{
+                                        value.openToday = false;
+                                    }
+                                }
+                            }else{
+                                value.openToday = false;
+                            }
                             break;
 
                         case moment().weekday() === 4:
+                            if(value.thursday.status){
+                                if(value.thursday.timeStart === value.thursday.timeEnd){
+                                    value.openToday = true;
+                                    value.openAllDay = true;
+                                    value.timeStart = value.thursday.timeStart;
+                                    value.timeEnd = value.thursday.timeEnd;
+                                }else{
+
+                                    if(moment().isBetween(moment(value.thursday.timeStart, "HH:mm") , moment(value.thursday.timeEnd, "HH:mm a"))){
+                                        value.openToday = true;
+                                        value.openAllDay = false;
+                                        value.timeStart = value.thursday.timeStart;
+                                        value.timeEnd = value.thursday.timeEnd;
+                                    }else{
+                                        value.openToday = false;
+                                    }
+                                }
+                            }else{
+                                value.openToday = false;
+                            }
                             break;
 
                         case moment().weekday() === 5:
-                            break;
+                            if(value.friday.status){
+                                if(value.friday.timeStart === value.friday.timeEnd){
+                                    value.openToday = true;
+                                    value.openAllDay = true;
+                                    value.timeStart = value.friday.timeStart;
+                                    value.timeEnd = value.friday.timeEnd;
+                                }else{
 
-                        case moment().weekday() === 6:
+                                    if(moment().isBetween(moment(value.friday.timeStart, "HH:mm") , moment(value.friday.timeEnd, "HH:mm a"))){
+                                        value.openToday = true;
+                                        value.openAllDay = false;
+                                        value.timeStart = value.friday.timeStart;
+                                        value.timeEnd = value.friday.timeEnd;
+                                    }else{
+                                        value.openToday = false;
+                                    }
+                                }
+                            }else{
+                                value.openToday = false;
+                            }
                             break;
 
                         default:
+                            if(value.saturday.status){
+                                if(value.saturday.timeStart === value.saturday.timeEnd){
+                                    value.openToday = true;
+                                    value.openAllDay = true;
+                                    value.timeStart = value.saturday.timeStart;
+                                    value.timeEnd = value.saturday.timeEnd;
+                                }else{
+
+                                    if(moment().isBetween(moment(value.saturday.timeStart, "HH:mm") , moment(value.saturday.timeEnd, "HH:mm a"))){
+                                        value.openToday = true;
+                                        value.openAllDay = false;
+                                        value.timeStart = value.saturday.timeStart;
+                                        value.timeEnd = value.saturday.timeEnd;
+                                    }else{
+                                        value.openToday = false;
+                                    }
+                                }
+                            }else{
+                                value.openToday = false;
+                            }
                     }
                     //endregion
                 });
 
                 mainList.vars.listFilter = mainList.vars.list;
             },
+        },
+
+        goPub : function (data) {
+            if(data.openToday){
+                $state.go('place', {place : data});
+            }else{
+                dialogAlert.show({
+                    title : 'Que pena!',
+                    content : 'Não estamos abertos hoje :(',
+                    ok : 'OK'
+                });
+            }
         },
 
         logout : function () {

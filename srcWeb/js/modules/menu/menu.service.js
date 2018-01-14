@@ -1,10 +1,10 @@
 angular.module('menu')
     .service('menuService', menuService);
 
-function menuService($resource) {
+function menuService($resource, defineHost) {
     return {
-        updateMenu : $resource('web/updateMenu'),
-        getMenu : $resource('web/getMenu'),
-        deleteMenu : $resource('web/deleteMenu')
+        updateMenu : $resource(defineHost.host + 'web/updateMenu'),
+        getMenu : $resource(defineHost.host + 'web/getMenu'),
+        deleteMenu : $resource(defineHost.host + 'web/deleteMenu')
     }
 }
