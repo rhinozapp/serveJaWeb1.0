@@ -45,7 +45,7 @@ function home(dialogAdvanced) {
     home.functions.core();
 }
 
-function loginController(dialogAdvanced, loginService, recoveryPasswordService, dialogAlert, $window) {
+function loginController($scope, dialogAdvanced, loginService, recoveryPasswordService, dialogAlert, $window) {
     var login = this;
     login.vars = {};
 
@@ -64,21 +64,13 @@ function loginController(dialogAdvanced, loginService, recoveryPasswordService, 
                         break;
 
                     case data.status === false:
-                        login.vars.alert = true;
-                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                        $scope.loginForm.username.$setValidity('userPassFound', false);
+                        $scope.loginForm.password.$setValidity('userPassFound', false);
                         break;
 
                     default:
-                        login.vars.alert = true;
-                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                }
-
-                if(login.vars.alert){
-                    dialogAlert.show({
-                        title : 'Atenção',
-                        content : login.vars.message,
-                        ok : 'Ok'
-                    });
+                        $scope.loginForm.username.$setValidity('userPassFound', false);
+                        $scope.loginForm.password.$setValidity('userPassFound', false);
                 }
             });
         },
@@ -92,21 +84,11 @@ function loginController(dialogAdvanced, loginService, recoveryPasswordService, 
                         break;
 
                     case data.status === false:
-                        login.vars.alert = true;
-                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                        $scope.loginForm.forgotPass.$setValidity('userFound', false);
                         break;
 
                     default:
-                        login.vars.alert = true;
-                        login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                }
-
-                if(login.vars.alert){
-                    dialogAlert.show({
-                        title : 'Atenção',
-                        content : login.vars.message,
-                        ok : 'Ok'
-                    });
+                        $scope.loginForm.forgotPass.$setValidity('userFound', false);
                 }
             });
         },

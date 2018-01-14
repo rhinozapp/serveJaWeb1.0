@@ -134,7 +134,7 @@
             <div class="modal__half">
                 <label class="modal__label">Cidade</label>
                 <input class="modal__input" type="text" name="city" ng-model="signUP.vars.city" required>
-                <div ng-messages="adminSignUp.city.$error">
+                <div ng-messages="adminSignUp.city.$error" ng-if="adminSignUp.city.$touched">
                      <div ng-message="required">Cidade não pode estar vazia.</div>
                 </div>
             </div>
