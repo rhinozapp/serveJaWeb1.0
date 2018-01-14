@@ -22,7 +22,7 @@ angular
             .state('place', {
                 url: '/place',
                 params : {
-                    idPlace : {}
+                    place : {}
                 },
                 templateUrl: 'templates/modules/place/place.html',
                 controller: 'placeController',
