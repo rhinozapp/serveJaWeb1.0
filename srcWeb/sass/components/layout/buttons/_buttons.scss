@@ -9,10 +9,15 @@
     text-align: center;
     min-width: 200px;
     font-weight: bold;
+    transition: all .3s ease;
     &:hover{
         border: 1px solid $main-color;
         background: $secundary-color;
         color: $main-color;
+    }
+    &:not(:hover){
+        background: $main-color;
+        color: $secundary-color;
     }
 }
 
@@ -24,3 +29,4 @@
 .btn-right{
     float: right;
 }
+

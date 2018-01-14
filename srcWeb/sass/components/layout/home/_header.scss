@@ -1,4 +1,5 @@
 .header{
+    max-width: 1500px;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -18,6 +19,7 @@
         .menu__item{
             display: inline-block;
             margin-left: 25px;
+            cursor: pointer;
             .menu__link{
                 color: $secundary-color;
                 text-decoration: none;

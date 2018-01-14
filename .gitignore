@@ -8,8 +8,8 @@
 /public/files/imgProducts/*
 
 #Build files
-/public/build
-/www/build
+/public/build/*
+/www/build/*
 
 ### Angular ###
 ## Angular ##

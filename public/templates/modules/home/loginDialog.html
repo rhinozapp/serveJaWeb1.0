@@ -11,7 +11,7 @@
     <div class="modal__centralizer">
         <form class="modal__form" name="loginForm">
             <div ng-show="!login.vars.forgotPasswordAction">
-                <div class="modal__label-input">
+                <div class="modal__info">
                     <label for="name" class="modal__label">E-mail</label>
                     <input class="modal__input" id="name" name="username" ng-model="login.vars.username" required autofocus>
                     <div ng-messages="loginForm.username.$error">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal__label-input">
+                <div class="modal__info">
                     <label for="pass" class="modal__label">Senha</label>
                     <input class="modal__input" id="pass" name="password" ng-model="login.vars.password" type="password" required>
                     <div ng-messages="loginForm.password.$error">
@@ -48,6 +48,7 @@
                         </div>
                     </div>
                 </div>
+                
             </div>
         </form>
 
