@@ -27,12 +27,12 @@ module.exports = function(app) {
     app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
     app.use(express.static('./public/'));
     app.use('/app', express.static('./www/'));
-    app.use(cors({origin: 'http://localhost:80'}));
-    app.use(cors({origin: 'http://localhost:8100'}));
-    app.use(cors({origin: 'http://maps.google.com'}));
-    app.use(cors({origin: 'https://viacep.com.br'}));
-    app.use(cors({origin: 'https://rhinozapp.herokuapp.com'}));
-    app.use(cors({origin: 'https://rhinozapp.herokuapp.com:42701'}));
+    app.use(cors({origin: 'http://localhost:80', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
+    app.use(cors({origin: 'http://localhost:8100', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
+    app.use(cors({origin: 'http://maps.google.com', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
+    app.use(cors({origin: 'https://viacep.com.br', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
+    app.use(cors({origin: 'https://rhinozapp.herokuapp.com', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
+    app.use(cors({origin: 'https://rhinozapp.herokuapp.com:42701', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
     app.use(cors());
     //endregion
 
