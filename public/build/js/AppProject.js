@@ -210,11 +210,19 @@ angular
 })();
 (function(){
 "use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular.module('layout', []);
+})();
+(function(){
+"use strict";
 angular
     .module('core')
     .service('defineHost', function () {
         return {
-            host : 'https://rhinozapp.herokuapp.com/:80'
+            host : 'https://rhinozapp.herokuapp.com/'
         };
     });
 })();
@@ -430,14 +438,6 @@ angular
             getDataBack : $resource('web/zipCode')
         };
     });
-})();
-(function(){
-"use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
-angular.module('layout', []);
 })();
 (function(){
 "use strict";
