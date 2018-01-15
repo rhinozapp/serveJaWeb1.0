@@ -45,11 +45,118 @@ angular.module('core', [
 })();
 (function(){
 "use strict";
+/**
+ * Created by Guilherme Assis on 19/09/2016.
+ */
+
+angular
+	.module('core');
+
+})();
+(function(){
+"use strict";
+/**
+ * Created by Michel Costa S on 2/24/2016.
+ * @Description: Configurador da barra de carregamento para o Bloo Project inteiro usando as Promises.
+ */
+angular
+	.module('core')
+	.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
+		cfpLoadingBarProvider.includeSpinner = false;
+	}]);
+
+})();
+(function(){
+"use strict";
+angular
+    .module('core')
+    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, stateHelperProvider) {
+        $urlRouterProvider.otherwise('/user/mainList');
+
+        $stateProvider
+            .state('user', {
+                url: '/user',
+                abstract: true,
+                templateUrl: "templates/app/layout/layout.html",
+            })
+            .state('user.mainList', {
+                url: '/mainList',
+                params : {
+                    action : ''
+                },
+                templateUrl: 'templates/modules/mainList/mainList.html',
+                controller: 'mainListController',
+                controllerAs : 'mainList'
+            })
+
+            .state('place', {
+                url: '/place',
+                params : {
+                    place : {}
+                },
+                templateUrl: 'templates/modules/place/place.html',
+                controller: 'placeController',
+                controllerAs: 'place',
+            })
+
+            .state('login', {
+                url: '/login',
+                templateUrl: 'templates/modules/login/login.html',
+                controller: 'loginController',
+                controllerAs: 'login',
+            });
+
+        $locationProvider.html5Mode(false);
+    });
+
+})();
+(function(){
+"use strict";
+angular
+    .module('core')
+    .run(function($rootScope, $window, $state) {
+        $rootScope.$on('$stateChangeStart', function (e, toState) {
+            // Set scroll to 0
+            window.scrollTo(0, 0);
+            var token = $window.localStorage.token;
+
+            if (toState.name === 'login' && token !== undefined) {
+                e.preventDefault();
+                $state.go('user.mainList');
+            }
+        });
+    });
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular
+    .module('core')
+    .config(function ($mdThemingProvider) {
+        $mdThemingProvider.theme('default')
+            .primaryPalette('indigo', {
+                'default' : '900'
+            })
+            .accentPalette('orange', {
+                'default' : '900'
+            })
+            .warnPalette('orange');
+
+        $mdThemingProvider.enableBrowserColor({
+            hue: '200' // Default is '800'
+        });
+    });
+})();
+(function(){
+"use strict";
 angular
     .module('core')
     .service('defineHost', function () {
         return {
-            host : 'https://rhinozapp.herokuapp.com/'
+            host : 'https://rhinozapp.herokuapp.com'
         };
     });
 })();
@@ -225,138 +332,10 @@ angular
 (function(){
 "use strict";
 /**
- * Created by Guilherme Assis on 19/09/2016.
- */
-
-angular
-	.module('core');
-
-})();
-(function(){
-"use strict";
-/**
- * Created by Michel Costa S on 2/24/2016.
- * @Description: Configurador da barra de carregamento para o Bloo Project inteiro usando as Promises.
- */
-angular
-	.module('core')
-	.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
-		cfpLoadingBarProvider.includeSpinner = false;
-	}]);
-
-})();
-(function(){
-"use strict";
-angular
-    .module('core')
-    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, stateHelperProvider) {
-        $urlRouterProvider.otherwise('/user/mainList');
-
-        $stateProvider
-            .state('user', {
-                url: '/user',
-                abstract: true,
-                templateUrl: "templates/app/layout/layout.html",
-            })
-            .state('user.mainList', {
-                url: '/mainList',
-                params : {
-                    action : ''
-                },
-                templateUrl: 'templates/modules/mainList/mainList.html',
-                controller: 'mainListController',
-                controllerAs : 'mainList'
-            })
-
-            .state('place', {
-                url: '/place',
-                params : {
-                    place : {}
-                },
-                templateUrl: 'templates/modules/place/place.html',
-                controller: 'placeController',
-                controllerAs: 'place',
-            })
-
-            .state('login', {
-                url: '/login',
-                templateUrl: 'templates/modules/login/login.html',
-                controller: 'loginController',
-                controllerAs: 'login',
-            });
-
-        $locationProvider.html5Mode(false);
-    });
-
-})();
-(function(){
-"use strict";
-angular
-    .module('core')
-    .run(function($rootScope, $window, $state) {
-        $rootScope.$on('$stateChangeStart', function (e, toState) {
-            // Set scroll to 0
-            window.scrollTo(0, 0);
-            var token = $window.localStorage.token;
-
-            if (toState.name === 'login' && token !== undefined) {
-                e.preventDefault();
-                $state.go('user.mainList');
-            }
-        });
-    });
-})();
-(function(){
-"use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
-angular
-    .module('core')
-    .config(function ($mdThemingProvider) {
-        $mdThemingProvider.theme('default')
-            .primaryPalette('indigo', {
-                'default' : '900'
-            })
-            .accentPalette('orange', {
-                'default' : '900'
-            })
-            .warnPalette('orange');
-
-        $mdThemingProvider.enableBrowserColor({
-            hue: '200' // Default is '800'
-        });
-    });
-})();
-(function(){
-"use strict";
-/**
  * Created by guiga on 25/05/2017.
  */
 
 angular.module('layout', []);
-})();
-(function(){
-"use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
-angular
-    .module('layout')
-    .directive('container', container);
-
-function container() {
-    return {
-        restrict: 'EA',
-        template: '<ui-view></ui-view>',
-        link: linkFunc,
-        bindToController: true
-    };
-    
-    function linkFunc() {}
-}
 })();
 (function(){
 "use strict";
@@ -427,5 +406,26 @@ function headerController(loginService, $mdSidenav, getProfile) {
     };
 
     header.functions.core();
+}
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular
+    .module('layout')
+    .directive('container', container);
+
+function container() {
+    return {
+        restrict: 'EA',
+        template: '<ui-view></ui-view>',
+        link: linkFunc,
+        bindToController: true
+    };
+    
+    function linkFunc() {}
 }
 })();

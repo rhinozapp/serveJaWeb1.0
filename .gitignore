@@ -7,10 +7,6 @@
 /public/files/qrCodes/*
 /public/files/imgProducts/*
 
-#Build files
-/public/build
-/www/build
-
 ### Angular ###
 ## Angular ##
 # compiled output
