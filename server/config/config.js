@@ -32,6 +32,7 @@ module.exports = function(app) {
     app.use(cors({origin: 'http://maps.google.com'}));
     app.use(cors({origin: 'https://viacep.com.br'}));
     app.use(cors({origin: 'https://rhinozapp.herokuapp.com'}));
+    app.use(cors({origin: 'https://rhinozapp.herokuapp.com:42701'}));
     app.use(cors());
     //endregion
 
