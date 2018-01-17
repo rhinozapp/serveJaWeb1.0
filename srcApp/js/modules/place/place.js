@@ -1,7 +1,7 @@
 angular.module('place', [])
     .controller('placeController', placeController);
 
-function placeController($stateParams, $state, placeService){
+function placeController($stateParams, $state, placeService, externalLink){
     var place = this;
     place.vars = {};
 
@@ -11,11 +11,22 @@ function placeController($stateParams, $state, placeService){
         },
 
         defineVars : function () {
-            if($stateParams.place._id){
-                place.vars.dataPub = $stateParams;
+            place.vars.showHowToArrive = false;
+            if($stateParams.place.pubData){
+                place.vars.dataPub = $stateParams.place.pubData;
+                place.vars.userLat = $stateParams.place.userLocal.lat;
+                place.vars.userLong = $stateParams.place.userLocal.long;
             }else{
                 $state.go('user.mainList');
             }
+        },
+
+        externalLink : function (url, target, location) {
+            externalLink.open({
+                url : url,
+                target : target,
+                location : location
+            });
         }
     };
 

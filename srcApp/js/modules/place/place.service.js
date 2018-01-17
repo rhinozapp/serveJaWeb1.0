@@ -3,6 +3,6 @@ angular.module('place')
 
 function placeService($resource, defineHost) {
     return {
-        get : $resource(/*defineHost.host + */'/app/getListPubs')
+        get : $resource(defineHost.host + '/app/getListPubs')
     }
 }

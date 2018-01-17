@@ -259,7 +259,15 @@ function mainListController(loginService, getCoordinates, mainListService, haver
 
         goPub : function (data) {
             if(data.openToday){
-                $state.go('place', {place : data});
+                $state.go('place', {
+                    place : {
+                        pubData : data,
+                        userLocal : {
+                            lat : mainList.vars.latSearch,
+                            long : mainList.vars.longSearch
+                        }
+                    }
+                });
             }else{
                 dialogAlert.show({
                     title : 'Que pena!',

@@ -402,7 +402,15 @@ function mainListController(loginService, getCoordinates, mainListService, haver
 
         goPub : function (data) {
             if(data.openToday){
-                $state.go('place', {place : data});
+                $state.go('place', {
+                    place : {
+                        pubData : data,
+                        userLocal : {
+                            lat : mainList.vars.latSearch,
+                            long : mainList.vars.longSearch
+                        }
+                    }
+                });
             }else{
                 dialogAlert.show({
                     title : 'Que pena!',
@@ -437,7 +445,7 @@ function mainListService($resource, defineHost) {
 angular.module('place', [])
     .controller('placeController', placeController);
 
-function placeController($stateParams, $state, placeService){
+function placeController($stateParams, $state, placeService, externalLink){
     var place = this;
     place.vars = {};
 
@@ -447,11 +455,22 @@ function placeController($stateParams, $state, placeService){
         },
 
         defineVars : function () {
-            if($stateParams.place._id){
-                place.vars.dataPub = $stateParams;
+            place.vars.showHowToArrive = false;
+            if($stateParams.place.pubData){
+                place.vars.dataPub = $stateParams.place.pubData;
+                place.vars.userLat = $stateParams.place.userLocal.lat;
+                place.vars.userLong = $stateParams.place.userLocal.long;
             }else{
                 $state.go('user.mainList');
             }
+        },
+
+        externalLink : function (url, target, location) {
+            externalLink.open({
+                url : url,
+                target : target,
+                location : location
+            });
         }
     };
 
@@ -465,7 +484,7 @@ angular.module('place')
 
 function placeService($resource, defineHost) {
     return {
-        get : $resource(/*defineHost.host + */'/app/getListPubs')
+        get : $resource(defineHost.host + '/app/getListPubs')
     }
 }
 })();
