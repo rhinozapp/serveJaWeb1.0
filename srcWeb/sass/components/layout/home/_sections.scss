@@ -15,13 +15,16 @@
         margin: auto;
         -webkit-animation: text-appears 3s ease-in-out;
         animation: text-appears 3s ease-in-out;
-        @media screen and (min-width: $break-to-mobile) {
+        @media (min-width: $break-to-mobile) {
             bottom: 190px;
         }
-        @media screen and (min-width: 1125px) {
+        @media (max-width: $break-to-mobile){
+            font-size: 2em;
+        }
+        @media (min-width: 1125px) {
             bottom: 280px;
         }
-        @media screen and (min-width: 1200px) {
+        @media (min-width: 1200px) {
             bottom: 320px;
         }
     }
@@ -30,15 +33,24 @@
 .who-are-we {
     padding: 20px 0;
     clear: both;
+    @media (max-width: $break-to-mobile){
+        text-align: center;
+    }
     &:nth-of-type(2) {
         overflow: hidden;
     }
     &:nth-of-type(3) {
         margin-top: 70px;
         background: #eee;
+        @media (max-width: $break-to-mobile){
+            margin-top: 0;
+        }
         .who-are-we__article {
             width: 65%;
             margin-bottom: 20px;
+            @media (max-width: $break-to-mobile){
+                width: 100%;
+            }
         }
         .who-are-we__img-app {
             position: absolute;
@@ -47,6 +59,12 @@
             box-shadow: 5px 5px 130px #aaa;
             right: 0;
             top: -65px;
+            @media (max-width: $break-to-mobile){
+                position: relative;
+                width: 100%;
+                top: 0;
+                margin-bottom: 30px;
+            }
         }
     }
     .who-are-we__reasons {
@@ -57,6 +75,11 @@
             width: 250px;
             float: left;
             margin-right: 110px;
+            @media (max-width: $break-to-mobile){
+                display: block;
+                width: 100%;
+                margin-bottom: 50px;
+            }
             &:nth-child(3){
                 margin-right: 0;
             }

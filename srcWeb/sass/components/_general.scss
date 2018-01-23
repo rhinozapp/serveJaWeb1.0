@@ -12,12 +12,19 @@ body{
 .content{
     max-width: 1500px;
     margin: 0 auto;
+    @media (max-width: $break-to-mobile){
+        width: 100%;
+    }
 }
 
 .centralizer{
     width: 970px;
     margin: 0 auto;
     position: relative;
+    overflow: hidden;
+    @media (max-width: $break-to-mobile){
+        width: 90%;
+    }
 }
 
 a{
@@ -29,4 +36,8 @@ a{
   border-radius: 100%;
   width: 100px;
   height: 100px;
+}
+
+a:hover, button:hover{
+    cursor: pointer;
 }

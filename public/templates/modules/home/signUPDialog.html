@@ -2,7 +2,7 @@
 
     <header class="modal__header">
         <div class="modal__centralizer">
-            <h2 class="modal__title">Cadastre-se</h2>
+            <h2 class="modal__title">Cadastrar meu bar</h2>
             <span class="modal__close-icon" ng-click="signUP.functions.cancel()">
                 <i class="icon-28">close</i>
             </span>
@@ -41,11 +41,10 @@
 
             <div class="modal__info modal__half">
                 <label class="modal__label">Repetir Senha</label>
-                <input class="modal__input" name="repPassword" ng-minlength="6" type="password" ng-model="signUP.vars.repPassword" required>
+                <input class="modal__input" name="repPassword" type="password" ng-model="signUP.vars.repPassword" required>
                 <div ng-messages="adminSignUp.repPassword.$error" ng-if="adminSignUp.repPassword.$touched">
                     <div class="model__empty-msg" ng-message="required">Senha não pode estar vazia.</div>
                     <div class="model__empty-msg" ng-message="notMatch">As senhas devem ser iguais.</div>
-                    <div class="model__empty-msg" ng-message="minlength">A senha deve ter mais de 6 caracteres.</div>
                 </div>
             </div>
 
@@ -56,6 +55,7 @@
                 <div ng-messages="adminSignUp.cnpj.$error" ng-if="adminSignUp.cnpj.$touched">
                     <div class="model__empty-msg" ng-message="required">CNPJ não pode ser vazio.</div>
                     <div class="model__empty-msg" ng-message="cnpj">Digite um CNPJ válido.</div>
+                    <div class="model__empty-msg" ng-message="void">Digite um CNPJ válido.</div>
                 </div>
             </div>
 
