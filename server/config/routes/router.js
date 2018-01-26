@@ -8,7 +8,6 @@ module.exports = function (app) {
             secret: 'rhinoz'
         });
 
-
     //region WEB Routes
     //region ZipCode
     let zipCodeWeb = require('./web/app/helpers/zipCode');
