@@ -2,7 +2,7 @@ let mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     objSchema = new mongoose.Schema({
         tableID: Schema.ObjectId,
-        userID : { type: String, required: true},
+        userID : { type: Schema.ObjectId, required: true, ref : 'userAdmin'},
         tableName : { type: String, required: true}
     });
 

@@ -9,9 +9,11 @@ exports.updateMenu = function (req, res) {
             if(value.view){
                 value.products.forEach(function (valueProd) {
                     if(valueProd.statusInMenu){
-                        dataToSave.push({
+                        /*dataToSave.push({
                             productID : valueProd.productID
-                        });
+                        });*/
+
+                        dataToSave.push(valueProd.productID);
                     }
                 });
             }

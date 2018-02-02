@@ -9,12 +9,28 @@
         <br><p>Descrição: {{place.vars.dataPub.description}}</p><br>
     </div>
     <div>
-        <a ng-click="place.functions.externalLink(place.vars.dataPub.pageFacebook, '_system', 'yes')">Facebook</a>
-        <a ng-click="place.functions.externalLink(place.vars.dataPub.pageInstagram, '_system', 'yes')">Instagram</a>
-        <a ng-click="place.functions.externalLink(place.vars.dataPub.webSite, '_system', 'yes')">WebSite</a>
-        <a ng-click="place.functions.externalLink('https://www.google.com.br/maps/dir/' +place.vars.userLat+ ',' +place.vars.userLong + '/' +place.vars.dataPub.address+ ' - ' +place.vars.dataPub.number, '_system', 'yes')">Como chegar?</a>
+        <a ng-click="place.functions.externalLink(place.vars.dataPub.pageFacebook, '_system', 'yes')">Facebook</a> |
+        <a ng-click="place.functions.externalLink(place.vars.dataPub.pageInstagram, '_system', 'yes')">Instagram</a> |
+        <a ng-click="place.functions.externalLink(place.vars.dataPub.webSite, '_system', 'yes')">WebSite</a> |
+        <a ng-click="place.functions.externalLink('https://www.google.com.br/maps/dir/' +place.vars.userLat+ ',' +place.vars.userLong + '/' +place.vars.dataPub.address+ ' - ' +place.vars.dataPub.number, '_system', 'yes')">Como chegar?</a> |
     </div>
     <p>-- Info place</p><br><br>
 </div>
 
-{{place.vars.dataPub | json}}
+<p>-- List products</p>
+<div ng-repeat="data in place.vars.listOrder">
+    <div ng-if="data.products.length > 0">
+        <span style="font-size: 20px; font-style: italic">{{data.categoryName}}</span>
+    </div>
+
+    <div ng-repeat="data2 in data.products">
+        <p><img ng-if="data2.imgPath" ng-src="http://localhost/files/imgProducts/{{data2.imgPath}}" style="width: 20px; height: 20px">
+            {{data2.productName}} |
+            {{data2.value | currency:'R$':2}} |
+            {{data2.promotionValue | currency:'R$':2}}</p>
+    </div>
+    <br><br>
+</div>
+
+
+<!--{{place.vars.dataPub | json}}-->

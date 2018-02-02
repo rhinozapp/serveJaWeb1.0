@@ -376,15 +376,12 @@ function saveMenuController(dialogAdvanced, menuService, productsService, profil
 
         defineVars : function () {
             saveMenu.vars.listOrder = [];
+            console.log(data);
             if(data){
                 saveMenu.vars.menuName = data.menuName;
                 saveMenu.vars.menuID = data._id;
-                saveMenu.vars.dataList = [];
+                saveMenu.vars.dataList = data.productsID;
                 saveMenu.vars.edit = true;
-
-                data.productsID.forEach(function (valueData) {
-                    saveMenu.vars.dataList.push(valueData.productID);
-                });
             }
         },
 

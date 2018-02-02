@@ -17,7 +17,7 @@ exports.doLogin = function(req, res) {
                 if (err) {
                     res.json({ status: isMatch });
                 } else {
-                    userProfile.find({ userID: user[0]._id }, function(err, userProfile) {
+                    userProfile.find({ userID: mongoose.Types.ObjectId(user[0]._id) }, function(err, userProfile) {
                         if (err) {
                             res.json({ status: false });
                         } else if (userProfile.length > 0) {
