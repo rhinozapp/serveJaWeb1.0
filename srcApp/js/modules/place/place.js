@@ -1,7 +1,7 @@
 angular.module('place', [])
     .controller('placeController', placeController);
 
-function placeController($stateParams, $state, placeService, externalLink){
+function placeController($stateParams, $scope, $filter, $state, placeService, externalLink){
     var place = this;
     place.vars = {};
 
@@ -24,7 +24,8 @@ function placeController($stateParams, $state, placeService, externalLink){
                     place.vars.dataPub = $stateParams.place.pubData;
                     place.vars.userLat = $stateParams.place.userLocal.lat;
                     place.vars.userLong = $stateParams.place.userLocal.long;
-                    place.vars.listOrder = [];
+                    place.vars.listByCategory = [];
+                    place.vars.listPromotion = [];
                     success();
                 }else{
                     fail();
@@ -80,16 +81,17 @@ function placeController($stateParams, $state, placeService, externalLink){
                 place.vars.menu = data.data;
 
                 if(place.vars.menu){
+                    //region List products by category
                     place.vars.listCategory.forEach(function (valueCat, keyCat) {
 
-                        place.vars.listOrder.push({
+                        place.vars.listByCategory.push({
                             categoryName : valueCat.categoryName,
                             products: []
                         });
 
                         place.vars.menu.productsID.forEach(function (valueProd, keyProd) {
                             if(valueCat._id === valueProd.categoryID){
-                                place.vars.listOrder[keyCat].products.push({
+                                place.vars.listByCategory[keyCat].products.push({
                                     productID: valueProd._id,
                                     productName: valueProd.productName,
                                     value : valueProd.value,
@@ -99,12 +101,22 @@ function placeController($stateParams, $state, placeService, externalLink){
                             }
                         });
                     });
+                    place.vars.listByCategoryFilter = place.vars.listByCategory;
+                    //endregion
 
-                    /*place.vars.listOrder.forEach(function (valueList, keyList) {
-                        if(valueList.products.length === 0){
-                            delete place.vars.listOrder[keyList];
-                        }
-                    });*/
+                    //region List products by promotion
+                    place.vars.menu.productsID.forEach(function (value) {
+                       if(value.promotionValue && value.promotionValue > 0){
+                           place.vars.listPromotion.push({
+                               productID: value._id,
+                               productName: value.productName,
+                               value : value.value,
+                               promotionValue : value.promotionValue,
+                               imgPath : value.imgPath
+                           })
+                       }
+                    });
+                    //endregion
                 }
             }
         },
