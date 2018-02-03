@@ -37,9 +37,7 @@ angular.module('core', [
 
     'ngCordovaOauth',
 
-    'benharold.haversine',
-
-    'google.places'
+    'benharold.haversine'
 ]);
 
 })();
@@ -92,7 +90,7 @@ angular
             .state('place', {
                 url: '/place',
                 params : {
-                    place : {}
+                    idPlace : {}
                 },
                 templateUrl: 'templates/modules/place/place.html',
                 controller: 'placeController',
@@ -156,7 +154,7 @@ angular
     .module('core')
     .service('defineHost', function () {
         return {
-            host : /*'http://192.168.1.103'*/''
+            host : /*'http://192.168.1.47:80'*/ ''
         };
     });
 })();
@@ -164,19 +162,7 @@ angular
 "use strict";
 angular
     .module('core')
-    .service('externalLink', function () {
-        return {
-            open : function (option) {
-                window.open(option.url, option.target, 'location='+option.location);
-            }
-        };
-    });
-})();
-(function(){
-"use strict";
-angular
-    .module('core')
-    .factory('getCoordinates', function () {
+    .service('getCoordinates', function ($window) {
         return {
             getPos : function () {
                 return new Promise(function (success) {

@@ -12,12 +12,19 @@ body{
 .content{
     max-width: 1500px;
     margin: 0 auto;
+    @media (max-width: $break-to-mobile){
+        width: 100%;
+    }
 }
 
 .centralizer{
     width: 970px;
     margin: 0 auto;
     position: relative;
+    overflow: hidden;
+    @media (max-width: $break-to-mobile){
+        width: 90%;
+    }
 }
 
 a{
@@ -25,37 +32,12 @@ a{
   outline:none
 }
 
-a:hover, a:link, a:visited, a:active{
-  text-decoration: none;
-  cursor: pointer;
-  outline:none
-}
-
-md-icon{
-  outline:none
-}
-
-.label{
-  color: grey !important;
-}
-
-.buttonFixedRight{
-  position: fixed;
-  float: right;
-  left: 92%;
-  top: 85%;
-}
-
-md-tooltip{
-  font-size: 15px;
-}
-
-md-tooltip .md-content{
-  height: auto !important;
-}
-
 .avatar-profile{
   border-radius: 100%;
   width: 100px;
   height: 100px;
+}
+
+a:hover, button:hover{
+    cursor: pointer;
 }

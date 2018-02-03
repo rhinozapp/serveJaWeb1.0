@@ -9,29 +9,31 @@
     </header>
 
     <div class="modal__centralizer">
+
         <form class="modal__form" name="loginForm">
+
             <div ng-show="!login.vars.forgotPasswordAction">
-                <div class="modal__label-input">
+                <div class="modal__info">
                     <label for="name" class="modal__label">E-mail</label>
-                    <input class="modal__input" id="name" name="username" ng-model="login.vars.username" required autofocus>
+                    <input class="modal__input" id="name" name="username" ng-model="login.vars.username" required>
                     <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
-                         <div ng-message="required">
+                        <div class="model__empty-msg" ng-message="required">
                             Insira seu e-mail.
                         </div>
-                        <div ng-message="userPassFound">
+                        <div class="model__empty-msg" ng-message="userPassFound">
                             Usuário ou senha incorretos.
                         </div>
                     </div>
                 </div>
 
-                <div class="modal__label-input">
+                <div class="modal__info">
                     <label for="pass" class="modal__label">Senha</label>
                     <input class="modal__input" id="pass" name="password" ng-model="login.vars.password" type="password" required>
                     <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
-                        <div ng-message="required">
+                        <div class="model__empty-msg" ng-message="required">
                             Insira sua senha.
                         </div>
-                        <div ng-message="userPassFound">
+                        <div class="model__empty-msg" ng-message="userPassFound">
                             Usuário ou senha incorretos.
                         </div>
                     </div>
@@ -39,10 +41,8 @@
 
                 <ul class="actions">
                     <li class="actions__action">
-                        <a class="btn-default btn-default-login"
-                           ng-click="login.functions.loginAction()"
-                           ng-disabled="!login.vars.username || !login.vars.password"
-                           disabled="disabled">Entrar</a>
+                        <a class="btn-default btn-default-login" ng-click="login.functions.loginAction()" ng-disabled="!login.vars.username || !login.vars.password"
+                            disabled="disabled">Entrar</a>
                     </li>
                     <li class="actions__action">
                         <a class="other-link" ng-click="login.vars.forgotPasswordAction = true">Esqueci minha senha</a>
@@ -54,14 +54,14 @@
             </div>
 
             <div ng-show="login.vars.forgotPasswordAction">
-                <div class="modal__label-input">
+                <div class="modal__info">
                     <label class="modal__label">Entre com o e-mail de cadastro</label>
                     <input class="modal__input" name="forgotPass" ng-model="login.vars.recoveryEmail" required>
                     <div ng-messages="loginForm.forgotPass.$error" ng-if="loginForm.forgotPass.$touched">
-                    <span ng-message="required">
-                        Insira seu e-mail de cadastro para enviarmos o link de recuperação de senha.
-                    </span>
-                        <div ng-message="userFound">
+                        <div class="model__empty-msg" ng-message="required">
+                            Insira seu e-mail de cadastro para enviarmos o link de recuperação de senha.
+                        </div>
+                        <div class="model__empty-msg" ng-message="userFound">
                             Usuário(a) não foi encontrado.
                         </div>
                     </div>
@@ -69,9 +69,8 @@
 
                 <ul class="actions">
                     <li class="actions__action">
-                        <a class="btn-default btn-default-login"
-                           ng-click="login.functions.recoveryPasswordSend()"
-                           ng-disabled="!login.vars.recoveryEmail" disabled="disabled">
+                        <a class="btn-default btn-default-login" ng-click="login.functions.recoveryPasswordSend()" ng-disabled="!login.vars.recoveryEmail"
+                            disabled="disabled">
                             Recuperar senha
                         </a>
                     </li>

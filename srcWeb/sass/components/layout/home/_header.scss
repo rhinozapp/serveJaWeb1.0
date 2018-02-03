@@ -1,4 +1,5 @@
 .header{
+    max-width: 1500px;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -6,6 +7,19 @@
     background: $main-color;
     color: $secundary-color;
     overflow: hidden;
+    .header__menu-icon{
+        display: none;
+        height: 23px;
+        @media (max-width: $break-to-mobile){
+            display: block;
+            font-size: 1.5em;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+        }
+    }
     .header__title{
         float: left;
         font-size: 2em;
@@ -15,9 +29,15 @@
     .menu{
         float: right;
         padding: 3% 0;
+        .menu__itens{
+            @media (max-width: $break-to-mobile){
+                display: none;
+            }
+        }
         .menu__item{
             display: inline-block;
             margin-left: 25px;
+            cursor: pointer;
             .menu__link{
                 color: $secundary-color;
                 text-decoration: none;
@@ -27,3 +47,4 @@
         }
     }
 }
+    
