@@ -2,7 +2,7 @@
 
     <header class="modal__header">
         <div class="modal__centralizer">
-            <h2 class="modal__title">Cadastre-se</h2>
+            <h2 class="modal__title">Cadastrar meu bar</h2>
             <span class="modal__close-icon" ng-click="signUP.functions.cancel()">
                 <i class="icon-28">close</i>
             </span>
@@ -12,134 +12,97 @@
     <div class="modal__centralizer">
         <form class="modal__form" name="adminSignUp">
 
-            <label class="modal__label">Nome do Bar</label>
-            <input class="modal__input"
-                   name="name"
-                   ng-model="signUP.vars.name"
-                   type="text"
-                   required>
-            <div ng-messages="adminSignUp.name.$error" ng-if="adminSignUp.name.$touched">
-                 <div ng-message="required">Nome não pode ser vazio.</div>
-            </div>
-
-            <label class="modal__label">E-mail</label>
-            <input class="modal__input"
-                   name="email"
-                   ng-model="signUP.vars.username"
-                   type="email"
-                   ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/"
-                required>
-            <div ng-messages="adminSignUp.email.$error" ng-if="adminSignUp.email.$touched">
-                 <div ng-message="required">E-mail não pode ser vazio.</div>
-                 <div ng-message="pattern">Digite um E-mail válido.</div>
-            </div>
-
-            <div class="modal__half">
-                <label class="modal__label">Senha</label>
-                <input class="modal__input"
-                       name="password"
-                       ng-minlength="6"
-                       type="password"
-                       ng-model="signUP.vars.password"
-                       required>
-                <div ng-messages="adminSignUp.password.$error" ng-if="adminSignUp.password.$touched">
-                     <div ng-message="required">Senha não pode estar vazia.</div>
-                    <div ng-message="notMatch">As senhas devem ser iguais.</div>
-                    <div ng-message="minlength">A senha deve ter mais de 6 caracteres.</div>
+            <div class="modal__info">
+                <label class="modal__label">Nome do Bar</label>
+                <input class="modal__input" name="name" ng-model="signUP.vars.name" type="text" required>
+                <div ng-messages="adminSignUp.name.$error" ng-if="adminSignUp.name.$touched">
+                    <div class="model__empty-msg" ng-message="required">Nome não pode ser vazio.</div>
                 </div>
             </div>
 
-            <div class="modal__half">
-                <label class="modal__label">Repetir Senha</label>
-                <input class="modal__input"
-                       name="repPassword"
-                       ng-minlength="6"
-                       type="password"
-                       ng-model="signUP.vars.repPassword"
-                       required>
-                <div ng-messages="adminSignUp.repPassword.$error" ng-if="adminSignUp.repPassword.$touched">
-                     <div ng-message="required">Senha não pode estar vazia.</div>
-                    <div ng-message="notMatch">As senhas devem ser iguais.</div>
-                    <div ng-message="minlength">A senha deve ter mais de 6 caracteres.</div>
-                </div>
-            </div>
-
-            <div class="modal__half">
-                <label class="modal__label">CNPJ</label>
-                <input class="modal__input"
-                       name="cnpj"
-                       ng-model="signUP.vars.cnpj"
-                       type="text"
-                       ng-cnpj
-                       ng-change="signUP.functions.checkCNPJ()"
-                       ui-mask="99.999.999/9999-99"
-                       ui-options="{addDefaultPlaceholder : false}"
+            <div class="modal__info">
+                <label class="modal__label">E-mail</label>
+                <input class="modal__input" name="email" ng-model="signUP.vars.username" type="email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/"
                     required>
+                <div ng-messages="adminSignUp.email.$error" ng-if="adminSignUp.email.$touched">
+                    <div class="model__empty-msg" ng-message="required">E-mail não pode ser vazio.</div>
+                    <div class="model__empty-msg" ng-message="pattern">Digite um E-mail válido.</div>
+                </div>
+            </div>
+
+            <div class="modal__info modal__half">
+                <label class="modal__label">Senha</label>
+                <input class="modal__input" name="password" ng-minlength="6" type="password" ng-model="signUP.vars.password" required>
+                <div ng-messages="adminSignUp.password.$error" ng-if="adminSignUp.password.$touched">
+                    <div class="model__empty-msg" ng-message="required">Senha não pode estar vazia.</div>
+                    <div class="model__empty-msg" ng-message="minlength">A senha deve ter mais de 6 caracteres.</div>
+                </div>
+            </div>
+
+            <div class="modal__info modal__half">
+                <label class="modal__label">Repetir Senha</label>
+                <input class="modal__input" name="repPassword" type="password" ng-model="signUP.vars.repPassword" required>
+                <div ng-messages="adminSignUp.repPassword.$error" ng-if="adminSignUp.repPassword.$touched">
+                    <div class="model__empty-msg" ng-message="required">Senha não pode estar vazia.</div>
+                    <div class="model__empty-msg" ng-message="notMatch">As senhas devem ser iguais.</div>
+                </div>
+            </div>
+
+            <div class="modal__info modal__half">
+                <label class="modal__label">CNPJ</label>
+                <input class="modal__input" name="cnpj" ng-model="signUP.vars.cnpj" type="text" ng-cnpj ng-change="signUP.functions.checkCNPJ()"
+                    ui-mask="99.999.999/9999-99" ui-options="{addDefaultPlaceholder : false}" required>
                 <div ng-messages="adminSignUp.cnpj.$error" ng-if="adminSignUp.cnpj.$touched">
-                    <div ng-message="required">CNPJ não pode ser vazio.</div>
-                    <div ng-message="cnpj">Digite um CNPJ válido.</div>
-                    <div ng-message="void">CNPJ não pode ser vazio.</div>
+                    <div class="model__empty-msg" ng-message="required">CNPJ não pode ser vazio.</div>
+                    <div class="model__empty-msg" ng-message="cnpj">Digite um CNPJ válido.</div>
+                    <div class="model__empty-msg" ng-message="void">Digite um CNPJ válido.</div>
                 </div>
             </div>
 
-            <div class="modal__half">
+            <div class="modal__info modal__half">
                 <label class="modal__label">CEP</label>
-                <input class="modal__input"
-                       type="text"
-                       name="zipCode"
-                       ng-model="signUP.vars.zipCode"
-                       ng-change="signUP.functions.zipCodeChange()"
-                       ui-mask="99999-999"
-                       ui-options="{addDefaultPlaceholder : false}"
-                       required>
+                <input class="modal__input" type="text" name="zipCode" ng-model="signUP.vars.zipCode" ng-change="signUP.functions.zipCodeChange()"
+                    ui-mask="99999-999" ui-options="{addDefaultPlaceholder : false}" required>
                 <div ng-messages="adminSignUp.zipCode.$error" ng-if="adminSignUp.zipCode.$touched">
-                     <div ng-message="required">CEP não pode estar vazio.</div>
+                    <div class="model__empty-msg" ng-message="required">CEP não pode estar vazio.</div>
                 </div>
             </div>
 
-            <div class="modal__half">
+            <div class="modal__info modal__half">
                 <label class="modal__label">Rua</label>
-                <input class="modal__input"
-                       type="text"
-                       name="address"
-                       ng-model="signUP.vars.address"
-                       required>
+                <input class="modal__input" type="text" name="address" ng-model="signUP.vars.address" required>
                 <div ng-messages="adminSignUp.address.$error" ng-if="adminSignUp.address.$touched">
-                     <div ng-message="required">Rua não pode estar vazia.</div>
+                    <div class="model__empty-msg" ng-message="required">Rua não pode estar vazia.</div>
                 </div>
             </div>
 
-            <div class="modal__half">
+            <div class="modal__info modal__half">
                 <label class="modal__label">Nº</label>
                 <input class="modal__input" type="text" ng-model="signUP.vars.number">
             </div>
 
-            <div class="modal__half">
+            <div class="modal__info modal__half">
                 <label class="modal__label">Complemento</label>
                 <input class="modal__input" type="text" ng-model="signUP.vars.complement">
             </div>
 
-            <div class="modal__half">
+            <div class="modal__info modal__half">
                 <label class="modal__label">Bairro</label>
-                <input class="modal__input"
-                       type="text"
-                       name="neighborhood"
-                       ng-model="signUP.vars.neighborhood"
-                       required>
+                <input class="modal__input" type="text" name="neighborhood" ng-model="signUP.vars.neighborhood" required>
                 <div ng-messages="adminSignUp.neighborhood.$error" ng-if="adminSignUp.neighborhood.$touched">
-                     <div ng-message="required">Bairro não pode estar vazio.</div>
+                    <div class="model__empty-msg" ng-message="required">Bairro não pode estar vazio.</div>
                 </div>
             </div>
 
-            <div class="modal__half">
+            <div class="modal__info modal__half">
                 <label class="modal__label">Cidade</label>
                 <input class="modal__input" type="text" name="city" ng-model="signUP.vars.city" required>
                 <div ng-messages="adminSignUp.city.$error" ng-if="adminSignUp.city.$touched">
-                     <div ng-message="required">Cidade não pode estar vazia.</div>
+                    <div class="model__empty-msg" ng-message="required">Cidade não pode estar vazia.</div>
                 </div>
             </div>
 
-            <div class="modal__half">
+            <div class="modal__info modal__half">
                 <label class="modal__label">UF</label>
                 <md-select ng-model="signUP.vars.uf">
                     <md-option ng-repeat="data in signUP.vars.listUF" ng-value="data" required>
@@ -148,13 +111,12 @@
                 </md-select>
             </div>
         </form>
-        
+
         <button class="btn-default" type="button" ng-click="signUP.functions.cancel()">
-              Cancelar
+            Cancelar
         </button>
 
-        <button class="btn-default btn-right" ng-click="signUP.functions.signUPAction()"
-            ng-disabled="!signUP.vars.name ||
+        <button class="btn-default btn-right" ng-click="signUP.functions.signUPAction()" ng-disabled="!signUP.vars.name ||
                    !signUP.vars.username ||
                    !signUP.vars.cnpj ||
                    !signUP.vars.zipCode ||
@@ -164,7 +126,7 @@
                    !signUP.vars.uf ||
                    (!signUP.vars.password || !signUP.vars.repPassword) ||
                    (signUP.vars.password !== signUP.vars.repPassword)" disabled="disabled">
-                Cadastrar
+            Cadastrar
         </button>
     </div>
 </div>

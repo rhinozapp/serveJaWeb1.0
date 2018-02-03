@@ -1,9 +1,7 @@
 .welcome {
     position: relative;
     .welcome__video {
-        max-width: 1500px;
         width: 100%;
-        opacity: .8;
     }
     .welcome__msg {
         font-size: 4em;
@@ -14,24 +12,80 @@
         text-shadow: 1px 1px 1px #000;
         right: 0;
         left: 0;
-        bottom: 315px;
         margin: auto;
-        -webkit-animation: text-appears 2.5s ease;
-        animation: text-appears 2.5s ease;
+        -webkit-animation: text-appears 3s ease-in-out;
+        animation: text-appears 3s ease-in-out;
+        @media (min-width: $break-to-mobile) {
+            bottom: 190px;
+        }
+        @media (max-width: $break-to-mobile){
+            font-size: 2em;
+        }
+        @media (min-width: 1125px) {
+            bottom: 280px;
+        }
+        @media (min-width: 1200px) {
+            bottom: 320px;
+        }
     }
-}
+}   
 
 .who-are-we {
     padding: 20px 0;
+    clear: both;
+    @media (max-width: $break-to-mobile){
+        text-align: center;
+    }
+    &:nth-of-type(2) {
+        overflow: hidden;
+    }
+    &:nth-of-type(3) {
+        margin-top: 70px;
+        background: #eee;
+        @media (max-width: $break-to-mobile){
+            margin-top: 0;
+        }
+        .who-are-we__article {
+            width: 65%;
+            margin-bottom: 20px;
+            @media (max-width: $break-to-mobile){
+                width: 100%;
+            }
+        }
+        .who-are-we__img-app {
+            position: absolute;
+            width: 30%;
+            max-width: 319px;
+            box-shadow: 5px 5px 130px #aaa;
+            right: 0;
+            top: -65px;
+            @media (max-width: $break-to-mobile){
+                position: relative;
+                width: 100%;
+                top: 0;
+                margin-bottom: 30px;
+            }
+        }
+    }
     .who-are-we__reasons {
         text-align: center;
         margin-top: 20px;
+        margin-bottom: 70px;
         .who-are-we__reason {
-            width: 300px;
-            display: inline-block;
+            width: 250px;
+            float: left;
+            margin-right: 110px;
+            @media (max-width: $break-to-mobile){
+                display: block;
+                width: 100%;
+                margin-bottom: 50px;
+            }
+            &:nth-child(3){
+                margin-right: 0;
+            }
             .who-are-we__icon {
                 font-size: 6em;
-                color: #fb0;
+                color: $main-color;
             }
             .who-are-we__reason-title {
                 font-size: 1.5em;
@@ -52,22 +106,6 @@
         font-size: 1.2em;
         line-height: 25px;
         text-align: justify;
-    }
-    &:nth-of-type(3) {
-        margin-top: 70px;
-        background: #eee;
-        .who-are-we__article {
-            width: 65%;
-            margin-bottom: 20px;
-        }
-        .who-are-we__img-app {
-            position: absolute;
-            width: 30%;
-            max-width: 319px;
-            box-shadow: 5px 5px 130px #aaa;
-            right: 0;
-            top: -65px;
-        }
     }
     .who-are-we__store {
         display: inline-block;
@@ -91,9 +129,9 @@
     }
 }
 
-@keyframes text-appears {
+@-webkit-keyframes text-appears {
     0% {
-        left: -20px;
+        left: -200px;
         opacity: 0;
     }
     100% {
@@ -104,7 +142,7 @@
 
 @keyframes text-appears {
     0% {
-        left: -20px;
+        left: -200px;
         opacity: 0;
     }
     100% {

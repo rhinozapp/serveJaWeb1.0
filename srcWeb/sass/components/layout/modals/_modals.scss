@@ -25,6 +25,17 @@
             cursor: pointer;
         }
     }
+    .modal__info{
+        position: relative;
+        .model__empty-msg{
+            position: absolute;
+            color: red;
+            font-size: .8em;
+            bottom: 15px;
+            text-transform: lowercase;
+            font-weight: bold;
+        }
+    }
     .modal__half{
         width: 45%;
         display: inline-block;
@@ -47,13 +58,7 @@
         outline: none;
         border-bottom: 1px solid #aaa;
         padding: 10px;
-        margin-bottom: 20px;
-    }
-    .modal__obs {
-        font-size: 0.8em;
-        margin: 15px 0;
-        color: #aaa;
-        display: block;
+        margin-bottom: 30px;
     }
     .modal__form {
         padding: 10px 0;
