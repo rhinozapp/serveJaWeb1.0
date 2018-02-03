@@ -11,8 +11,8 @@ angular.module('home')
 
 function loginService($window, $resource, defineHost) {
     return {
-        signUP : $resource(defineHost.host + 'web/signUp'),
-        doLogin: $resource(defineHost.host + 'web/doLogin'),
+        signUP : $resource(defineHost.host + '/web/signUp'),
+        doLogin: $resource(defineHost.host + '/web/doLogin'),
         doLogout : function () {
             $window.localStorage.clear();
             $window.location.reload();

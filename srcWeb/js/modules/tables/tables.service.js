@@ -3,8 +3,8 @@ angular.module('tables')
 
 function tablesService($resource, defineHost) {
     return {
-        updateTables : $resource(defineHost.host + 'web/updateTables'),
-        getTables : $resource(defineHost.host + 'web/getTables'),
-        deleteTables : $resource(defineHost.host + 'web/deleteTables')
+        updateTables : $resource(defineHost.host + '/web/updateTables'),
+        getTables : $resource(defineHost.host + '/web/getTables'),
+        deleteTables : $resource(defineHost.host + '/web/deleteTables')
     }
 }

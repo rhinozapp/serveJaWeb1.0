@@ -1,1 +1,61 @@
-{{place.vars.dataPub | json}}
+<div>
+    <a ui-sref="user.mainList">Voltar para lista de bares</a>
+
+    <br><br>
+
+    <p>-- Info place</p>
+    <div>
+        <img ng-src="http://192.168.1.103/files/logoProfile/{{place.vars.dataPub.logoPath}}" style="width: 50px; height: 50px">
+        <br><p>Descrição: {{place.vars.dataPub.description}}</p><br>
+    </div>
+    <div>
+        <a ng-click="place.functions.externalLink(place.vars.dataPub.pageFacebook, '_system', 'yes')">Facebook</a> |
+        <a ng-click="place.functions.externalLink(place.vars.dataPub.pageInstagram, '_system', 'yes')">Instagram</a> |
+        <a ng-click="place.functions.externalLink(place.vars.dataPub.webSite, '_system', 'yes')">WebSite</a> |
+        <a ng-click="place.functions.externalLink('https://www.google.com.br/maps/dir/' +place.vars.userLat+ ',' +place.vars.userLong + '/' +place.vars.dataPub.address+ ' - ' +place.vars.dataPub.number, '_system', 'yes')">Como chegar?</a> |
+    </div>
+
+    <br><br>
+    <div>
+        <a ng-click="place.functions.favorite()">Favoritar bar</a> |
+        <a ng-click="place.functions.QrCode()">QRCode</a>
+    </div>
+    <p>-- Info place</p><br><br>
+</div>
+
+
+<p>-- search products per name (type to search)</p>
+<div>
+    <input ng-model="place.vars.search">
+</div>
+<p>-- search products per name (type to search)</p><br><br>
+
+
+<p>-- List promotion products</p>
+<div ng-repeat="data in place.vars.listPromotion | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
+    <p><img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}" style="width: 20px; height: 20px">
+        {{data.productName}} |
+        {{data.value | currency:'R$':2}} |
+        {{data.promotionValue | currency:'R$':2}}</p>
+</div>
+<p>-- List promotion products</p><br><br>
+
+
+<p>-- List products by category</p>
+<div ng-repeat="data in place.vars.listByCategoryFilter">
+    <div ng-if="data.products.length > 0">
+        <span style="font-size: 20px; font-style: italic">{{data.categoryName}}</span>
+    </div>
+
+    <div ng-repeat="data2 in data.products | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
+        <p><img ng-if="data2.imgPath" ng-src="http://localhost/files/imgProducts/{{data2.imgPath}}" style="width: 20px; height: 20px">
+            {{data2.productName}} |
+            {{data2.value | currency:'R$':2}} |
+            {{data2.promotionValue | currency:'R$':2}}</p>
+    </div>
+    <br><br>
+</div>
+<p>-- List products by category</p>
+
+
+<!--{{place.vars.dataPub | json}}-->

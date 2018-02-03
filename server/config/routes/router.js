@@ -8,7 +8,6 @@ module.exports = function (app) {
             secret: 'rhinoz'
         });
 
-
     //region WEB Routes
     //region ZipCode
     let zipCodeWeb = require('./web/app/helpers/zipCode');
@@ -97,6 +96,14 @@ module.exports = function (app) {
     //region List Pubs
     let getListPubs = require('./app/modules/mainList/getListPubs');
     app.post('/app/getListPubs', getListPubs.getListPubs);
+    //endregion
+
+    //region Get Menu
+    let getMenuApp = require('./app/modules/place/getMenu');
+    app.post('/app/getMenu', getMenuApp.getMenu);
+
+    let getCategoryApp = require('./app/modules/place/getCategory');
+    app.post('/app/getCategory', getCategoryApp.getCategory);
     //endregion
     //endregion
 

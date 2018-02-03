@@ -232,8 +232,8 @@ angular.module('home')
 
 function loginService($window, $resource, defineHost) {
     return {
-        signUP : $resource(defineHost.host + 'web/signUp'),
-        doLogin: $resource(defineHost.host + 'web/doLogin'),
+        signUP : $resource(defineHost.host + '/web/signUp'),
+        doLogin: $resource(defineHost.host + '/web/doLogin'),
         doLogout : function () {
             $window.localStorage.clear();
             $window.location.reload();
@@ -376,15 +376,12 @@ function saveMenuController(dialogAdvanced, menuService, productsService, profil
 
         defineVars : function () {
             saveMenu.vars.listOrder = [];
+            console.log(data);
             if(data){
                 saveMenu.vars.menuName = data.menuName;
                 saveMenu.vars.menuID = data._id;
-                saveMenu.vars.dataList = [];
+                saveMenu.vars.dataList = data.productsID;
                 saveMenu.vars.edit = true;
-
-                data.productsID.forEach(function (valueData) {
-                    saveMenu.vars.dataList.push(valueData.productID);
-                });
             }
         },
 
@@ -471,9 +468,9 @@ angular.module('menu')
 
 function menuService($resource, defineHost) {
     return {
-        updateMenu : $resource(defineHost.host + 'web/updateMenu'),
-        getMenu : $resource(defineHost.host + 'web/getMenu'),
-        deleteMenu : $resource(defineHost.host + 'web/deleteMenu')
+        updateMenu : $resource(defineHost.host + '/web/updateMenu'),
+        getMenu : $resource(defineHost.host + '/web/getMenu'),
+        deleteMenu : $resource(defineHost.host + '/web/deleteMenu')
     }
 }
 })();
@@ -777,12 +774,12 @@ angular.module('products')
 
 function productsService($resource, defineHost) {
     return {
-        saveProducts : $resource(defineHost.host + 'web/saveProducts'),
-        getProducts : $resource(defineHost.host + 'web/getProducts'),
-        deleteProducts : $resource(defineHost.host + 'web/deleteProducts'),
-        saveCategory : $resource(defineHost.host + 'web/saveCategory'),
-        getCategory : $resource(defineHost.host + 'web/getCategory'),
-        deleteCategory : $resource(defineHost.host + 'web/deleteCategory')
+        saveProducts : $resource(defineHost.host + '/web/saveProducts'),
+        getProducts : $resource(defineHost.host + '/web/getProducts'),
+        deleteProducts : $resource(defineHost.host + '/web/deleteProducts'),
+        saveCategory : $resource(defineHost.host + '/web/saveCategory'),
+        getCategory : $resource(defineHost.host + '/web/getCategory'),
+        deleteCategory : $resource(defineHost.host + '/web/deleteCategory')
     }
 }
 })();
@@ -1040,8 +1037,8 @@ angular.module('profile')
 
 function profileService($resource, defineHost) {
     return {
-        updateProfile : $resource(defineHost.host + 'web/updateProfile'),
-        getProfile : $resource(defineHost.host + 'web/getProfile')
+        updateProfile : $resource(defineHost.host + '/web/updateProfile'),
+        getProfile : $resource(defineHost.host + '/web/getProfile')
     }
 }
 })();
@@ -1163,9 +1160,9 @@ angular.module('recoveryPassword')
 
 function recoveryPasswordService($resource, defineHost) {
     return {
-        recoveryPasswordSend: $resource(defineHost.host + 'web/recoveryPasswordSend'),
-        recoveryPasswordGetHash: $resource(defineHost.host + 'web/recoveryPasswordGetHash'),
-        recoveryPassword: $resource(defineHost.host + 'web/recoveryPassword')
+        recoveryPasswordSend: $resource(defineHost.host + '/web/recoveryPasswordSend'),
+        recoveryPasswordGetHash: $resource(defineHost.host + '/web/recoveryPasswordGetHash'),
+        recoveryPassword: $resource(defineHost.host + '/web/recoveryPassword')
     }
 }
 })();
@@ -1363,9 +1360,9 @@ angular.module('tables')
 
 function tablesService($resource, defineHost) {
     return {
-        updateTables : $resource(defineHost.host + 'web/updateTables'),
-        getTables : $resource(defineHost.host + 'web/getTables'),
-        deleteTables : $resource(defineHost.host + 'web/deleteTables')
+        updateTables : $resource(defineHost.host + '/web/updateTables'),
+        getTables : $resource(defineHost.host + '/web/getTables'),
+        deleteTables : $resource(defineHost.host + '/web/deleteTables')
     }
 }
 })();

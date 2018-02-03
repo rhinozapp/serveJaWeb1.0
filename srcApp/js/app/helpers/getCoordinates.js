@@ -1,6 +1,6 @@
 angular
     .module('core')
-    .service('getCoordinates', function ($window) {
+    .factory('getCoordinates', function () {
         return {
             getPos : function () {
                 return new Promise(function (success) {
