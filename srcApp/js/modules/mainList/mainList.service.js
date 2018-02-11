@@ -3,6 +3,7 @@ angular.module('mainList')
 
 function mainListService($resource, defineHost) {
     return {
-        get : $resource(defineHost.host + '/app/getListPubs')
+        getListPubs : $resource(defineHost.host + '/app/getListPubs'),
+        getListPubsFavorites : $resource(defineHost.host + '/app/getListPubsFavorites')
     }
 }

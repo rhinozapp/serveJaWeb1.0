@@ -1,7 +1,7 @@
 angular.module('place', [])
     .controller('placeController', placeController);
 
-function placeController($stateParams, $scope, $filter, $state, placeService, externalLink){
+function placeController($stateParams, $scope, $filter, $state, placeService, mainListService, externalLink, getProfile){
     var place = this;
     place.vars = {};
 
@@ -11,6 +11,7 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ex
                 place.functions.getCategory.getCategory();
                 place.functions.defineMenu();
                 place.functions.getMenu.getMenu();
+                place.functions.checkFavorite.checkFavorite();
 
                 }, function () {
                 $state.go('user.mainList');
@@ -130,6 +131,48 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ex
                 place.vars.listCategory = data.data;
             }
         },
+
+        checkFavorite : {
+            checkFavorite : function () {
+                mainListService.getListPubsFavorites.save({
+                    userID : getProfile.id
+                }, place.functions.checkFavorite.successCheckFavorite);
+            },
+
+            successCheckFavorite : function (data) {
+                if(data.data){
+                    place.vars.favorite = $.grep(data.data, function(value){
+                        return value.userID === place.vars.dataPub.userID;
+                    });
+                }
+            }
+        },
+
+        markFavorite : {
+            markFavorite : function () {
+                placeService.markFavorite.save({
+                    userID : getProfile.id,
+                    place : place.vars.dataPub
+                }, place.functions.markFavorite.successMarkFavorite);
+            },
+
+            successMarkFavorite : function () {
+                place.vars.favorite = !place.vars.favorite;
+            }
+        },
+
+        notFavorite : {
+            notFavorite : function () {
+                placeService.notFavorite.save({
+                    userID : getProfile.id,
+                    place : place.vars.dataPub
+                }, place.functions.notFavorite.successNotFavorite);
+            },
+
+            successNotFavorite : function () {
+                place.vars.favorite = !place.vars.favorite;
+            }
+        }
     };
 
     place.functions.core();

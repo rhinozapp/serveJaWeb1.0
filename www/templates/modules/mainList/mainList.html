@@ -9,11 +9,10 @@
 </div>
 
 <div class="near-bars" ng-if="mainList.vars.latSearch || mainList.vars.longSearch">
-    <p class="near-bars__parag">Próximos à
+    <p class="near-bars__parag">
         <span class="near-bars__locale">{{mainList.vars.nearLocal}}</span>
     </p>
 </div>
-
 
 <div ng-repeat="item in mainList.vars.listFilter  | orderBy:['-item.distance','-openToday']">
     <ul class="bars" ng-click="mainList.functions.goPub(item)">
