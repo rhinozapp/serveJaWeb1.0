@@ -1,0 +1,45 @@
+.header {
+    background: #ffbb00;
+    position: relative;
+    margin-bottom: 15px;
+    text-align: center;
+    .header__icon {
+        position: absolute;
+        font-size: 30px !important;
+        color: #fff !important;
+        top: 15px;
+        left: 15px;
+    }
+    .header__img {
+        margin-top: 35px;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+    }
+    .actions {
+        margin-top: 5px;
+        .actions__action {
+            display: inline-block;
+            padding: 10px 0;
+            width: 30%;
+            .actions__btn {
+                text-decoration: none;
+                text-align: center;
+                color: #fff;
+                font-size: 0.7em;
+                display: block;
+                padding: 5px;
+                &:focus {
+                    background: #e4a700;
+                    color: #fff;
+                }
+                .actions__icon {
+                    display: block;
+                    position: relative;
+                    font-size: 1.7em;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}

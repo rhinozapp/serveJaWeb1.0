@@ -1,28 +1,37 @@
 <!--
 quando header.vars.profile.status for TRUE ele estará logado com face
-
 -->
 
--- HEADER<br>
-
-<img ng-if="header.vars.profile.status"
-     ng-src="http://localhost/files/logoProfile/{{header.vars.profile.photo}}"
-     style="width: 50px; height: 50px">
-
-<button ui-sref="user.mainList({action : 'nearToMe'})">
-    near to me
-</button>
-
-<button ui-sref="user.mainList({action : 'favorites'})">
-    favorites
-</button>
-
-<button ui-sref="user.mainList({action : 'findLocal'})">
-    find a local
-</button>
-
-<button ng-if="!header.vars.profile.status" ui-sref="login">
+<button class="button__app" ng-if="!header.vars.profile.status" ui-sref="login">
     login
 </button>
 
-<br>-- HEADER
+<div class="header">
+
+    <i class="fa fa-bars header__icon"></i>
+    <img class="header__img" ng-if="header.vars.profile.status" ng-src="http://localhost/files/logoProfile/158dmbw4pTgCxPLjelakbFiL.jpg">
+
+    <ul class="actions">
+        <li class="actions__action">
+            <a class="actions__btn" ui-sref="user.mainList({action : 'nearToMe'})">
+                <i class="fa fa-map-marker actions__icon"></i>
+                <span class="actions__descrip">Perto de mim</span>
+            </a>
+        </li>
+
+        <li class="actions__action">
+            <a class="actions__btn" ui-sref="user.mainList({action : 'findLocal'})">
+                <i class="fa fa-search actions__icon"></i>
+                <span class="actions__descrip">Bares perto de</span>
+            </a>
+        </li>
+
+        <li class="actions__action">
+            <a class="actions__btn" ui-sref="user.mainList({action : 'favorites'})">
+                <i class="fa fa-star actions__icon"></i>
+                <span class="actions__descrip">Favoritos</span>
+            </a>
+        </li>
+    </ul>
+
+</div>
