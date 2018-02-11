@@ -1,45 +1,44 @@
-<br><br>
+<div class="content">
+    <div ng-if="mainList.vars.actionFindLocal">
+        <input class="input-bar" g-places-autocomplete ng-model="mainList.vars.searchLocal" ng-change="mainList.functions.getList.getLocal()" placeholder="Procurar bares próximos à">
+    </div>
 
-<p>-- search local (type to search)</p>
-<div ng-if="mainList.vars.actionFindLocal">
-    <input g-places-autocomplete
-           ng-model="mainList.vars.searchLocal"
-           ng-change="mainList.functions.getList.getLocal()">
-</div>
-<p>-- search local (type to search)</p><br><br>
-
-
-<p>-- search pubs per name (type to search)</p>
-<div>
-    <input ng-model="mainList.vars.search">
-</div>
-<p>-- search pubs per name (type to search)</p><br><br>
-
-
-<p>--List pubs</p>
-<div ng-if="mainList.vars.latSearch || mainList.vars.longSearch">
-    <p>{{mainList.vars.nearLocal}}</p>
-</div>
-
-<div ng-repeat="item in mainList.vars.listFilter  | orderBy:['-item.distance','-openToday']">
-    <div ng-click="mainList.functions.goPub(item)">
-        <div><img ng-src="http://192.168.1.103/files/logoProfile/{{item.logoPath}}" style="width: 50px; height: 50px"></div>
-        <div>{{item.name}}</div>
-        <div>{{item.distance | number:2}}KM</div>
-        <div ng-if="item.openToday && !item.openAllDay">
-            Aberto hoje das {{item.timeStart}} às {{item.timeEnd}}.
-        </div>
-        <div ng-if="item.openToday && item.openAllDay">
-            Aberto hoje 24hs.
-        </div>
-        <div ng-if="!item.openToday">
-            Fechado hoje.
-        </div>
-        <br>
+    <div>
+        <input class="input-bar" ng-model="mainList.vars.search" placeholder="Procure por um bar">
     </div>
 </div>
 
-<div ng-if="mainList.vars.listFilter.length === 0">
-    Não achamos nenhum bar :(
+<div class="near-bars" ng-if="mainList.vars.latSearch || mainList.vars.longSearch">
+    <p class="near-bars__parag">
+        <span class="near-bars__locale">{{mainList.vars.nearLocal}}</span>
+    </p>
 </div>
-<p>--List pubs</p><br><br>
+
+<div ng-repeat="item in mainList.vars.listFilter  | orderBy:['-item.distance','-openToday']">
+    <ul class="bars" ng-click="mainList.functions.goPub(item)">
+        <li class="bars__bar">
+            <div class="bars__info">
+                <img class="bars__info-img" ng-src="http://localhost/files/logoProfile/d6XWMOQhVtj4crCYh_zUGazI.jpg" style="width: 50px; height: 50px">
+                <div class="bars__info-descrip">
+                    <p class="bars__info-name">{{item.name}}</p>
+                    <small class="bars__info-distance">{{item.distance | number:2}}KM</small>
+                </div>
+                <div class="bars__hidden-content">
+                    <div ng-if="item.openToday && !item.openAllDay">
+                        Aberto hoje das {{item.timeStart}} às {{item.timeEnd}}.
+                    </div>
+                    <div class="list-test" ng-if="item.openToday && item.openAllDay">
+                        Aberto hoje 24hs.
+                    </div>
+                    <div ng-if="!item.openToday">
+                        Fechado hoje.
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div ng-if="mainList.vars.listFilter.length === 0">
+        Não achamos nenhum bar :(
+    </div>
+</div>
