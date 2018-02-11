@@ -93,17 +93,26 @@ module.exports = function (app) {
     app.post('/app/doLoginHack', doLoginHack.doLoginHack);
     //endregion
 
-    //region List Pubs
+    //region Main List
     let getListPubs = require('./app/modules/mainList/getListPubs');
     app.post('/app/getListPubs', getListPubs.getListPubs);
+
+    let getListPubsFavorites = require('./app/modules/mainList/getListPubsFavorites');
+    app.post('/app/getListPubsFavorites', getListPubsFavorites.getListPubsFavorites);
     //endregion
 
-    //region Get Menu
+    //region Place
     let getMenuApp = require('./app/modules/place/getMenu');
     app.post('/app/getMenu', getMenuApp.getMenu);
 
     let getCategoryApp = require('./app/modules/place/getCategory');
     app.post('/app/getCategory', getCategoryApp.getCategory);
+
+    let markFavoriteApp = require('./app/modules/place/markFavorite');
+    app.post('/app/markFavorite', markFavoriteApp.markFavorite);
+
+    let notFavoriteApp = require('./app/modules/place/notFavorite');
+    app.post('/app/notFavorite', notFavoriteApp.notFavorite);
     //endregion
     //endregion
 

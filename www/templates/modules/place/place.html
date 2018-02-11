@@ -17,7 +17,8 @@
 
     <br><br>
     <div>
-        <a ng-click="place.functions.favorite()">Favoritar bar</a> |
+        <a ng-if="!place.vars.favorite" ng-click="place.functions.markFavorite.markFavorite()">Favoritar bar</a> |
+        <a ng-if="place.vars.favorite" ng-click="place.functions.notFavorite.notFavorite()">Desfavoritar bar</a> |
         <a ng-click="place.functions.QrCode()">QRCode</a>
     </div>
     <p>-- Info place</p><br><br>

@@ -70,7 +70,7 @@ gulp.task('modulesWeb', function () {
 gulp.task('vendor', function () {
     console.log('Compiling the Vendor Dependencies.');
     return gulp.src([
-        /*bower + 'jquery/dist/jquery.js',*/
+        bower + 'jquery/dist/jquery.js',
         bower + 'angular/angular.js',
         bower + 'angular-animate/angular-animate.js',
         bower + 'angular-aria/angular-aria.js',

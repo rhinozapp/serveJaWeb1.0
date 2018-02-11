@@ -156,7 +156,7 @@ angular
     .module('core')
     .service('defineHost', function () {
         return {
-            host : /*'http://192.168.1.103'*/''
+            host : 'http://192.168.1.103'/*''*/
         };
     });
 })();
@@ -213,6 +213,7 @@ angular
             return {
                 email:profile.email,
                 idFace:profile.idFace,
+                id:profile.id,
                 name:profile.name,
                 photo:profile.photo,
                 token:profile.token,

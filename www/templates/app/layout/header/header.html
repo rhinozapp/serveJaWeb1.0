@@ -6,8 +6,8 @@ quando header.vars.profile.status for TRUE ele estará logado com face
 -- HEADER<br>
 
 <img ng-if="header.vars.profile.status"
-     ng-src="http://localhost/files/logoProfile/{{header.vars.profile.photo}}"
-     style="width: 50px; height: 50px">
+     ng-src="{{header.vars.profile.photo}}"
+     style="width: 50px; height: 50px"><!--http://localhost/files/logoProfile/-->
 
 <button ui-sref="user.mainList({action : 'nearToMe'})">
     near to me

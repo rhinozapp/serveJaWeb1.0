@@ -18,7 +18,7 @@
 
 <p>--List pubs</p>
 <div ng-if="mainList.vars.latSearch || mainList.vars.longSearch">
-    <p>Próximos à {{mainList.vars.nearLocal}}</p>
+    <p>{{mainList.vars.nearLocal}}</p>
 </div>
 
 <div ng-repeat="item in mainList.vars.listFilter  | orderBy:['-item.distance','-openToday']">

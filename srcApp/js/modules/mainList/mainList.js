@@ -25,7 +25,12 @@ function mainListController(loginService, getCoordinates, mainListService, haver
                     mainList.functions.getList.getNear();
                 });
             }else if($stateParams.action === 'favorites'){
-                mainList.functions.getList.getFavorite();
+                getCoordinates.getPos().then(function (data) {
+                    mainList.vars.lat = data.lat;
+                    mainList.vars.long = data.long;
+
+                    mainList.functions.getList.getFavorite();
+                });
 
             }else if($stateParams.action === 'findLocal'){
                 mainList.vars.actionFindLocal = true;
@@ -46,8 +51,8 @@ function mainListController(loginService, getCoordinates, mainListService, haver
 
         getList : {
             getNear : function () {
-                mainList.vars.nearLocal = 'seu local.';
-                mainListService.get.save({
+                mainList.vars.nearLocal = 'Próximos à seu local.';
+                mainListService.getListPubs.save({
                     lat : mainList.vars.lat,
                     long : mainList.vars.long
                 }, mainList.functions.getList.success);
@@ -55,16 +60,21 @@ function mainListController(loginService, getCoordinates, mainListService, haver
 
             getLocal : function () {
                 if(typeof mainList.vars.searchLocal === "object"){
-                    mainList.vars.nearLocal = mainList.vars.searchLocal.formatted_address;
+                    mainList.vars.nearLocal = 'Próximos à' + mainList.vars.searchLocal.formatted_address;
                     mainList.vars.search = '';
-                    mainListService.get.save({
+                    mainListService.getListPubs.save({
                         lat : mainList.vars.searchLocal.geometry.location.lat(),
                         long : mainList.vars.searchLocal.geometry.location.lng()
                     }, mainList.functions.getList.success);
                 }
             },
 
-            getFavorite : function () {},
+            getFavorite : function () {
+                mainList.vars.nearLocal = 'Seus favoritos.';
+                mainListService.getListPubsFavorites.save({
+                    userID : getProfile.id
+                }, mainList.functions.getList.success);
+            },
 
             success : function (data) {
                 mainList.vars.list = data.data;
