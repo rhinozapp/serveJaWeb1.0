@@ -1,0 +1,55 @@
+.bars {
+    margin: 0;
+    padding: 0;
+    .bars__bar {
+        list-style: none;
+        padding: 4% 5%;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 8%;
+            margin: auto;
+            width: 7px;
+            height: 7px;
+            border-left: 2px solid transparent;
+            border-right: 2px solid #616161;
+            border-top: 2px solid transparent;
+            border-bottom: 2px solid #616161;
+            transform: rotate(-45deg);
+        }
+        .bars__info {
+            display: table;
+            .bars__info-img {
+                max-width: 45px;
+                float: left;
+                border-radius: 50%;
+                display: table-cell;
+            }
+            .bars__info-descrip {
+                width: 100%;
+                display: table-cell;
+                vertical-align: middle;
+                padding-left: 5%;
+                .bars__info-name {
+                    margin-bottom: 5px;
+                    width: 85%;
+                    font-size: .9em;
+                    font-weight: bold;
+                    color: #616161;
+                }
+                .bars__info-distance {
+                    font-size: .7em;
+                    color: #ccc;
+                }
+            }
+        }
+    }
+}
+
+.bars__hidden-content {
+    display: none;
+}
