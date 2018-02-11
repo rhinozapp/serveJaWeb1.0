@@ -31,6 +31,7 @@ exports.doLoginHack = function (req, res) {
             });
         }else{
             token = jwt.sign({
+                id : user[0]._id,
                 email: 'hack@hack.com',
                 name : 'hack',
                 photo : '158dmbw4pTgCxPLjelakbFiL.jpg',

@@ -6,6 +6,7 @@ angular
             return {
                 email:profile.email,
                 idFace:profile.idFace,
+                id:profile.id,
                 name:profile.name,
                 photo:profile.photo,
                 token:profile.token,

@@ -168,7 +168,12 @@ function mainListController(loginService, getCoordinates, mainListService, haver
                     mainList.functions.getList.getNear();
                 });
             }else if($stateParams.action === 'favorites'){
-                mainList.functions.getList.getFavorite();
+                getCoordinates.getPos().then(function (data) {
+                    mainList.vars.lat = data.lat;
+                    mainList.vars.long = data.long;
+
+                    mainList.functions.getList.getFavorite();
+                });
 
             }else if($stateParams.action === 'findLocal'){
                 mainList.vars.actionFindLocal = true;
@@ -189,8 +194,8 @@ function mainListController(loginService, getCoordinates, mainListService, haver
 
         getList : {
             getNear : function () {
-                mainList.vars.nearLocal = 'seu local.';
-                mainListService.get.save({
+                mainList.vars.nearLocal = 'Próximos à seu local.';
+                mainListService.getListPubs.save({
                     lat : mainList.vars.lat,
                     long : mainList.vars.long
                 }, mainList.functions.getList.success);
@@ -198,16 +203,21 @@ function mainListController(loginService, getCoordinates, mainListService, haver
 
             getLocal : function () {
                 if(typeof mainList.vars.searchLocal === "object"){
-                    mainList.vars.nearLocal = mainList.vars.searchLocal.formatted_address;
+                    mainList.vars.nearLocal = 'Próximos à' + mainList.vars.searchLocal.formatted_address;
                     mainList.vars.search = '';
-                    mainListService.get.save({
+                    mainListService.getListPubs.save({
                         lat : mainList.vars.searchLocal.geometry.location.lat(),
                         long : mainList.vars.searchLocal.geometry.location.lng()
                     }, mainList.functions.getList.success);
                 }
             },
 
-            getFavorite : function () {},
+            getFavorite : function () {
+                mainList.vars.nearLocal = 'Seus favoritos.';
+                mainListService.getListPubsFavorites.save({
+                    userID : getProfile.id
+                }, mainList.functions.getList.success);
+            },
 
             success : function (data) {
                 mainList.vars.list = data.data;
@@ -436,7 +446,8 @@ angular.module('mainList')
 
 function mainListService($resource, defineHost) {
     return {
-        get : $resource(defineHost.host + '/app/getListPubs')
+        getListPubs : $resource(defineHost.host + '/app/getListPubs'),
+        getListPubsFavorites : $resource(defineHost.host + '/app/getListPubsFavorites')
     }
 }
 })();
@@ -445,7 +456,7 @@ function mainListService($resource, defineHost) {
 angular.module('place', [])
     .controller('placeController', placeController);
 
-function placeController($stateParams, $scope, $filter, $state, placeService, externalLink){
+function placeController($stateParams, $scope, $filter, $state, placeService, mainListService, externalLink, getProfile){
     var place = this;
     place.vars = {};
 
@@ -455,6 +466,7 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ex
                 place.functions.getCategory.getCategory();
                 place.functions.defineMenu();
                 place.functions.getMenu.getMenu();
+                place.functions.checkFavorite.checkFavorite();
 
                 }, function () {
                 $state.go('user.mainList');
@@ -574,6 +586,48 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ex
                 place.vars.listCategory = data.data;
             }
         },
+
+        checkFavorite : {
+            checkFavorite : function () {
+                mainListService.getListPubsFavorites.save({
+                    userID : getProfile.id
+                }, place.functions.checkFavorite.successCheckFavorite);
+            },
+
+            successCheckFavorite : function (data) {
+                if(data.data){
+                    place.vars.favorite = $.grep(data.data, function(value){
+                        return value.userID === place.vars.dataPub.userID;
+                    });
+                }
+            }
+        },
+
+        markFavorite : {
+            markFavorite : function () {
+                placeService.markFavorite.save({
+                    userID : getProfile.id,
+                    place : place.vars.dataPub
+                }, place.functions.markFavorite.successMarkFavorite);
+            },
+
+            successMarkFavorite : function () {
+                place.vars.favorite = !place.vars.favorite;
+            }
+        },
+
+        notFavorite : {
+            notFavorite : function () {
+                placeService.notFavorite.save({
+                    userID : getProfile.id,
+                    place : place.vars.dataPub
+                }, place.functions.notFavorite.successNotFavorite);
+            },
+
+            successNotFavorite : function () {
+                place.vars.favorite = !place.vars.favorite;
+            }
+        }
     };
 
     place.functions.core();
@@ -587,7 +641,9 @@ angular.module('place')
 function placeService($resource, defineHost) {
     return {
         getMenu : $resource(defineHost.host + '/app/getMenu'),
-        getCategory : $resource(defineHost.host + '/app/getCategory')
+        getCategory : $resource(defineHost.host + '/app/getCategory'),
+        notFavorite : $resource(defineHost.host + '/app/notFavorite'),
+        markFavorite : $resource(defineHost.host + '/app/markFavorite')
     }
 }
 })();

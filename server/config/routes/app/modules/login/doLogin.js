@@ -30,7 +30,10 @@ exports.doLogin = function (req, res) {
                 });
             });
         }else{
+            console.log(user[0]._id);
+
             token = jwt.sign({
+                id : user[0]._id,
                 email: req.body.data.email,
                 name : req.body.data.name,
                 photo : req.body.data.picture.data.url,
