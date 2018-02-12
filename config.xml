@@ -25,4 +25,7 @@
     <engine name="android" spec="^6.3.0" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
     <plugin name="cordova-plugin-inappbrowser" spec="^1.7.1" />
+    <plugin name="cordova-plugin-googleplus" spec="git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git">
+        <variable name="REVERSED_CLIENT_ID" value="675857416832-gkkntadhdgbjs8o19akb071ho7stguki.apps.googleusercontent.com" />
+    </plugin>
 </widget>

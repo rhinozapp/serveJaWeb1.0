@@ -19,6 +19,7 @@
     "connect-multiparty": "^2.0.0",
     "consign": "^0.1.5",
     "cordova-android": "^6.3.0",
+    "cordova-plugin-googleplus": "git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git",
     "cordova-plugin-inappbrowser": "^1.7.1",
     "cordova-plugin-whitelist": "^1.3.2",
     "cors": "^2.8.4",
@@ -48,7 +49,10 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-inappbrowser": {}
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "675857416832-gkkntadhdgbjs8o19akb071ho7stguki.apps.googleusercontent.com"
+      }
     },
     "platforms": [
       "android"

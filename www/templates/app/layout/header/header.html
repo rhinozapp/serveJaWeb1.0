@@ -6,6 +6,10 @@ quando header.vars.profile.status for TRUE ele estará logado com face
     login
 </button>
 
+<button class="button__app" ng-if="header.vars.profile.status" ng-click="header.functions.doLogout()">
+    logout
+</button>
+
 <div class="header">
 
     <i class="fa fa-bars header__icon"></i>
