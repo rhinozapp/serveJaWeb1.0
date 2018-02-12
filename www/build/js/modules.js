@@ -321,10 +321,6 @@ function mainListService($resource, defineHost) {
 })();
 (function(){
 "use strict";
-/**
- * Created by guiga on 04/02/2017.
- */
-
 angular.module('login', [])
     .controller('loginController', login);
 
@@ -365,6 +361,45 @@ function login(loginService, $window, toastAction) {
             });
         },
 
+        loginGoogle : function () {
+            loginService.doLoginGoogle().then(function (data) {
+                loginService.recordData.save(data, function (result) {
+                    switch (true){
+                        case result.status === true:
+                            login.vars.message = 'Logado! :)';
+                            $window.localStorage.token = result.token;
+                            $window.location.reload();
+                            break;
+
+                        case result.status === false:
+                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                            break;
+
+                        default:
+                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                    }
+
+                    toastAction.show({
+                        top : false,
+                        bottom : true,
+                        left : false,
+                        right : true,
+                        text : login.vars.message,
+                        scope : login
+                    });
+                })
+            }, function (err) {
+                toastAction.show({
+                    top : false,
+                    bottom : true,
+                    left : false,
+                    right : true,
+                    text : err,
+                    scope : login
+                });
+            });
+        },
+
         loginHack : function () {
             loginService.doLoginHack.save({}, function (result) {
                 $window.localStorage.token = result.token;
@@ -378,10 +413,6 @@ function login(loginService, $window, toastAction) {
 })();
 (function(){
 "use strict";
-/**
- * Created by guiga on 01/09/2017.
- */
-
 angular.module('login')
     .service('loginService', loginService)
     .factory('authInterceptor', authInterceptor)
@@ -418,6 +449,24 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
                     content : error,
                     ok : 'OK!'
                 });
+            });
+        },
+
+        doLoginGoogle : function () {
+            return new Promise(function(success, fail){
+                window.plugins.googleplus.login(
+                    {
+                        'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
+                        'webClientId': '675857416832-gkkntadhdgbjs8o19akb071ho7stguki.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
+                        'offline': true // optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
+                    },
+                    function (obj) {
+                        success(JSON.stringify(obj)); // do something useful instead of alerting
+                    },
+                    function (msg) {
+                        fail(msg);
+                    }
+                );
             });
         },
 
