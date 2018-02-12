@@ -2,9 +2,68 @@ exports.doLogin = function (req, res) {
     let mongoose = require('mongoose'),
         userApp = mongoose.model('userApp'),
         jwt = require('jsonwebtoken'),
-        token;
+        token,
+        data = {};
 
-    userApp.find({ idFace : req.body.data.id }, function(err, user) {
+    if(req.body.data){
+        data.vars = {
+            emailFace: req.body.data.email,
+            name : req.body.data.name,
+            photo : req.body.data.picture.data.url,
+            tokenFace : req.body.config.params.access_token,
+            idFace : req.body.data.id
+        }
+    }else{
+        data.vars = {
+            emailGoogle: req.body.email,
+            name : req.body.givenName,
+            photo : req.body.imageUrl,
+            tokenGoogle : req.body.accessToken,
+            idGoogle : req.body.userId
+        }
+    }
+
+    userApp.update({
+        $or : [
+            {idFace : data.vars.idFace},
+            {idGoogle : data.vars.idGoogle}
+        ]
+    }, data.vars, {
+        multi : false,
+        upsert: true
+    }, function(err, status) {
+        if(!err){
+            userApp.find({
+                $or : [
+                    {idFace : data.vars.idFace},
+                    {idGoogle : data.vars.idGoogle}
+                ]
+            }, function(err, user) {
+                token = jwt.sign({
+                    id : user[0]._id,
+                    emailFace: user[0].emailFace,
+                    emailGoogle: user[0].emailGoogle,
+                    name : user[0].name,
+                    photo : user[0].photo,
+                    tokenFace : user[0].tokenFace,
+                    tokenGoogle : user[0].tokenGoogle,
+                    idFace : user[0].idFace,
+                    idGoogle : user[0].idGoogle
+                }, 'rhinoz');
+
+                res.json({
+                    token : token,
+                    status : true
+                });
+            });
+        }else{
+            res.json({
+                status : false
+            });
+        }
+    });
+
+    /*userApp.find({ idFace : req.body.data.id }, function(err, user) {
         if (err){
             res.json({status : false});
         }else if(user.length === 0) {
@@ -58,5 +117,6 @@ exports.doLogin = function (req, res) {
                 });
             });
         }
-    });
+    });*/
+
 };

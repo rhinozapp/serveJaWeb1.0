@@ -9,18 +9,18 @@ exports.doLoginHack = function (req, res) {
             res.json({status : false});
         }else if(user.length === 0) {
             new userApp({
-                email: 'hack@hack.com',
+                emailFace: 'hack@hack.com',
                 name : 'hack',
                 photo : '158dmbw4pTgCxPLjelakbFiL.jpg',
-                token : 'hack',
+                tokenFace : 'hack',
                 idFace : 'hack'
             }).save().then(function (data) {
                 token = jwt.sign({
                     id : data._id,
-                    email: data.email,
+                    emailFace: data.email,
                     name : data.name,
                     photo : data.photo,
-                    token : data.token,
+                    tokenFace : data.token,
                     idFace : data.idFace
                 }, 'rhinoz');
 
@@ -32,20 +32,20 @@ exports.doLoginHack = function (req, res) {
         }else{
             token = jwt.sign({
                 id : user[0]._id,
-                email: 'hack@hack.com',
+                emailFace: 'hack@hack.com',
                 name : 'hack',
                 photo : '158dmbw4pTgCxPLjelakbFiL.jpg',
-                token : 'hack',
+                tokenFace : 'hack',
                 idFace : 'hack'
             }, 'rhinoz');
 
             userApp.update({
                 _id : user[0]._id
             }, {
-                email: 'hack@hack.com',
+                emailFace: 'hack@hack.com',
                 name : 'hack',
                 photo : '158dmbw4pTgCxPLjelakbFiL.jpg',
-                token : 'hack',
+                tokenFace : 'hack',
                 idFace : 'hack'
             }, {
                 multi : false

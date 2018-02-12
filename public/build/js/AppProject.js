@@ -447,27 +447,6 @@ angular.module('layout', []);
 
 angular
     .module('layout')
-    .directive('container', container);
-
-function container() {
-    return {
-        restrict: 'EA',
-        template: '<ui-view></ui-view>',
-        link: linkFunc,
-        bindToController: true
-    };
-    
-    function linkFunc() {}
-}
-})();
-(function(){
-"use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
-angular
-    .module('layout')
     .directive('headerNav', headerNav);
 
 function headerNav() {
@@ -512,5 +491,26 @@ function headerNavController(loginService, profileGet) {
     };
 
     headerNav.functions.core();
+}
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular
+    .module('layout')
+    .directive('container', container);
+
+function container() {
+    return {
+        restrict: 'EA',
+        template: '<ui-view></ui-view>',
+        link: linkFunc,
+        bindToController: true
+    };
+    
+    function linkFunc() {}
 }
 })();
