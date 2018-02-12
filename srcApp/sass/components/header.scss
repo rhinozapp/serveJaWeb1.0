@@ -1,12 +1,13 @@
 .header {
-    background: #ffbb00;
+    background: $main-color;
     position: relative;
     margin-bottom: 15px;
     text-align: center;
+    overflow: hidden;
     .header__icon {
         position: absolute;
-        font-size: 30px !important;
-        color: #fff !important;
+        font-size: 30px;
+        color: $secondary-color;
         top: 15px;
         left: 15px;
     }
@@ -16,24 +17,24 @@
         height: 70px;
         border-radius: 50%;
     }
-    .actions {
+    .header__actions {
         margin-top: 5px;
-        .actions__action {
-            display: inline-block;
+        .header__actions-action {
+            float: left;
             padding: 10px 0;
-            width: 30%;
-            .actions__btn {
+            width: 25%;
+            .header__actions-btn {
                 text-decoration: none;
                 text-align: center;
-                color: #fff;
-                font-size: 0.7em;
+                color: $secondary-color;
+                font-size: 0.6em;
                 display: block;
-                padding: 5px;
+                padding: 10px 5px;
                 &:focus {
-                    background: #e4a700;
-                    color: #fff;
+                    background: $hover-menu;
+                    color: $secondary-color;
                 }
-                .actions__icon {
+                .header__actions-icon {
                     display: block;
                     position: relative;
                     font-size: 1.7em;

@@ -2,40 +2,45 @@
 quando header.vars.profile.status for TRUE ele estará logado com face
 -->
 
-<button class="button__app" ng-if="!header.vars.profile.status" ui-sref="login">
-    login
-</button>
-
-<button class="button__app" ng-if="header.vars.profile.status" ng-click="header.functions.doLogout()">
-    logout
-</button>
-
 <div class="header">
 
-    <i class="fa fa-bars header__icon"></i>
-    <img class="header__img" ng-if="header.vars.profile.status" ng-src="http://localhost/files/logoProfile/158dmbw4pTgCxPLjelakbFiL.jpg">
+    <button class="btn__default" type="button" ng-if="!header.vars.profile.status" ui-sref="login">
+        Login
+    </button>
 
-    <ul class="actions">
-        <li class="actions__action">
-            <a class="actions__btn" ui-sref="user.mainList({action : 'nearToMe'})">
-                <i class="fa fa-map-marker actions__icon"></i>
-                <span class="actions__descrip">Perto de mim</span>
+
+    <button class="btn__default" type="button" ng-if="header.vars.profile.status" ng-click="header.functions.doLogout()">
+        Logout
+    </button>
+
+    <ul class="header__actions">
+        <li class="header__actions-action">
+            <a class="header__actions-btn">
+                <i class="fa fa-bars header__actions-icon"></i>
+                <span class="header__actions-descrip">Menu</span>
             </a>
         </li>
 
-        <li class="actions__action">
-            <a class="actions__btn" ui-sref="user.mainList({action : 'findLocal'})">
-                <i class="fa fa-search actions__icon"></i>
-                <span class="actions__descrip">Bares perto de</span>
+        <li class="header__actions-action">
+            <a class="header__actions-btn" ui-sref="user.mainList({action : 'nearToMe'})">
+                <i class="fa fa-map-marker header__actions-icon"></i>
+                <span class="header__actions-descrip">Bares próximos</span>
             </a>
         </li>
 
-        <li class="actions__action">
-            <a class="actions__btn" ui-sref="user.mainList({action : 'favorites'})">
-                <i class="fa fa-star actions__icon"></i>
-                <span class="actions__descrip">Favoritos</span>
+        <li class="header__actions-action">
+            <a class="header__actions-btn" ui-sref="user.mainList({action : 'findLocal'})">
+                <i class="fa fa-search header__actions-icon"></i>
+                <span class="header__actions-descrip">Achar bares</span>
             </a>
         </li>
-    </ul>
+
+        <li class="header__actions-action">
+            <a class="header__actions-btn" ui-sref="user.mainList({action : 'favorites'})">
+                <i class="fa fa-star header__actions-icon"></i>
+                <span class="header__actions-descrip">Favoritos</span>
+            </a>
+        </li>
+    </ul> 
 
 </div>

@@ -1,62 +1,65 @@
-<div>
-    <a ui-sref="user.mainList">Voltar para lista de bares</a>
 
-    <br><br>
+<a ui-sref="user.mainList">
+    <i class="fa fa-arrow-left"></i>
+</a>
 
-    <p>-- Info place</p>
-    <div>
-        <img ng-src="http://192.168.1.103/files/logoProfile/{{place.vars.dataPub.logoPath}}" style="width: 50px; height: 50px">
-        <br><p>Descrição: {{place.vars.dataPub.description}}</p><br>
-    </div>
-    <div>
-        <a ng-click="place.functions.externalLink(place.vars.dataPub.pageFacebook, '_system', 'yes')">Facebook</a> |
-        <a ng-click="place.functions.externalLink(place.vars.dataPub.pageInstagram, '_system', 'yes')">Instagram</a> |
-        <a ng-click="place.functions.externalLink(place.vars.dataPub.webSite, '_system', 'yes')">WebSite</a> |
-        <a ng-click="place.functions.externalLink('https://www.google.com.br/maps/dir/' +place.vars.userLat+ ',' +place.vars.userLong + '/' +place.vars.dataPub.address+ ' - ' +place.vars.dataPub.number, '_system', 'yes')">Como chegar?</a> |
+<div class="place">
+    <div class="place__imgs">
+        <img class="place__img-logo" ng-src="http://192.168.1.103/files/logoProfile/{{place.vars.dataPub.logoPath}}">
+        <img class="place__img-header" src="https://ritzcarlton-h.assetsadobe.com/is/image/content/dam/the-ritz-carlton/hotels/europe/spain/tenerife-abama/assetmigration/RCABAMA_00236_conversion.png?$XlargeViewport100pct$"
+            alt="">
     </div>
 
-    <br><br>
-    <div>
-        <a ng-if="!place.vars.favorite" ng-click="place.functions.markFavorite.markFavorite()">Favoritar bar</a> |
-        <a ng-if="place.vars.favorite" ng-click="place.functions.notFavorite.notFavorite()">Desfavoritar bar</a> |
-        <a ng-click="place.functions.QrCode()">QRCode</a>
+    <div class="content">
+        <p class="place__description">Descrição: {{place.vars.dataPub.description}}</p>
+
+        <ul class="place__socials">
+            <li class="place__social">
+                <a ng-click="place.functions.externalLink(place.vars.dataPub.pageFacebook, '_system', 'yes')">Facebook</a>
+            </li>
+            <li class="place__social">
+                <a ng-click="place.functions.externalLink(place.vars.dataPub.pageInstagram, '_system', 'yes')">Instagram</a>
+            </li>
+            <li class="place__social">
+                <a ng-click="place.functions.externalLink(place.vars.dataPub.webSite, '_system', 'yes')">WebSite</a>
+            </li>
+            <li class="place__social">
+                <a ng-click="place.functions.externalLink('https://www.google.com.br/maps/dir/' +place.vars.userLat+ ',' +place.vars.userLong + '/' +place.vars.dataPub.address+ ' - ' +place.vars.dataPub.number, '_system', 'yes')">Como chegar?</a>
+            </li>
+        </ul>
+
+        <ul class="place__interactions">
+            <li class="place__interactions">
+                <a ng-if="!place.vars.favorite" ng-click="place.functions.markFavorite.markFavorite()">Favoritar bar</a>
+            </li>
+            <li class="place__interactions">
+                <a ng-if="place.vars.favorite" ng-click="place.functions.notFavorite.notFavorite()">Desfavoritar bar</a>
+            </li>
+        </ul>
+
+        <a class="place__qr-code" ng-click="place.functions.QrCode()">QRCode</a>
+
+
+
+        <input class="input-default" ng-model="place.vars.search" placeholder="Procurar um produto">
+
+
+        <div ng-repeat="data in place.vars.listPromotion | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
+            <p>
+                <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}" style="width: 20px; height: 20px"> {{data.productName}} | {{data.value | currency:'R$':2}} | {{data.promotionValue | currency:'R$':2}}</p>
+        </div>
+
+        <div ng-repeat="data in place.vars.listByCategoryFilter">
+            <div ng-if="data.products.length > 0">
+                <span style="font-size: 20px; font-style: italic">{{data.categoryName}}</span>
+            </div>
+
+            <div ng-repeat="data2 in data.products | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
+                <p>
+                    <img ng-if="data2.imgPath" ng-src="http://localhost/files/imgProducts/{{data2.imgPath}}" style="width: 20px; height: 20px"> {{data2.productName}} | {{data2.value | currency:'R$':2}} | {{data2.promotionValue | currency:'R$':2}}</p>
+            </div>
+        </div>
     </div>
-    <p>-- Info place</p><br><br>
 </div>
-
-
-<p>-- search products per name (type to search)</p>
-<div>
-    <input ng-model="place.vars.search">
-</div>
-<p>-- search products per name (type to search)</p><br><br>
-
-
-<p>-- List promotion products</p>
-<div ng-repeat="data in place.vars.listPromotion | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
-    <p><img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}" style="width: 20px; height: 20px">
-        {{data.productName}} |
-        {{data.value | currency:'R$':2}} |
-        {{data.promotionValue | currency:'R$':2}}</p>
-</div>
-<p>-- List promotion products</p><br><br>
-
-
-<p>-- List products by category</p>
-<div ng-repeat="data in place.vars.listByCategoryFilter">
-    <div ng-if="data.products.length > 0">
-        <span style="font-size: 20px; font-style: italic">{{data.categoryName}}</span>
-    </div>
-
-    <div ng-repeat="data2 in data.products | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
-        <p><img ng-if="data2.imgPath" ng-src="http://localhost/files/imgProducts/{{data2.imgPath}}" style="width: 20px; height: 20px">
-            {{data2.productName}} |
-            {{data2.value | currency:'R$':2}} |
-            {{data2.promotionValue | currency:'R$':2}}</p>
-    </div>
-    <br><br>
-</div>
-<p>-- List products by category</p>
-
 
 <!--{{place.vars.dataPub | json}}-->
