@@ -11,3 +11,17 @@
         font-weight: bold;
     }
 }
+
+.btn__default {
+    width: 95%;
+    text-align: center;
+    background: $main-color;
+    border: 1px solid $secondary-color;
+    color: $secondary-color;
+    padding: 10px 0;
+    border-radius: 30px;
+    margin-top: 10px;
+    font-size: .8em;
+    text-transform: uppercase;
+    font-weight: bold;
+}

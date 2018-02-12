@@ -1,0 +1,35 @@
+.login {
+    height: -webkit-fill-available;
+    text-align: center;
+    background: $main-color;
+    color: $secondary-color;
+    padding-top: 30%;
+    .login__content {
+        .login__msg{
+            font-size: .9em;
+        }
+        .login__title {
+            margin: 10px 0 20px 0;
+            font-size: 2.8em;
+        }
+        .login__form-btns {
+            .login__form-btn {
+                width: 95%;
+                text-align: center;
+                padding: 10px 0;
+                border-radius: 30px;
+                border: none;
+                margin-top: 10px;
+                font-size: .8em;
+                text-transform: uppercase;
+                color: $secondary-color;
+            }
+            .login__form-fb-btn {
+                background: #3b5998;
+            }
+            .login__form-gp-btn {
+                background: #dd4b39;
+            }
+        }
+    }
+}

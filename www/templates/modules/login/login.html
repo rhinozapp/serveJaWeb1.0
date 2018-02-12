@@ -1,20 +1,20 @@
-<div class="login center">
-    <div class="login__blur"></div>
-
-    <div class="center">
+<div class="login">
+    <div class="login__content">
+        <span class="login__msg">Bem vindo ao</span>
+        <h1 class="login__title">ServeJá</h1>
         <form class="login__form" name="loginForm">
-            <div>
-                Entre com facebook
-            </div>
-
-            <div layout="row" style="margin-top: 40px" layout-align="center">
-                <div flex="50">
-                    <md-button class="md-primary md-raised" ng-click="login.functions.loginFacebook()">Entrar</md-button>
-                </div>
-
-                <div flex="50">
-                    <md-button class="md-primary md-raised" ng-click="login.functions.loginHack()">Hack</md-button>
-                </div>
+            <div class="login__form-btns">
+                <button class="login__form-btn login__form-fb-btn" type="button" ng-click="login.functions.loginFacebook()">
+                    <i class="fa fa-facebook-square"></i>
+                    <span>Entrar com Facebook</span>
+                </button>
+                <button class="login__form-btn login__form-gp-btn" type="button" ng-click="login.functions.loginHack()">
+                    <i class="fa fa-google-plus-square"></i>
+                    <span>Entrar com </span>
+                </button>
+                <button class="btn__default" type="button" ng-click="login.functions.loginHack()">
+                    <span>Hack</span>
+                </button>
             </div>
         </form>
     </div>
