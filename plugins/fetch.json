@@ -24,5 +24,13 @@
     "variables": {
       "REVERSED_CLIENT_ID": "675857416832-gkkntadhdgbjs8o19akb071ho7stguki.apps.googleusercontent.com"
     }
+  },
+  "cordova-plugin-qrscanner2": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-qrscanner2@^2.5.0"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

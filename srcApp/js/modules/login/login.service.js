@@ -21,19 +21,15 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
                         token : result.access_token
                     };
                 }).error(function (error) {
-                    dialogAlert.show({
-                        title : 'Atenção!',
-                        content : error,
-                        ok : 'OK!'
-                    });
+                    return {
+                        status : false
+                    };
                 });
 
             }, function(error) {
-                dialogAlert.show({
-                    title : 'Atenção!',
-                    content : error,
-                    ok : 'OK!'
-                });
+                return {
+                    status : false
+                };
             });
         },
 

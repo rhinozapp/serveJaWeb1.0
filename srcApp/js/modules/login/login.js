@@ -10,31 +10,36 @@ function login(loginService, $window, toastAction) {
 
         loginFacebook : function () {
             loginService.doLoginFacebook().then(function (data) {
-                loginService.recordData.save(data, function (result) {
-                    switch (true){
-                        case result.status === true:
-                            login.vars.message = 'Logado! :)';
-                            $window.localStorage.token = result.token;
-                            $window.location.reload();
-                            break;
+                if(data.status){
+                    loginService.recordData.save(data, function (result) {
+                        switch (true){
+                            case result.status === true:
+                                login.vars.message = 'Logado! :)';
+                                $window.localStorage.token = result.token;
+                                $window.location.reload();
+                                break;
 
-                        case result.status === false:
-                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                            break;
+                            case result.status === false:
+                                login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                                break;
 
-                        default:
-                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                    }
-
-                    toastAction.show({
-                        top : false,
-                        bottom : true,
-                        left : false,
-                        right : true,
-                        text : login.vars.message,
-                        scope : login
+                            default:
+                                login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                        }
                     });
-                })
+                }else{
+                    login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                }
+
+
+                toastAction.show({
+                    top : false,
+                    bottom : true,
+                    left : false,
+                    right : true,
+                    text : login.vars.message,
+                    scope : login
+                });
             });
         },
 

@@ -99,6 +99,16 @@ angular
                 controllerAs: 'place',
             })
 
+            .state('placeRequest', {
+                url: '/placeRequest',
+                params : {
+                    place : {}
+                },
+                templateUrl: 'templates/modules/placeRequest/placeRequest.html',
+                controller: 'placeRequestController',
+                controllerAs: 'placeRequest',
+            })
+
             .state('login', {
                 url: '/login',
                 templateUrl: 'templates/modules/login/login.html',
@@ -156,7 +166,7 @@ angular
     .module('core')
     .service('defineHost', function () {
         return {
-            host : 'http://192.168.1.103'/*''*/
+            host : /*'http://192.168.1.103'*/''
         };
     });
 })();
