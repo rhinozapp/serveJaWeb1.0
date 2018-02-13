@@ -1,13 +1,80 @@
-.place{
-    .place__imgs{
-        .place__img-logo{
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 1px solid #000;
-        }
-        .place__img-header{
+.place {
+    .place__header {
+        color: $secondary-color;
+        width: 100%;
+        position: relative;
+        box-sizing: border-box;
+        .place__header-info {
+            position: absolute;
+            padding: 10px 0 5px 0;
             width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            .place__img-logo {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                border: 1px solid #000;
+                margin-left: 40px;
+            }
+            .place__name,
+            .place__icon {
+                position: absolute;
+                color: $secondary-color;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                font-size: 1.2em;
+                height: 18px;
+            }
+            .place__name {
+                left: 100px;
+            }
+            .place__icon {
+                left: 10px;
+            }
+            .place__interactions {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 6px;
+                margin: auto;
+                width: 23px;
+                height: 21px;
+                font-size: 1.2em;
+            }
+        }
+        .place__img-bar {
+            width: 100%;
+        }
+    }
+    .place__socials {
+        color: $main-color;
+        text-align: center;
+        margin: 10px 0;
+        .place__social {
+            display: inline-block;
+            width: 23%;
+            .place__social-icon {
+                display: block;
+                font-size: 1.2em;
+            }
+            .place__social-descrip {
+                font-size: .7em;
+            }
+        }
+    }
+    .place__info {
+        color: #616161;
+        .place__info-title {
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+            font-size: 1.5em;
+        }
+        .place__article{
+            margin-bottom: 10px;
+            .place__description{
+                line-height: 23px;
+            }
         }
     }
 }
