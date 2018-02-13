@@ -1,9 +1,0 @@
-{
-  "name": "rhinoz",
-  "app_id": "",
-  "type": "ionic1",
-  "watchPatterns": [],
-  "integrations": {
-    "gulp": {}
-  }
-}

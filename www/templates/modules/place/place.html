@@ -6,6 +6,7 @@
             <a class="place__icon" ui-sref="user.mainList">
                 <i class="fa fa-arrow-left"></i>
             </a>
+
             <ul class="place__interactions">
                 <li class="place__interactions">
                     <a ng-if="!place.vars.favorite" ng-click="place.functions.markFavorite.markFavorite()">
@@ -57,7 +58,6 @@
                 <article class="place__article">
                     <p class="place__description">{{place.vars.dataPub.description}}</p>
                 </article>
-
 
                 <input class="input-default" ng-model="place.vars.search" placeholder="Procurar um produto">
 

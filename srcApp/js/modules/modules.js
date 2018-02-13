@@ -1,5 +1,6 @@
 angular.module('modules', [
     'login',
     'mainList',
-    'place'
+    'place',
+    'placeRequest'
 ]);
