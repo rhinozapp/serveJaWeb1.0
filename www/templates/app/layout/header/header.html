@@ -4,14 +4,15 @@ quando header.vars.profile.status for TRUE ele estará logado com face
 
 <div class="header">
 
-    <button class="btn__default" type="button" ng-if="!header.vars.profile.status" ui-sref="login">
-        Login
-    </button>
+    <div class="content">
+        <button class="btn__default" type="button" ng-if="!header.vars.profile.status" ui-sref="login">
+            Login
+        </button>
 
-
-    <button class="btn__default" type="button" ng-if="header.vars.profile.status" ng-click="header.functions.doLogout()">
-        Logout
-    </button>
+        <button class="btn__default" type="button" ng-if="header.vars.profile.status" ng-click="header.functions.doLogout()">
+            Logout
+        </button>
+    </div>
 
     <ul class="header__actions">
         <li class="header__actions-action">
@@ -41,6 +42,6 @@ quando header.vars.profile.status for TRUE ele estará logado com face
                 <span class="header__actions-descrip">Favoritos</span>
             </a>
         </li>
-    </ul> 
+    </ul>
 
 </div>

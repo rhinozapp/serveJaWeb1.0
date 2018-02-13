@@ -1,1 +1,1 @@
-.place .place__imgs .place__img-logo{width:60px;height:60px;border-radius:50%;border:1px solid #000}.place .place__imgs .place__img-header{width:100%}
+body:before{white-space:pre;font-family:monospace;content:"Error: Undefined variable: \"$secondary-color\".\A         on line 3 of srcApp/sass/components/place.scss\A \A 1: .place {\A 2:     .place__header {\A 3:         color: $secondary-color;\A 4:         width: 100%;\A 5:         position: relative;\A 6:         box-sizing: border-box;\A 7:         .place__header-info {\A 8:             position: absolute;"}
