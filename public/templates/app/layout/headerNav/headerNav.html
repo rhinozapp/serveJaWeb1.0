@@ -23,18 +23,16 @@
             Mesas
         </md-button>
 
+        <md-button ui-sref-active="md-raised" ui-sref="admin.profile" aria-label="Profile">
+            Perfil
+        </md-button>
+
         <md-menu>
             <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
                 <md-icon class="icon-24">more_vert</md-icon>
             </md-button>
 
             <md-menu-content width="3">
-                <md-menu-item>
-                    <md-button ui-sref="admin.profile" aria-label="Profile">
-                        Perfil
-                    </md-button>
-                </md-menu-item>
-
                 <md-menu-item>
                     <md-button aria-label="logout" ng-click="headerNav.functions.doLogout()">
                         Sair

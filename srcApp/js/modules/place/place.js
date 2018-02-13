@@ -177,3 +177,17 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ma
 
     place.functions.core();
 }
+
+/*QRScanner.scan(function (err, text) {
+    if(err){
+        alert("err: "+err);
+        // an error occurred, or the scan was canceled (error code `6`)
+    } else {
+        // The scan completed, display the contents of the QR code:
+        alert("txt: "+text);
+    }
+});
+
+QRScanner.show(function(status){
+    alert("status: "+status);
+});*/

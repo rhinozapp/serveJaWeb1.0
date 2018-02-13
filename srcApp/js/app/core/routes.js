@@ -29,6 +29,16 @@ angular
                 controllerAs: 'place',
             })
 
+            .state('placeRequest', {
+                url: '/placeRequest',
+                params : {
+                    place : {}
+                },
+                templateUrl: 'templates/modules/placeRequest/placeRequest.html',
+                controller: 'placeRequestController',
+                controllerAs: 'placeRequest',
+            })
+
             .state('login', {
                 url: '/login',
                 templateUrl: 'templates/modules/login/login.html',

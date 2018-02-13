@@ -99,6 +99,16 @@ angular
                 controllerAs: 'place',
             })
 
+            .state('placeRequest', {
+                url: '/placeRequest',
+                params : {
+                    place : {}
+                },
+                templateUrl: 'templates/modules/placeRequest/placeRequest.html',
+                controller: 'placeRequestController',
+                controllerAs: 'placeRequest',
+            })
+
             .state('login', {
                 url: '/login',
                 templateUrl: 'templates/modules/login/login.html',
@@ -211,12 +221,15 @@ angular
         if($window.localStorage.token){
             var profile = jwtHelper.decodeToken($window.localStorage.token);
             return {
-                email:profile.email,
-                idFace:profile.idFace,
-                id:profile.id,
-                name:profile.name,
-                photo:profile.photo,
-                token:profile.token,
+                id : profile._id,
+                emailFace: profile.emailFace,
+                emailGoogle: profile.emailGoogle,
+                name : profile.name,
+                photo : profile.photo,
+                tokenFace : profile.tokenFace,
+                tokenGoogle : profile.tokenGoogle,
+                idFace : profile.idFace,
+                idGoogle : profile.idGoogle,
                 status : true
             }
         }else{

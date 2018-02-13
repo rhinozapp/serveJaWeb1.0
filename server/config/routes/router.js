@@ -39,6 +39,9 @@ module.exports = function (app) {
 
     let getProfileWeb = require('./web/modules/profile/getProfile');
     app.post('/web/getProfile', authenticate, getProfileWeb.getProfile);
+
+    let updateHeaderImgProfileWeb = require('./web/modules/profile/updateHeaderImgProfile');
+    app.post('/web/updateHeaderImgProfile', multipart({uploadDir: './public/files/headerImgProfile/'}), updateHeaderImgProfileWeb.updateHeaderImgProfile);
     //endregion
 
     //region Products

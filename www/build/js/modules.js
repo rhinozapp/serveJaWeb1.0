@@ -3,9 +3,192 @@
 angular.module('modules', [
     'login',
     'mainList',
-    'place'
+    'place',
+    'placeRequest'
 ]);
 
+})();
+(function(){
+"use strict";
+angular.module('login', [])
+    .controller('loginController', login);
+
+function login(loginService, $window, toastAction) {
+    var login = this;
+    login.vars = {};
+
+    login.functions = {
+        core : function () {},
+
+        loginFacebook : function () {
+            loginService.doLoginFacebook().then(function (data) {
+                if(data.status){
+                    loginService.recordData.save(data, function (result) {
+                        switch (true){
+                            case result.status === true:
+                                login.vars.message = 'Logado! :)';
+                                $window.localStorage.token = result.token;
+                                $window.location.reload();
+                                break;
+
+                            case result.status === false:
+                                login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                                break;
+
+                            default:
+                                login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                        }
+                    });
+                }else{
+                    login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                }
+
+
+                toastAction.show({
+                    top : false,
+                    bottom : true,
+                    left : false,
+                    right : true,
+                    text : login.vars.message,
+                    scope : login
+                });
+            });
+        },
+
+        loginGoogle : function () {
+            loginService.doLoginGoogle().then(function (data) {
+                loginService.recordData.save(data, function (result) {
+                    switch (true){
+                        case result.status === true:
+                            login.vars.message = 'Logado! :)';
+                            $window.localStorage.token = result.token;
+                            $window.location.reload();
+                            break;
+
+                        case result.status === false:
+                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                            break;
+
+                        default:
+                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                    }
+
+                    toastAction.show({
+                        top : false,
+                        bottom : true,
+                        left : false,
+                        right : true,
+                        text : login.vars.message,
+                        scope : login
+                    });
+                })
+            }, function (err) {
+                toastAction.show({
+                    top : false,
+                    bottom : true,
+                    left : false,
+                    right : true,
+                    text : err,
+                    scope : login
+                });
+            });
+        },
+
+        loginHack : function () {
+            loginService.doLoginHack.save({}, function (result) {
+                $window.localStorage.token = result.token;
+                $window.location.reload();
+            })
+        }
+    };
+
+    login.functions.core();
+}
+})();
+(function(){
+"use strict";
+angular.module('login')
+    .service('loginService', loginService)
+    .factory('authInterceptor', authInterceptor)
+    .config(function ($httpProvider) {
+        $httpProvider.interceptors.push('authInterceptor');
+    });
+
+function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth, $http) {
+    return {
+        doLoginFacebook: function () {
+            return $cordovaOauth.facebook('262613364247603', ['public_profile']).then(function(result) {
+                return $http.get('https://graph.facebook.com/v2.11/me', {
+                    params: {
+                        access_token: result.access_token,
+                        fields: 'name,picture,email',
+                        format: 'json'
+                    }
+                }).success(function (data, status, headers, config) {
+                    return {
+                        dataFacebook : data,
+                        token : result.access_token
+                    };
+                }).error(function (error) {
+                    return {
+                        status : false
+                    };
+                });
+
+            }, function(error) {
+                return {
+                    status : false
+                };
+            });
+        },
+
+        doLoginGoogle : function () {
+            return new Promise(function(success, fail){
+                window.plugins.googleplus.login(
+                    {
+                        'scopes': '',
+                        'webClientId': '675857416832-gkkntadhdgbjs8o19akb071ho7stguki.apps.googleusercontent.com',
+                        'offline': false
+                    },
+                    function (obj) {
+                        success(JSON.stringify(obj)); // do something useful instead of alerting
+                    },
+                    function (msg) {
+                        fail(msg);
+                    }
+                );
+            });
+        },
+
+        doLoginHack : $resource(defineHost.host + '/app/doLoginHack'),
+
+        recordData : $resource(defineHost.host + '/app/doLogin'),
+
+        doLogout : function () {
+            $window.localStorage.clear();
+            $window.location.reload();
+        },
+    };
+}
+
+function authInterceptor($q, $window) {
+    return {
+        request: function (config) {
+            config.headers = config.headers || {};
+
+            if ($window.localStorage.token) {
+                config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
+            }
+            return config;
+        },
+        response: function (response) {
+            if (response.status === 401) {
+                console.log('denied');
+            }
+            return response || $q.when(response);
+        }
+    };
+}
 })();
 (function(){
 "use strict";
@@ -321,187 +504,6 @@ function mainListService($resource, defineHost) {
 })();
 (function(){
 "use strict";
-angular.module('login', [])
-    .controller('loginController', login);
-
-function login(loginService, $window, toastAction) {
-    var login = this;
-    login.vars = {};
-
-    login.functions = {
-        core : function () {},
-
-        loginFacebook : function () {
-            loginService.doLoginFacebook().then(function (data) {
-                loginService.recordData.save(data, function (result) {
-                    switch (true){
-                        case result.status === true:
-                            login.vars.message = 'Logado! :)';
-                            $window.localStorage.token = result.token;
-                            $window.location.reload();
-                            break;
-
-                        case result.status === false:
-                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                            break;
-
-                        default:
-                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                    }
-
-                    toastAction.show({
-                        top : false,
-                        bottom : true,
-                        left : false,
-                        right : true,
-                        text : login.vars.message,
-                        scope : login
-                    });
-                })
-            });
-        },
-
-        loginGoogle : function () {
-            loginService.doLoginGoogle().then(function (data) {
-                loginService.recordData.save(data, function (result) {
-                    switch (true){
-                        case result.status === true:
-                            login.vars.message = 'Logado! :)';
-                            $window.localStorage.token = result.token;
-                            $window.location.reload();
-                            break;
-
-                        case result.status === false:
-                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                            break;
-
-                        default:
-                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                    }
-
-                    toastAction.show({
-                        top : false,
-                        bottom : true,
-                        left : false,
-                        right : true,
-                        text : login.vars.message,
-                        scope : login
-                    });
-                })
-            }, function (err) {
-                toastAction.show({
-                    top : false,
-                    bottom : true,
-                    left : false,
-                    right : true,
-                    text : err,
-                    scope : login
-                });
-            });
-        },
-
-        loginHack : function () {
-            loginService.doLoginHack.save({}, function (result) {
-                $window.localStorage.token = result.token;
-                $window.location.reload();
-            })
-        }
-    };
-
-    login.functions.core();
-}
-})();
-(function(){
-"use strict";
-angular.module('login')
-    .service('loginService', loginService)
-    .factory('authInterceptor', authInterceptor)
-    .config(function ($httpProvider) {
-        $httpProvider.interceptors.push('authInterceptor');
-    });
-
-function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth, $http) {
-    return {
-        doLoginFacebook: function () {
-            return $cordovaOauth.facebook('262613364247603', ['public_profile']).then(function(result) {
-                return $http.get('https://graph.facebook.com/v2.11/me', {
-                    params: {
-                        access_token: result.access_token,
-                        fields: 'name,picture,email',
-                        format: 'json'
-                    }
-                }).success(function (data, status, headers, config) {
-                    return {
-                        dataFacebook : data,
-                        token : result.access_token
-                    };
-                }).error(function (error) {
-                    dialogAlert.show({
-                        title : 'Atenção!',
-                        content : error,
-                        ok : 'OK!'
-                    });
-                });
-
-            }, function(error) {
-                dialogAlert.show({
-                    title : 'Atenção!',
-                    content : error,
-                    ok : 'OK!'
-                });
-            });
-        },
-
-        doLoginGoogle : function () {
-            return new Promise(function(success, fail){
-                window.plugins.googleplus.login(
-                    {
-                        'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
-                        'webClientId': '675857416832-gkkntadhdgbjs8o19akb071ho7stguki.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
-                        'offline': true // optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
-                    },
-                    function (obj) {
-                        success(JSON.stringify(obj)); // do something useful instead of alerting
-                    },
-                    function (msg) {
-                        fail(msg);
-                    }
-                );
-            });
-        },
-
-        doLoginHack : $resource(defineHost.host + '/app/doLoginHack'),
-
-        recordData : $resource(defineHost.host + '/app/doLogin'),
-
-        doLogout : function () {
-            $window.localStorage.clear();
-            $window.location.reload();
-        },
-    };
-}
-
-function authInterceptor($q, $window) {
-    return {
-        request: function (config) {
-            config.headers = config.headers || {};
-
-            if ($window.localStorage.token) {
-                config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
-            }
-            return config;
-        },
-        response: function (response) {
-            if (response.status === 401) {
-                console.log('denied');
-            }
-            return response || $q.when(response);
-        }
-    };
-}
-})();
-(function(){
-"use strict";
 angular.module('place', [])
     .controller('placeController', placeController);
 
@@ -681,6 +683,20 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ma
 
     place.functions.core();
 }
+
+/*QRScanner.scan(function (err, text) {
+    if(err){
+        alert("err: "+err);
+        // an error occurred, or the scan was canceled (error code `6`)
+    } else {
+        // The scan completed, display the contents of the QR code:
+        alert("txt: "+text);
+    }
+});
+
+QRScanner.show(function(status){
+    alert("status: "+status);
+});*/
 })();
 (function(){
 "use strict";
@@ -695,4 +711,11 @@ function placeService($resource, defineHost) {
         markFavorite : $resource(defineHost.host + '/app/markFavorite')
     }
 }
+})();
+(function(){
+"use strict";
+angular.module('placeRequest', [])
+    .controller('placeRequestController', placeRequestController);
+
+function placeRequestController() {}
 })();
