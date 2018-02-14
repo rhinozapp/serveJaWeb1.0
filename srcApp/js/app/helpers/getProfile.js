@@ -4,7 +4,7 @@ angular
         if($window.localStorage.token){
             var profile = jwtHelper.decodeToken($window.localStorage.token);
             return {
-                id : profile._id,
+                id : profile.id,
                 emailFace: profile.emailFace,
                 emailGoogle: profile.emailGoogle,
                 name : profile.name,

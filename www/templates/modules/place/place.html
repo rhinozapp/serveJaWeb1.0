@@ -8,15 +8,16 @@
             </a>
 
             <ul class="place__interactions">
-                <li class="place__interactions">
-                    <a ng-if="!place.vars.favorite" ng-click="place.functions.markFavorite.markFavorite()">
-                        <i class="fa fa-heart"></i>
-                    </a>
+                <li ng-if="!place.vars.favorite"
+                    ng-click="place.functions.markFavorite.markFavorite()"
+                    class="place__interactions">
+                    <i class="fa fa-heart"></i>
                 </li>
-                <li class="place__interactions">
-                    <a ng-if="place.vars.favorite" ng-click="place.functions.notFavorite.notFavorite()">
-                        <i class="fa fa-instagram"></i>
-                    </a>
+
+                <li ng-if="place.vars.favorite"
+                    ng-click="place.functions.notFavorite.notFavorite()"
+                    class="place__interactions">
+                    <i class="fa fa-instagram"></i>
                 </li>
             </ul>
         </div>
@@ -54,7 +55,7 @@
     <div class="content">
         <button class="btn__default" type="button" ng-click="place.functions.QrCode()">Iniciar pedido</button>
         <section class="place__info">
-            <h2 class="place__info-title">Sobre o bar</h3>
+            <h2 class="place__info-title">Sobre o bar</h2>
                 <article class="place__article">
                     <p class="place__description">{{place.vars.dataPub.description}}</p>
                 </article>

@@ -2,6 +2,8 @@ exports.markFavorite = function (req, res) {
     let mongoose = require('mongoose'),
         favorites = mongoose.model('favorites');
 
+    console.log(req.body.place._id);
+
     favorites.update({
         userID: req.body.userID
     }, {

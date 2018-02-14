@@ -650,6 +650,12 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ma
                     place.vars.favorite = $.grep(data.data, function(value){
                         return value.userID === place.vars.dataPub.userID;
                     });
+
+                    if(place.vars.favorite.length > 0){
+                        place.vars.favorite = true;
+                    }else{
+                        place.vars.favorite = false;
+                    }
                 }
             }
         },
