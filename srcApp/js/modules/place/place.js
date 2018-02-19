@@ -1,7 +1,7 @@
 angular.module('place', [])
     .controller('placeController', placeController);
 
-function placeController($stateParams, $scope, $filter, $state, placeService, mainListService, externalLink, getProfile){
+function placeController($stateParams, $state, placeService, mainListService, externalLink, getProfile){
     var place = this;
     place.vars = {};
 
@@ -27,6 +27,7 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ma
                     place.vars.userLong = $stateParams.place.userLocal.long;
                     place.vars.listByCategory = [];
                     place.vars.listPromotion = [];
+                    place.vars.statusUser = getProfile.status;
                     success();
                 }else{
                     fail();
@@ -178,22 +179,20 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ma
             successNotFavorite : function () {
                 place.vars.favorite = !place.vars.favorite;
             }
-        }
+        },
+
+        takeQRCode : function () {
+            $state.go('QRCodeReader', {
+                place : {
+                    pubData : place.vars.dataPub,
+                    userLocal : {
+                        lat : place.vars.userLat,
+                        long : place.vars.userLong
+                    }
+                }
+            });
+        },
     };
 
     place.functions.core();
 }
-
-/*QRScanner.scan(function (err, text) {
-    if(err){
-        alert("err: "+err);
-        // an error occurred, or the scan was canceled (error code `6`)
-    } else {
-        // The scan completed, display the contents of the QR code:
-        alert("txt: "+text);
-    }
-});
-
-QRScanner.show(function(status){
-    alert("status: "+status);
-});*/

@@ -1,5 +1,5 @@
 //region Include gulp
-var gulp = require('gulp'),
+let gulp = require('gulp'),
     concat = require('gulp-concat'),
     concatCss = require('gulp-concat-css'),
     rename = require('gulp-rename'),
@@ -11,7 +11,7 @@ var gulp = require('gulp'),
 //endregion
 
 //region Define base folders www
-var src = 'srcApp/',
+let src = 'srcApp/',
     dest = 'www/build/',
     bower = 'bower_components/',
     App = 'srcApp/js/app/',
@@ -20,7 +20,7 @@ var src = 'srcApp/',
 //endregion
 
 //region Define base folders web
-var srcWeb = 'srcWeb/',
+let srcWeb = 'srcWeb/',
     destWeb = 'public/build/',
     AppWeb = 'srcWeb/js/app/',
     modulesWeb = 'srcWeb/js/modules/';

@@ -39,6 +39,16 @@ angular
                 controllerAs: 'placeRequest',
             })
 
+            .state('QRCodeReader', {
+                url: '/QRCodeReader',
+                params : {
+                    place : {}
+                },
+                templateUrl: 'templates/modules/QRCodeReader/QRCodeReader.html',
+                controller: 'QRCodeReaderController',
+                controllerAs: 'QRCodeReader',
+            })
+
             .state('login', {
                 url: '/login',
                 templateUrl: 'templates/modules/login/login.html',

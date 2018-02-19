@@ -4,7 +4,8 @@ angular.module('modules', [
     'login',
     'mainList',
     'place',
-    'placeRequest'
+    'placeRequest',
+    'QRCodeReader'
 ]);
 
 })();
@@ -507,7 +508,7 @@ function mainListService($resource, defineHost) {
 angular.module('place', [])
     .controller('placeController', placeController);
 
-function placeController($stateParams, $scope, $filter, $state, placeService, mainListService, externalLink, getProfile){
+function placeController($stateParams, $state, placeService, mainListService, externalLink, getProfile){
     var place = this;
     place.vars = {};
 
@@ -533,6 +534,7 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ma
                     place.vars.userLong = $stateParams.place.userLocal.long;
                     place.vars.listByCategory = [];
                     place.vars.listPromotion = [];
+                    place.vars.statusUser = getProfile.status;
                     success();
                 }else{
                     fail();
@@ -684,25 +686,23 @@ function placeController($stateParams, $scope, $filter, $state, placeService, ma
             successNotFavorite : function () {
                 place.vars.favorite = !place.vars.favorite;
             }
-        }
+        },
+
+        takeQRCode : function () {
+            $state.go('QRCodeReader', {
+                place : {
+                    pubData : place.vars.dataPub,
+                    userLocal : {
+                        lat : place.vars.userLat,
+                        long : place.vars.userLong
+                    }
+                }
+            });
+        },
     };
 
     place.functions.core();
 }
-
-/*QRScanner.scan(function (err, text) {
-    if(err){
-        alert("err: "+err);
-        // an error occurred, or the scan was canceled (error code `6`)
-    } else {
-        // The scan completed, display the contents of the QR code:
-        alert("txt: "+text);
-    }
-});
-
-QRScanner.show(function(status){
-    alert("status: "+status);
-});*/
 })();
 (function(){
 "use strict";
@@ -724,4 +724,59 @@ angular.module('placeRequest', [])
     .controller('placeRequestController', placeRequestController);
 
 function placeRequestController() {}
+})();
+(function(){
+"use strict";
+angular.module('QRCodeReader', [])
+    .controller('QRCodeReaderController', QRCodeReaderController);
+
+function QRCodeReaderController($stateParams, $state, getProfile, toastAction, saveLastAction) {
+    var QRCodeReader = this;
+    QRCodeReader.vars = {};
+
+    QRCodeReader.functions = {
+        core : function () {
+            QRCodeReader.functions.initScan();
+        },
+
+        initScan : function () {
+            if(getProfile.status){
+                QRScanner.scan(function (err, text){
+                    if(err){
+                        console.log(err);
+                    } else {
+                        console.log(text);
+                        QRScanner.hide();
+                        $state.go('user.mainList');
+                    }
+                });
+
+                QRScanner.show(function(status){});
+            }else{
+                toastAction.show({
+                    top : false,
+                    bottom : true,
+                    left : false,
+                    right : true,
+                    text : 'É necessário realizar o login antes de iniciar o pedido',
+                    scope : QRCodeReader
+                });
+                saveLastAction.save({
+                    module : 'placeRequest',
+                    data : $stateParams.place,
+                    action : 'initRequest'
+                });
+                $state.go('login');
+            }
+        },
+
+        cancelScan : function () {
+            QRScanner.cancelScan();
+            QRScanner.hide();
+            $state.go('user.mainList');
+        }
+    };
+
+    QRCodeReader.functions.core();
+}
 })();

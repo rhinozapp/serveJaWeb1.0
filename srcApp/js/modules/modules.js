@@ -2,5 +2,6 @@ angular.module('modules', [
     'login',
     'mainList',
     'place',
-    'placeRequest'
+    'placeRequest',
+    'QRCodeReader'
 ]);

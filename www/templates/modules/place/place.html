@@ -7,7 +7,7 @@
                 <i class="fa fa-arrow-left"></i>
             </a>
 
-            <ul class="place__interactions">
+            <ul class="place__interactions" ng-if="place.vars.statusUser">
                 <li ng-if="!place.vars.favorite"
                     ng-click="place.functions.markFavorite.markFavorite()"
                     class="place__interactions">
@@ -53,7 +53,7 @@
     </ul>
 
     <div class="content">
-        <button class="btn__default" type="button" ng-click="place.functions.QrCode()">Iniciar pedido</button>
+        <button class="btn__default" type="button" ng-click="place.functions.takeQRCode()">Iniciar pedido</button>
         <section class="place__info">
             <h2 class="place__info-title">Sobre o bar</h2>
                 <article class="place__article">
