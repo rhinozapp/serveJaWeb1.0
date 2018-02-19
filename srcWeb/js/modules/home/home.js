@@ -5,25 +5,25 @@ function home(dialogAdvanced) {
     var home = this;
 
     home.functions = {
-        core : function () {},
+        core: function() {},
 
-        doLogin : function () {
+        doLogin: function() {
             dialogAdvanced.show({
-                controller : loginController,
-                controllerAs : 'login',
-                templateUrl : 'templates/modules/home/loginDialog.html',
-                clickOutsideToClose : false
-                /*functionThen : function () {}*/
+                controller: loginController,
+                controllerAs: 'login',
+                templateUrl: 'templates/modules/home/loginDialog.html',
+                clickOutsideToClose: false
+                    /*functionThen : function () {}*/
             });
         },
 
-        signUp : function () {
+        signUp: function() {
             dialogAdvanced.show({
-                controller : signUPController,
-                controllerAs : 'signUP',
-                templateUrl : 'templates/modules/home/signUPDialog.html',
-                clickOutsideToClose : false
-                /*functionThen : function () {}*/
+                controller: signUPController,
+                controllerAs: 'signUP',
+                templateUrl: 'templates/modules/home/signUPDialog.html',
+                clickOutsideToClose: false
+                    /*functionThen : function () {}*/
             });
         }
     };
@@ -36,12 +36,12 @@ function loginController($scope, dialogAdvanced, loginService, recoveryPasswordS
     login.vars = {};
 
     login.functions = {
-        core : function () {},
+        core: function() {},
 
-        loginAction : function () {
-            loginService.doLogin.save(login.vars, function (data) {
+        loginAction: function() {
+            loginService.doLogin.save(login.vars, function(data) {
                 console.log(data.status === true);
-                switch (true){
+                switch (true) {
                     case data.status === true:
                         login.vars.alert = false;
 
@@ -61,9 +61,9 @@ function loginController($scope, dialogAdvanced, loginService, recoveryPasswordS
             });
         },
 
-        recoveryPasswordSend : function () {
-            recoveryPasswordService.recoveryPasswordSend.save(login.vars, function (data) {
-                switch (true){
+        recoveryPasswordSend: function() {
+            recoveryPasswordService.recoveryPasswordSend.save(login.vars, function(data) {
+                switch (true) {
                     case data.status === true:
                         login.vars.alert = true;
                         login.vars.message = 'Enviamos um link para recuperação de senha, veja seu e-mail e clique no link para alterá-la.';
@@ -79,17 +79,17 @@ function loginController($scope, dialogAdvanced, loginService, recoveryPasswordS
             });
         },
 
-        signUP : function () {
+        signUP: function() {
             dialogAdvanced.show({
-                controller : signUPController,
-                controllerAs : 'signUP',
-                templateUrl : 'templates/modules/home/signUPDialog.html',
-                clickOutsideToClose : false
-                /*functionThen : function () {}*/
+                controller: signUPController,
+                controllerAs: 'signUP',
+                templateUrl: 'templates/modules/home/signUPDialog.html',
+                clickOutsideToClose: false
+                    /*functionThen : function () {}*/
             });
         },
 
-        cancel : function () {
+        cancel: function() {
             dialogAdvanced.cancel();
         }
     };
@@ -100,12 +100,12 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
     signUP.vars = {};
 
     signUP.functions = {
-        core : function () {
+        core: function() {
             signUP.functions.defineVars();
             signUP.functions.watchMatch();
         },
 
-        defineVars : function () {
+        defineVars: function() {
             signUP.vars.listUF = [
                 'SP',
                 'AC',
@@ -137,28 +137,28 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
             ];
         },
 
-        watchMatch : function () {
-            $scope.$watchGroup(['signUP.vars.password', 'signUP.vars.repPassword'], function (value) {
-                if(value[0] !== value[1]){
+        watchMatch: function() {
+            $scope.$watchGroup(['signUP.vars.password', 'signUP.vars.repPassword'], function(value) {
+                if (value[0] !== value[1]) {
                     $scope.adminSignUp.password.$setValidity('notMatch', false);
                     $scope.adminSignUp.repPassword.$setValidity('notMatch', false);
-                }else{
+                } else {
                     $scope.adminSignUp.password.$setValidity('notMatch', true);
                     $scope.adminSignUp.repPassword.$setValidity('notMatch', true);
                 }
             });
         },
 
-        checkCNPJ : function () {
-            if(signUP.vars.cnpj==='00000000000000'){
+        checkCNPJ: function() {
+            if (signUP.vars.cnpj === '00000000000000') {
                 $scope.adminSignUp.cnpj.$setValidity('void', false);
             }
         },
 
-        zipCodeChange : function () {
+        zipCodeChange: function() {
             signUP.vars.zipCode = signUP.vars.zipCode.replace('-', '');
-            if(signUP.vars.zipCode.length >= 8){
-                zipCodeSearch.getData(signUP.vars).then(function (data) {
+            if (signUP.vars.zipCode.length >= 8) {
+                zipCodeSearch.getData(signUP.vars).then(function(data) {
                     signUP.vars.address = data.address.logradouro;
                     /*signUP.vars.complement = data.address.complemento;*/
                     signUP.vars.neighborhood = data.address.bairro;
@@ -171,9 +171,35 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
             }
         },
 
-        signUPAction : function () {
-            loginService.signUP.save(signUP.vars, function (data) {
-                switch (true){
+        usernameChange: function() {
+            loginService.usernameValidation.save(signUP.vars, function(data) {
+                switch (true) {
+                    case data.status === true:
+                        //The user does not exist in our database. We can go on.
+                        signUP.vars.noAlert = true;
+                        break;
+
+                    case data.status === false:
+                        signUP.vars.noAlert = false;
+                        signUP.vars.message = data.message;
+                        break;
+
+                    default:
+                        signUP.vars.message = data.message;
+                }
+                if (!signUP.vars.noAlert) {
+                    dialogAlert.show({
+                        title: 'Atenção',
+                        content: signUP.vars.message,
+                        ok: 'Ok'
+                    });
+                }
+            })
+        },
+
+        signUPAction: function() {
+            loginService.signUP.save(signUP.vars, function(data) {
+                switch (true) {
                     case data.status === true:
                         signUP.vars.message = 'Você foi cadastrado com sucesso!';
                         $window.localStorage.token = data.token;
@@ -181,7 +207,7 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
                         break;
 
                     case data.status === false:
-                        signUP.vars.message = 'Alguma coisa deu errado, tente novamente :(!';
+                        signUP.vars.message = data.message;
                         break;
 
                     default:
@@ -189,14 +215,14 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
                 }
 
                 dialogAlert.show({
-                    title : 'Atenção',
-                    content : signUP.vars.message,
-                    ok : 'Ok'
+                    title: 'Atenção',
+                    content: signUP.vars.message,
+                    ok: 'Ok'
                 });
             });
         },
 
-        cancel : function () {
+        cancel: function() {
             dialogAdvanced.cancel();
         }
     };

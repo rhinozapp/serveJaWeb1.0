@@ -22,8 +22,7 @@
 
             <div class="modal__info">
                 <label class="modal__label">E-mail</label>
-                <input class="modal__input" name="email" ng-model="signUP.vars.username" type="email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/"
-                    required>
+                <input class="modal__input" name="email" ng-model="signUP.vars.username" type="email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" required ng-change="signUP.functions.usernameChange()">
                 <div ng-messages="adminSignUp.email.$error" ng-if="adminSignUp.email.$touched">
                     <div class="model__empty-msg" ng-message="required">E-mail não pode ser vazio.</div>
                     <div class="model__empty-msg" ng-message="pattern">Digite um E-mail válido.</div>
@@ -50,8 +49,7 @@
 
             <div class="modal__info modal__half">
                 <label class="modal__label">CNPJ</label>
-                <input class="modal__input" name="cnpj" ng-model="signUP.vars.cnpj" type="text" ng-cnpj ng-change="signUP.functions.checkCNPJ()"
-                    ui-mask="99.999.999/9999-99" ui-options="{addDefaultPlaceholder : false}" required>
+                <input class="modal__input" name="cnpj" ng-model="signUP.vars.cnpj" type="text" ng-cnpj ng-change="signUP.functions.checkCNPJ()" ui-mask="99.999.999/9999-99" ui-options="{addDefaultPlaceholder : false}" required>
                 <div ng-messages="adminSignUp.cnpj.$error" ng-if="adminSignUp.cnpj.$touched">
                     <div class="model__empty-msg" ng-message="required">CNPJ não pode ser vazio.</div>
                     <div class="model__empty-msg" ng-message="cnpj">Digite um CNPJ válido.</div>
@@ -61,8 +59,7 @@
 
             <div class="modal__info modal__half">
                 <label class="modal__label">CEP</label>
-                <input class="modal__input" type="text" name="zipCode" ng-model="signUP.vars.zipCode" ng-change="signUP.functions.zipCodeChange()"
-                    ui-mask="99999-999" ui-options="{addDefaultPlaceholder : false}" required>
+                <input class="modal__input" type="text" name="zipCode" ng-model="signUP.vars.zipCode" ng-change="signUP.functions.zipCodeChange()" ui-mask="99999-999" ui-options="{addDefaultPlaceholder : false}" required>
                 <div ng-messages="adminSignUp.zipCode.$error" ng-if="adminSignUp.zipCode.$touched">
                     <div class="model__empty-msg" ng-message="required">CEP não pode estar vazio.</div>
                 </div>
