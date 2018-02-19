@@ -189,23 +189,17 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
                 switch (true) {
                     case data.status === true:
                         //The user does not exist in our database. We can go on.
-                        signUP.vars.noAlert = true;
+                        signUP.vars.userExist = false;
                         break;
 
                     case data.status === false:
-                        signUP.vars.noAlert = false;
+                        //The user exist in our database. We should alert and stop him
+                        signUP.vars.userExist = true;
                         signUP.vars.message = data.message;
                         break;
 
                     default:
                         signUP.vars.message = data.message;
-                }
-                if (!signUP.vars.noAlert) {
-                    dialogAlert.show({
-                        title: 'Atenção',
-                        content: signUP.vars.message,
-                        ok: 'Ok'
-                    });
                 }
             })
         },

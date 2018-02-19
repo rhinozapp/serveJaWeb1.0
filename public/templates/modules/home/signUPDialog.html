@@ -27,6 +27,8 @@
                     <div class="model__empty-msg" ng-message="required">E-mail não pode ser vazio.</div>
                     <div class="model__empty-msg" ng-message="pattern">Digite um E-mail válido.</div>
                 </div>
+                <div class="model__empty-msg" ng-show="signUP.vars.userExist">{{signUP.vars.message}}.</div>
+
             </div>
 
             <div class="modal__info modal__half">
@@ -115,6 +117,7 @@
 
         <button class="btn-default btn-right" ng-click="signUP.functions.signUPAction()" ng-disabled="!signUP.vars.name ||
                    !signUP.vars.username ||
+                   signUP.vars.userExist ||
                    !signUP.vars.cnpj ||
                    !signUP.vars.zipCode ||
                    !signUP.vars.address ||
