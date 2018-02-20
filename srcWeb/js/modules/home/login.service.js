@@ -5,15 +5,16 @@
 angular.module('home')
     .service('loginService', loginService)
     .factory('authInterceptor', authInterceptor)
-    .config(function ($httpProvider) {
+    .config(function($httpProvider) {
         $httpProvider.interceptors.push('authInterceptor');
     });
 
 function loginService($window, $resource, defineHost) {
     return {
-        signUP : $resource(defineHost.host + '/web/signUp'),
+        signUP: $resource(defineHost.host + '/web/signUp'),
+        usernameValidation: $resource(defineHost.host + '/web/usernameValidation'),
         doLogin: $resource(defineHost.host + '/web/doLogin'),
-        doLogout : function () {
+        doLogout: function() {
             $window.localStorage.clear();
             $window.location.reload();
         }
@@ -22,7 +23,7 @@ function loginService($window, $resource, defineHost) {
 
 function authInterceptor($q, $window) {
     return {
-        request: function (config) {
+        request: function(config) {
             config.headers = config.headers || {};
 
             if ($window.localStorage.token) {
@@ -30,7 +31,7 @@ function authInterceptor($q, $window) {
             }
             return config;
         },
-        response: function (response) {
+        response: function(response) {
             if (response.status === 401) {
                 console.log('denied');
             }

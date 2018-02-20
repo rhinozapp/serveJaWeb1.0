@@ -1,4 +1,4 @@
-exports.signup = function (req, res) {
+exports.signup = function(req, res) {
     let mongoose = require('mongoose'),
         userAdmin = mongoose.model('userAdmin'),
         userProfile = mongoose.model('userAdminProfile'),
@@ -10,44 +10,44 @@ exports.signup = function (req, res) {
 
     new userAdmin({
         email: req.body.username,
-        password : bcrypt.hashSync(req.body.password, salt)
-    }).save().then(function (data) {
+        password: bcrypt.hashSync(req.body.password, salt)
+    }).save().then(function(data) {
         new userProfile({
-            userID : data._id,
+            userID: data._id,
             name: req.body.name,
-            cnpj : req.body.cnpj,
+            cnpj: req.body.cnpj,
             zipCode: req.body.zipCode,
-            address : req.body.address ,
-            number : req.body.number ,
-            complement : req.body.complement ,
-            neighborhood : req.body.neighborhood ,
-            city : req.body.city ,
-            uf : req.body.uf ,
-            loc : {
-                'type' : 'Point',
+            address: req.body.address,
+            number: req.body.number,
+            complement: req.body.complement,
+            neighborhood: req.body.neighborhood,
+            city: req.body.city,
+            uf: req.body.uf,
+            loc: {
+                'type': 'Point',
                 coordinates: [req.body.long, req.body.lat]
             },
-            statusLoc : req.body.status,
-        }).save().then(function (data) {
+            statusLoc: req.body.status,
+        }).save().then(function(data) {
             token = jwt.sign({
-                id : data.userID,
-                email : req.body.username,
-                name : req.body.name
+                id: data.userID,
+                email: req.body.username,
+                name: req.body.name
             }, 'rhinoz', { expiresIn: '12h' });
 
             res.json({
-                status : true,
-                token : token
+                status: true,
+                token: token
             });
 
-        }, function (err) {
+        }, function(err) {
             logger.log('error', err);
-            res.json({status : false});
+            res.json({ status: false, message: 'Houve um erro inesperado ao salvar suas coordenadas :( Por favor, contate o administrador.' });
         });
 
-    }, function (err) {
+    }, function(err) {
         logger.log('error', err);
-        res.json({status : false});
+        res.json({ status: false, message: 'Houve um erro ao cadastrar este e-mail e senha. Tem certeza que você já não é nosso cliente? :)' });
 
     });
 };

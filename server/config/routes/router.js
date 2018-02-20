@@ -1,4 +1,4 @@
-module.exports = function (app) {
+module.exports = function(app) {
     let path = require('path'),
         appDir = path.dirname(require.main.filename),
         multipart = require('connect-multiparty'),
@@ -20,6 +20,9 @@ module.exports = function (app) {
 
     let doLoginWeb = require('./web/modules/login/doLogin');
     app.post('/web/doLogin', doLoginWeb.doLogin);
+
+    let usernameValidationWeb = require('./web/modules/login/usernameValidation');
+    app.post('/web/usernameValidation', usernameValidationWeb.usernameValidation);
     //endregion
 
     //region Recovery Password
@@ -35,18 +38,18 @@ module.exports = function (app) {
 
     //region Profile
     let updateProfileWeb = require('./web/modules/profile/updateProfile');
-    app.post('/web/updateProfile', multipart({uploadDir: './public/files/logoProfile/'}), updateProfileWeb.updateProfile);
+    app.post('/web/updateProfile', multipart({ uploadDir: './public/files/logoProfile/' }), updateProfileWeb.updateProfile);
 
     let getProfileWeb = require('./web/modules/profile/getProfile');
     app.post('/web/getProfile', authenticate, getProfileWeb.getProfile);
 
     let updateHeaderImgProfileWeb = require('./web/modules/profile/updateHeaderImgProfile');
-    app.post('/web/updateHeaderImgProfile', multipart({uploadDir: './public/files/headerImgProfile/'}), updateHeaderImgProfileWeb.updateHeaderImgProfile);
+    app.post('/web/updateHeaderImgProfile', multipart({ uploadDir: './public/files/headerImgProfile/' }), updateHeaderImgProfileWeb.updateHeaderImgProfile);
     //endregion
 
     //region Products
     let saveProductsWeb = require('./web/modules/products/saveProducts');
-    app.post('/web/saveProducts', multipart({uploadDir: './public/files/imgProducts/'}), saveProductsWeb.saveProducts);
+    app.post('/web/saveProducts', multipart({ uploadDir: './public/files/imgProducts/' }), saveProductsWeb.saveProducts);
 
     let getProductsWeb = require('./web/modules/products/getProducts');
     app.post('/web/getProducts', authenticate, getProductsWeb.getProducts);
@@ -120,7 +123,7 @@ module.exports = function (app) {
     //endregion
 
     //region Response
-    app.get('*', function (req, res) {
+    app.get('*', function(req, res) {
         res.sendFile(appDir + '/www/index.html');
     });
     //endregion
