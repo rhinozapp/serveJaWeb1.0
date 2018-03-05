@@ -10,7 +10,7 @@
   "cordova-plugin-inappbrowser": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-inappbrowser@1.7.1"
+      "id": "cordova-plugin-inappbrowser@^1.7.1"
     },
     "is_top_level": true,
     "variables": {}
@@ -18,7 +18,7 @@
   "cordova-plugin-googleplus": {
     "source": {
       "type": "registry",
-      "id": "https://github.com/EddyVerbruggen/cordova-plugin-googleplus"
+      "id": "git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git"
     },
     "is_top_level": true,
     "variables": {
@@ -28,7 +28,7 @@
   "cordova-plugin-qrscanner": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-qrscanner"
+      "id": "cordova-plugin-qrscanner@^2.5.0"
     },
     "is_top_level": true,
     "variables": {}
