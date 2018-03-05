@@ -2,30 +2,44 @@
     position: relative;
     .welcome__video {
         width: 100%;
-    }
-    .welcome__msg {
-        font-size: 4em;
-        color: #fff;
-        display: block;
-        text-align: center;
-        position: absolute;
-        text-shadow: 1px 1px 1px #000;
-        right: 0;
-        left: 0;
-        margin: auto;
-        -webkit-animation: text-appears 3s ease-in-out;
-        animation: text-appears 3s ease-in-out;
-        @media (min-width: $break-to-mobile) {
-            bottom: 190px;
-        }
         @media (max-width: $break-to-mobile){
-            font-size: 2em;
+            display: none;
         }
-        @media (min-width: 1125px) {
-            bottom: 280px;
+    }
+    .welcom__bg-mobile{
+        position: relative;
+        display: none;
+        background: url(/files/img/index-welcome-bg.jpg) no-repeat;
+        background-size: cover; 
+        @media (max-width: $break-to-mobile){
+            display: block;
         }
-        @media (min-width: 1200px) {
-            bottom: 320px;
+        .welcome__msg {
+            font-size: 4em;
+            color: #fff;
+            display: block;
+            text-align: center;
+            position: absolute;
+            text-shadow: 1px 1px 1px #000;
+            right: 0;
+            left: 0;
+            margin: auto;
+            -webkit-animation: text-appears 3s ease-in-out;
+            animation: text-appears 3s ease-in-out;
+            @media (min-width: $break-to-mobile) {
+                bottom: 190px;
+            }
+            @media (max-width: $break-to-mobile){
+                font-size: 2em;
+                position: relative;
+                padding: 40% 0 30% 0;
+            }
+            @media (min-width: 1125px) {
+                bottom: 280px;
+            }
+            @media (min-width: 1200px) {
+                bottom: 320px;
+            }
         }
     }
 }   
