@@ -94,8 +94,9 @@ exports.updateProfile = function (req, res) {
     //endregion
 
     //region If file
+    console.log(req.files.file);
     if(req.files.file){
-        fileName = req.files.file.path.split('logoProfile\\');
+        fileName = req.files.file.path.split('logoProfile/');
         files += fileName[1];
 
         userProfile.update({

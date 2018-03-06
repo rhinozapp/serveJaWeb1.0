@@ -1,7 +1,7 @@
 <div class="place">
     <div class="place__header">
         <div class="place__header-info">
-            <img class="place__img-logo" ng-src="http://192.168.1.103/files/logoProfile/{{place.vars.dataPub.logoPath}}">
+            <img class="place__img-logo" ng-src="http://localhost/files/logoProfile/{{place.vars.dataPub.logoPath}}">
             <div class="place__name">{{place.vars.dataPub.name}} </div>
             <a class="place__icon" ui-sref="user.mainList">
                 <i class="fa fa-arrow-left"></i>
@@ -21,8 +21,7 @@
                 </li>
             </ul>
         </div>
-        <img class="place__img-bar" src="https://ritzcarlton-h.assetsadobe.com/is/image/content/dam/the-ritz-carlton/hotels/europe/spain/tenerife-abama/assetmigration/RCABAMA_00236_conversion.png?$XlargeViewport100pct$"
-            alt="">
+        <img class="place__img-bar" ng-src="http://localhost/files/headerImgProfile/{{place.vars.dataPub.headerImgPath}}" alt="he">
     </div>
 
     <ul class="place__socials">

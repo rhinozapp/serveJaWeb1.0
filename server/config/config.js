@@ -48,21 +48,21 @@ module.exports = function(app, http) {
     app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
     app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
     app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
-    app.use(express.static('./public/'));
-    app.use('/app', express.static('./www/'));
-    app.use(cors({origin: 'http://localhost:80', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
+    app.use(express.static(process.cwd()+'/public/'));
+    app.use('/app', express.static(process.cwd()+'/www/'));
+    /*app.use(cors({origin: 'http://localhost:3000', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
     app.use(cors({origin: 'http://192.168.1.103:80', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
     app.use(cors({origin: 'http://localhost:8100', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
     app.use(cors({origin: 'http://maps.google.com', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
     app.use(cors({origin: 'https://viacep.com.br', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
     app.use(cors({origin: 'https://rhinozapp.herokuapp.com', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
-    app.use(cors({origin: 'https://rhinozapp.herokuapp.com:42701', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
+    app.use(cors({origin: 'https://rhinozapp.herokuapp.com:42701', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));*/
     app.options('*', cors());
     //endregion
 
     //region Consign
     consign({
-            cwd: process.cwd() + '\\server\\config',
+            cwd: /*process.cwd() + */'./server/config',
             verbose: false
         })
         .include('models')

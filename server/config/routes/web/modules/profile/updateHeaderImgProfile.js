@@ -8,7 +8,7 @@ exports.updateHeaderImgProfile = function (req, res) {
 
     //region If file
     if(req.files.file){
-        fileName = req.files.file.path.split('headerImgProfile\\');
+        fileName = req.files.file.path.split('headerImgProfile/');
         files += fileName[1];
 
         userProfile.update({

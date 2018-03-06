@@ -11,6 +11,61 @@ angular.module('modules', [
 })();
 (function(){
 "use strict";
+angular.module('QRCodeReader', [])
+    .controller('QRCodeReaderController', QRCodeReaderController);
+
+function QRCodeReaderController($stateParams, $state, getProfile, toastAction, saveLastAction) {
+    var QRCodeReader = this;
+    QRCodeReader.vars = {};
+
+    QRCodeReader.functions = {
+        core : function () {
+            QRCodeReader.functions.initScan();
+        },
+
+        initScan : function () {
+            if(getProfile.status){
+                QRScanner.scan(function (err, text){
+                    if(err){
+                        console.log(err);
+                    } else {
+                        console.log(text);
+                        QRScanner.hide();
+                        $state.go('user.mainList');
+                    }
+                });
+
+                QRScanner.show(function(status){});
+            }else{
+                toastAction.show({
+                    top : false,
+                    bottom : true,
+                    left : false,
+                    right : true,
+                    text : 'É necessário realizar o login antes de iniciar o pedido',
+                    scope : QRCodeReader
+                });
+                saveLastAction.save({
+                    module : 'placeRequest',
+                    data : $stateParams.place,
+                    action : 'initRequest'
+                });
+                $state.go('login');
+            }
+        },
+
+        cancelScan : function () {
+            QRScanner.cancelScan();
+            QRScanner.hide();
+            $state.go('user.mainList');
+        }
+    };
+
+    QRCodeReader.functions.core();
+}
+})();
+(function(){
+"use strict";
 angular.module('login', [])
     .controller('loginController', login);
 
@@ -44,7 +99,6 @@ function login(loginService, $window, toastAction) {
                     login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
                 }
 
-
                 toastAction.show({
                     top : false,
                     bottom : true,
@@ -58,38 +112,42 @@ function login(loginService, $window, toastAction) {
 
         loginGoogle : function () {
             loginService.doLoginGoogle().then(function (data) {
-                loginService.recordData.save(data, function (result) {
-                    switch (true){
-                        case result.status === true:
-                            login.vars.message = 'Logado! :)';
-                            $window.localStorage.token = result.token;
-                            $window.location.reload();
-                            break;
+                if(data.status){
+                    loginService.recordData.save(data, function (result) {
+                        switch (true){
+                            case result.status === true:
+                                login.vars.message = 'Logado! :)';
+                                $window.localStorage.token = result.token;
+                                $window.location.reload();
+                                break;
 
-                        case result.status === false:
-                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                            break;
+                            case result.status === false:
+                                login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                                break;
 
-                        default:
-                            login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
-                    }
+                            default:
+                                login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                        }
+                    })
+                }else{
+                    login.vars.message = 'Alguma coisa deu errado, tente novamente :(';
+                }
 
-                    toastAction.show({
-                        top : false,
-                        bottom : true,
-                        left : false,
-                        right : true,
-                        text : login.vars.message,
-                        scope : login
-                    });
-                })
+                toastAction.show({
+                    top : false,
+                    bottom : true,
+                    left : false,
+                    right : true,
+                    text : login.vars.message,
+                    scope : login
+                });
             }, function (err) {
                 toastAction.show({
                     top : false,
                     bottom : true,
                     left : false,
                     right : true,
-                    text : err,
+                    text : 'Alguma coisa deu errado, tente novamente :(',
                     scope : login
                 });
             });
@@ -144,7 +202,7 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
         },
 
         doLoginGoogle : function () {
-            return new Promise(function(success, fail){
+            return new Promise(function(success){
                 window.plugins.googleplus.login(
                     {
                         'scopes': '',
@@ -155,7 +213,9 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
                         success(JSON.stringify(obj)); // do something useful instead of alerting
                     },
                     function (msg) {
-                        fail(msg);
+                        success({
+                            status : false
+                        });
                     }
                 );
             });
@@ -724,59 +784,4 @@ angular.module('placeRequest', [])
     .controller('placeRequestController', placeRequestController);
 
 function placeRequestController() {}
-})();
-(function(){
-"use strict";
-angular.module('QRCodeReader', [])
-    .controller('QRCodeReaderController', QRCodeReaderController);
-
-function QRCodeReaderController($stateParams, $state, getProfile, toastAction, saveLastAction) {
-    var QRCodeReader = this;
-    QRCodeReader.vars = {};
-
-    QRCodeReader.functions = {
-        core : function () {
-            QRCodeReader.functions.initScan();
-        },
-
-        initScan : function () {
-            if(getProfile.status){
-                QRScanner.scan(function (err, text){
-                    if(err){
-                        console.log(err);
-                    } else {
-                        console.log(text);
-                        QRScanner.hide();
-                        $state.go('user.mainList');
-                    }
-                });
-
-                QRScanner.show(function(status){});
-            }else{
-                toastAction.show({
-                    top : false,
-                    bottom : true,
-                    left : false,
-                    right : true,
-                    text : 'É necessário realizar o login antes de iniciar o pedido',
-                    scope : QRCodeReader
-                });
-                saveLastAction.save({
-                    module : 'placeRequest',
-                    data : $stateParams.place,
-                    action : 'initRequest'
-                });
-                $state.go('login');
-            }
-        },
-
-        cancelScan : function () {
-            QRScanner.cancelScan();
-            QRScanner.hide();
-            $state.go('user.mainList');
-        }
-    };
-
-    QRCodeReader.functions.core();
-}
 })();

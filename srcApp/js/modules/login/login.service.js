@@ -34,7 +34,7 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
         },
 
         doLoginGoogle : function () {
-            return new Promise(function(success, fail){
+            return new Promise(function(success){
                 window.plugins.googleplus.login(
                     {
                         'scopes': '',
@@ -45,7 +45,9 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
                         success(JSON.stringify(obj)); // do something useful instead of alerting
                     },
                     function (msg) {
-                        fail(msg);
+                        success({
+                            status : false
+                        });
                     }
                 );
             });
