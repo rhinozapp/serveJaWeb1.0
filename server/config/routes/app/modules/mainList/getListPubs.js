@@ -1,8 +1,8 @@
 exports.getListPubs = function (req, res) {
     let mongoose = require('mongoose'),
-        userAdminProfile = mongoose.model('userAdminProfile');
+        userAdmin = mongoose.model('userAdmin');
 
-    userAdminProfile.find({
+    userAdmin.find({
         loc : {
             $nearSphere: {
                 $geometry: {

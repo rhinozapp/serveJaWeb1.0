@@ -6,7 +6,8 @@ angular.module('modules', [
     'products',
     'profile',
     'menu',
-    'tables'
+    'tables',
+    'requests'
 ]);
 })();
 (function(){
@@ -397,7 +398,6 @@ function saveMenuController(dialogAdvanced, menuService, productsService, profil
 
         defineVars : function () {
             saveMenu.vars.listOrder = [];
-            console.log(data);
             if(data){
                 saveMenu.vars.menuName = data.menuName;
                 saveMenu.vars.menuID = data._id;
@@ -1197,6 +1197,49 @@ function recoveryPasswordService($resource, defineHost) {
         recoveryPasswordSend: $resource(defineHost.host + '/web/recoveryPasswordSend'),
         recoveryPasswordGetHash: $resource(defineHost.host + '/web/recoveryPasswordGetHash'),
         recoveryPassword: $resource(defineHost.host + '/web/recoveryPassword')
+    }
+}
+})();
+(function(){
+"use strict";
+angular.module('requests', [])
+    .controller('requestsController', requests);
+
+function requests($scope, $filter, profileGet, requestsService, dialogAdvanced, dialogAlert, dialogConfirm) {
+    var requests = this;
+    requests.vars = {};
+
+    requests.functions = {
+        core: function () {
+            requests.functions.getRequests.getRequests();
+        },
+
+        defineVars : function () {},
+
+        getRequests : {
+            getRequests : function () {
+                requestsService.getRequests.save(profileGet, requests.functions.getRequests.successGetRequests)
+            },
+
+            successGetRequests : function (data) {
+                socket.on(profileGet.id, function (data) {
+                    console.log(data);
+                });
+            }
+        }
+    };
+
+    requests.functions.core();
+}
+})();
+(function(){
+"use strict";
+angular.module('requests')
+    .service('requestsService', requestsService);
+
+function requestsService($resource, defineHost) {
+    return {
+        getRequests: $resource(defineHost.host + '/web/getRequests')
     }
 }
 })();

@@ -3,7 +3,7 @@ exports.updateHeaderImgProfile = function (req, res) {
         files = '',
         fileName = '',
         mongoose = require('mongoose'),
-        userProfile = mongoose.model('userAdminProfile'),
+        userAdmin = mongoose.model('userAdmin'),
         updateVars = req.body.vars;
 
     //region If file
@@ -11,8 +11,8 @@ exports.updateHeaderImgProfile = function (req, res) {
         fileName = req.files.file.path.split('headerImgProfile/');
         files += fileName[1];
 
-        userProfile.update({
-            userID : updateVars.userID
+        userAdmin.update({
+            _id : mongoose.Types.ObjectId(updateVars._id)
         }, {
             headerImgPath : files
         }, {

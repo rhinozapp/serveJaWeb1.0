@@ -88,9 +88,19 @@ module.exports = function(app) {
     let deleteTablesWeb = require('./web/modules/tables/deleteTables');
     app.post('/web/deleteTables', authenticate, deleteTablesWeb.deleteTables);
     //endregion
+
+    //region Requests
+    let getRequestsWeb = require('./web/modules/requests/getRequests');
+    app.post('/web/getRequests', authenticate, getRequestsWeb.getRequests);
+    //endregion
     //endregion
 
     //region APP Routes
+    //region Config Helpers
+    let checkRequestStatusApp = require('./app/app/configHelpers/checkRequestStatus');
+    app.post('/app/checkRequestStatus', checkRequestStatusApp.checkRequestStatus);
+    //endregion
+
     //region doLogin
     let doLoginApp = require('./app/modules/login/doLogin');
     app.post('/app/doLogin', doLoginApp.doLogin);
@@ -119,6 +129,19 @@ module.exports = function(app) {
 
     let notFavoriteApp = require('./app/modules/place/notFavorite');
     app.post('/app/notFavorite', notFavoriteApp.notFavorite);
+    //endregion
+
+    //region QRCode Reader
+    let checkTableValidApp = require('./app/modules/QRCodeReader/checkTableValid');
+    app.post('/app/checkTableValid', checkTableValidApp.checkTableValid);
+
+    let startRequestApp = require('./app/modules/QRCodeReader/startRequest');
+    app.post('/app/startRequest', startRequestApp.startRequest);
+    //endregion
+
+    //region Place Requests
+    let addProductsInRequestApp = require('./app/modules/placeRequest/addProductsInRequest');
+    app.post('/app/addProductsInRequest', addProductsInRequestApp.addProductsInRequest);
     //endregion
     //endregion
 

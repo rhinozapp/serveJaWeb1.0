@@ -6,7 +6,8 @@ exports.saveProducts = function (req, res) {
 
     //region If file
     if(req.files.file){
-        fileName = req.files.file.path.split('imgProducts\\');
+        console.log(req.files);
+        fileName = req.files.file.path.split('imgProducts/');
         files += fileName[1];
 
         products.update({

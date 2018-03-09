@@ -44,8 +44,9 @@ function login(loginService, $window, toastAction) {
 
         loginGoogle : function () {
             loginService.doLoginGoogle().then(function (data) {
+                alert(data.data);
                 if(data.status){
-                    loginService.recordData.save(data, function (result) {
+                    loginService.recordData.save(data.data, function (result) {
                         switch (true){
                             case result.status === true:
                                 login.vars.message = 'Logado! :)';

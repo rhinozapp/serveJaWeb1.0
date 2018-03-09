@@ -3,7 +3,7 @@ exports.updateProfile = function (req, res) {
         files = '',
         fileName = '',
         mongoose = require('mongoose'),
-        userProfile = mongoose.model('userAdminProfile'),
+        userAdmin = mongoose.model('userAdmin'),
         updateVars = req.body.vars,
         sundayStatus,
         mondayStatus,
@@ -94,13 +94,12 @@ exports.updateProfile = function (req, res) {
     //endregion
 
     //region If file
-    console.log(req.files.file);
     if(req.files.file){
         fileName = req.files.file.path.split('logoProfile/');
         files += fileName[1];
 
-        userProfile.update({
-            userID : updateVars.userID
+        userAdmin.update({
+            _id : mongoose.Types.ObjectId(updateVars._id)
         }, {
             logoPath : files
         }, {
@@ -111,8 +110,8 @@ exports.updateProfile = function (req, res) {
     //endregion
 
     //region Update info
-    userProfile.update({
-        userID : updateVars.userID
+    userAdmin.update({
+        _id : mongoose.Types.ObjectId(updateVars._id)
     }, {
         name : updateVars.name,
         cnpj : updateVars.cnpj,
@@ -176,7 +175,8 @@ exports.updateProfile = function (req, res) {
         }
     }, {
         multi : false
-    }, function (data) {
+    }, function (err, data) {
+        console.log(err, data);
         res.send(true);
     });
     //endregion

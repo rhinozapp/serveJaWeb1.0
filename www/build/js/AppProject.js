@@ -125,6 +125,16 @@ angular
 })();
 (function(){
 "use strict";
+angular
+    .module('core')
+    .service('getRequestStatus', function ($resource, defineHost) {
+        return {
+            checkRequestStatus : $resource(defineHost.host + '/app/checkRequestStatus')
+        }
+    });
+})();
+(function(){
+"use strict";
 /**
  * Created by guilherme.assis on 02/12/2016.
  */
@@ -322,7 +332,9 @@ angular
             .state('placeRequest', {
                 url: '/placeRequest',
                 params : {
-                    place : {}
+                    place : {},
+                    tableID : {},
+                    requestID : {}
                 },
                 templateUrl: 'templates/modules/placeRequest/placeRequest.html',
                 controller: 'placeRequestController',
@@ -354,33 +366,90 @@ angular
 "use strict";
 angular
     .module('core')
-    .run(function($rootScope, $window, $state, saveLastAction) {
+    .run(function($rootScope, $window, $state, saveLastAction, getRequestStatus, getProfile) {
         $rootScope.$on('$stateChangeStart', function (e, toState) {
             // Set scroll to 0
             window.scrollTo(0, 0);
             var token = $window.localStorage.token;
 
+            //region Check Last Action
             if (toState.name === 'login' && token !== undefined) {
                 e.preventDefault();
 
                 if($window.localStorage.lastAction){
                     var lastAction = saveLastAction.get().lastAction;
                     switch (true){
-                        case lastAction.action === 'initRequest':
-                            $state.go('QRCodeReader', {
-                                place : {
-                                    pubData : lastAction.data.pubData,
-                                    userLocal : {
-                                        lat : lastAction.data.userLocal.lat,
-                                        long : lastAction.data.userLocal.long
+                        case lastAction.action === 'inRequest':
+                            if(getProfile.status){
+                                getRequestStatus.checkRequestStatus.save({
+                                    userAppID : getProfile.id
+                                }, function (data) {
+                                    if(data.status){
+                                        $state.go('placeRequest', {
+                                            place : data.place,
+                                            tableID : data.tableID,
+                                            requestID : data.requestID
+                                        });
                                     }
-                                }
-                            });
+                                })
+                            }
+                            break;
+
+                        case lastAction.action === 'initRequest':
+                            if(getProfile.status){
+                                getRequestStatus.checkRequestStatus.save({
+                                    userAppID : getProfile.id
+                                }, function (data) {
+                                    if(data.status){
+                                        $state.go('placeRequest', {
+                                            place : data.place
+                                        });
+                                    }else{
+                                        $state.go('QRCodeReader', {
+                                            place : {
+                                                pubData : lastAction.data.pubData,
+                                                userLocal : {
+                                                    lat : lastAction.data.userLocal.lat,
+                                                    long : lastAction.data.userLocal.long
+                                                }
+                                            }
+                                        });
+                                    }
+                                })
+                            }else{
+                                $state.go('QRCodeReader', {
+                                    place : {
+                                        pubData : lastAction.data.pubData,
+                                        userLocal : {
+                                            lat : lastAction.data.userLocal.lat,
+                                            long : lastAction.data.userLocal.long
+                                        }
+                                    }
+                                });
+                            }
+                            break;
                     }
                 }else{
                     $state.go('user.mainList');
                 }
             }
+            //endregion
+
+            //region Get Request Status
+            if(getProfile.status){
+                getRequestStatus.checkRequestStatus.save({
+                    userAppID : getProfile.id
+                }, function (data) {
+                    if(data.status){
+                        $state.go('placeRequest', {
+                            place : data.place,
+                            tableID : data.tableID,
+                            requestID : data.requestID
+                        });
+                    }
+                })
+            }
+            //endregion
         });
     });
 })();

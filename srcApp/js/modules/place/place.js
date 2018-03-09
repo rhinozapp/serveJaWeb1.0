@@ -125,7 +125,7 @@ function placeController($stateParams, $state, placeService, mainListService, ex
 
         getCategory : {
             getCategory : function () {
-                placeService.getCategory.save({id : place.vars.dataPub.userID}, place.functions.getCategory.successGetCategory);
+                placeService.getCategory.save({id : place.vars.dataPub._id}, place.functions.getCategory.successGetCategory);
             },
 
             successGetCategory : function (data) {

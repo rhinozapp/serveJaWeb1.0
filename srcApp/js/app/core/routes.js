@@ -32,7 +32,9 @@ angular
             .state('placeRequest', {
                 url: '/placeRequest',
                 params : {
-                    place : {}
+                    place : {},
+                    tableID : {},
+                    requestID : {}
                 },
                 templateUrl: 'templates/modules/placeRequest/placeRequest.html',
                 controller: 'placeRequestController',

@@ -112,7 +112,6 @@ function saveMenuController(dialogAdvanced, menuService, productsService, profil
 
         defineVars : function () {
             saveMenu.vars.listOrder = [];
-            console.log(data);
             if(data){
                 saveMenu.vars.menuName = data.menuName;
                 saveMenu.vars.menuID = data._id;

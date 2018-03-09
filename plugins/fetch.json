@@ -15,16 +15,6 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-plugin-googleplus": {
-    "source": {
-      "type": "registry",
-      "id": "git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git"
-    },
-    "is_top_level": true,
-    "variables": {
-      "REVERSED_CLIENT_ID": "675857416832-gkkntadhdgbjs8o19akb071ho7stguki.apps.googleusercontent.com"
-    }
-  },
   "cordova-plugin-qrscanner": {
     "source": {
       "type": "registry",
@@ -40,5 +30,15 @@
     },
     "is_top_level": false,
     "variables": {}
+  },
+  "cordova-plugin-googleplus": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-googleplus"
+    },
+    "is_top_level": true,
+    "variables": {
+      "REVERSED_CLIENT_ID": "675857416832-cja7rbuo650a35cjcksnq9o4qnln2afk.apps.googleusercontent.com"
+    }
   }
 }

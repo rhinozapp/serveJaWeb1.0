@@ -76,13 +76,23 @@ angular
                     },
                     //endregion
 
-                    //region Menu
+                    //region Tables
                     {
                         name: 'tables',
                         url: '/tables',
                         controller: 'tablesController',
                         controllerAs: 'tables',
                         templateUrl: 'templates/modules/tables/tables.html'
+                    },
+                    //endregion
+
+                    //region Requests
+                    {
+                        name: 'requests',
+                        url: '/requests',
+                        controller: 'requestsController',
+                        controllerAs: 'requests',
+                        templateUrl: 'templates/modules/requests/requests.html'
                     },
                     //endregion
                 ]

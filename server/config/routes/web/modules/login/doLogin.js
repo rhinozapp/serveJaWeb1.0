@@ -1,7 +1,6 @@
 exports.doLogin = function(req, res) {
     let mongoose = require('mongoose'),
         userModel = mongoose.model('userAdmin'),
-        userProfile = mongoose.model('userAdminProfile'),
         bcrypt = require('bcrypt'),
         logger = require('../../../../logger'),
         jwt = require('jsonwebtoken'),
@@ -17,24 +16,16 @@ exports.doLogin = function(req, res) {
                 if (err) {
                     res.json({ status: isMatch });
                 } else {
-                    userProfile.find({ userID: mongoose.Types.ObjectId(user[0]._id) }, function(err, userProfile) {
-                        if (err) {
-                            res.json({ status: false });
-                        } else if (userProfile.length > 0) {
-                            token = jwt.sign({
-                                id: user[0]._id,
-                                email: user[0].email,
-                                name: userProfile[0].name,
-                                logoPath: userProfile[0].logoPath
-                            }, 'rhinoz', { expiresIn: '12h' });
+                    token = jwt.sign({
+                        id: user[0]._id,
+                        email: user[0].email,
+                        name: user[0].name,
+                        logoPath: user[0].logoPath
+                    }, 'rhinoz', { expiresIn: '12h' });
 
-                            res.json({
-                                status: isMatch,
-                                token: token
-                            });
-                        } else {
-                            res.json({ status: false });
-                        }
+                    res.json({
+                        status: isMatch,
+                        token: token
                     });
                 }
             });

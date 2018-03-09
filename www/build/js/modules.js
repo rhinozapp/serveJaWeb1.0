@@ -11,61 +11,6 @@ angular.module('modules', [
 })();
 (function(){
 "use strict";
-angular.module('QRCodeReader', [])
-    .controller('QRCodeReaderController', QRCodeReaderController);
-
-function QRCodeReaderController($stateParams, $state, getProfile, toastAction, saveLastAction) {
-    var QRCodeReader = this;
-    QRCodeReader.vars = {};
-
-    QRCodeReader.functions = {
-        core : function () {
-            QRCodeReader.functions.initScan();
-        },
-
-        initScan : function () {
-            if(getProfile.status){
-                QRScanner.scan(function (err, text){
-                    if(err){
-                        console.log(err);
-                    } else {
-                        console.log(text);
-                        QRScanner.hide();
-                        $state.go('user.mainList');
-                    }
-                });
-
-                QRScanner.show(function(status){});
-            }else{
-                toastAction.show({
-                    top : false,
-                    bottom : true,
-                    left : false,
-                    right : true,
-                    text : 'É necessário realizar o login antes de iniciar o pedido',
-                    scope : QRCodeReader
-                });
-                saveLastAction.save({
-                    module : 'placeRequest',
-                    data : $stateParams.place,
-                    action : 'initRequest'
-                });
-                $state.go('login');
-            }
-        },
-
-        cancelScan : function () {
-            QRScanner.cancelScan();
-            QRScanner.hide();
-            $state.go('user.mainList');
-        }
-    };
-
-    QRCodeReader.functions.core();
-}
-})();
-(function(){
-"use strict";
 angular.module('login', [])
     .controller('loginController', login);
 
@@ -112,8 +57,9 @@ function login(loginService, $window, toastAction) {
 
         loginGoogle : function () {
             loginService.doLoginGoogle().then(function (data) {
+                alert(data.data);
                 if(data.status){
-                    loginService.recordData.save(data, function (result) {
+                    loginService.recordData.save(data.data, function (result) {
                         switch (true){
                             case result.status === true:
                                 login.vars.message = 'Logado! :)';
@@ -210,11 +156,16 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
                         'offline': false
                     },
                     function (obj) {
-                        success(JSON.stringify(obj)); // do something useful instead of alerting
+                        success({
+                            status : true,
+                            data : JSON.stringify(obj)
+                        });
                     },
                     function (msg) {
+                        console.log(msg);
                         success({
-                            status : false
+                            status : false,
+                            data : msg
                         });
                     }
                 );
@@ -249,6 +200,150 @@ function authInterceptor($q, $window) {
             return response || $q.when(response);
         }
     };
+}
+})();
+(function(){
+"use strict";
+angular.module('QRCodeReader', [])
+    .controller('QRCodeReaderController', QRCodeReaderController);
+
+function QRCodeReaderController($stateParams, $state, getProfile, toastAction, saveLastAction, QRCodeReaderService) {
+    var QRCodeReader = this;
+    QRCodeReader.vars = {};
+
+    QRCodeReader.functions = {
+        core : function () {
+            QRCodeReader.functions.initScan();
+        },
+
+        initScan : function () {
+            if(getProfile.status){
+                QRScanner.scan(function (err, tableID){
+                    if(err){
+                        toastAction.show({
+                            top : false,
+                            bottom : true,
+                            left : false,
+                            right : true,
+                            text : 'Algo deu errado, tente novamente.',
+                            scope : QRCodeReader
+                        });
+                        QRScanner.cancelScan();
+                        QRScanner.hide();
+                    } else {
+                        QRCodeReader.functions.checkValidTable.checkValidTable(tableID);
+                    }
+                });
+                QRScanner.show(function(status){});
+            }else{
+                toastAction.show({
+                    top : false,
+                    bottom : true,
+                    left : false,
+                    right : true,
+                    text : 'É necessário realizar o login antes de iniciar o pedido',
+                    scope : QRCodeReader
+                });
+                saveLastAction.save({
+                    module : 'placeRequest',
+                    data : $stateParams.place,
+                    action : 'initRequest'
+                });
+                $state.go('login');
+            }
+        },
+
+        checkValidTable : {
+            checkValidTable : function (tableID) {
+                QRCodeReader.vars.tableID = tableID;
+                QRCodeReaderService.checkTableValid.save({
+                    place : $stateParams.place,
+                    tableID : QRCodeReader.vars.tableID
+                }, QRCodeReader.functions.checkValidTable.successCheckValidTable);
+            },
+
+            successCheckValidTable : function (data) {
+                if(data.status){
+                    QRCodeReader.functions.checkValidTable.startRequest();
+                }else{
+                    toastAction.show({
+                        top : false,
+                        bottom : true,
+                        left : false,
+                        right : true,
+                        text : 'Essa mesa nao pertence a este bar, tente novamente',
+                        scope : QRCodeReader
+                    });
+
+                    QRCodeReader.functions.initScan();
+                }
+            },
+
+            startRequest : function () {
+                QRCodeReaderService.startRequest.save({
+                    place : $stateParams.place,
+                    tableID : QRCodeReader.vars.tableID,
+                    userAppID: getProfile.id
+                }, QRCodeReader.functions.checkValidTable.successStartRequest)
+            },
+
+            successStartRequest : function (data) {
+                QRScanner.cancelScan();
+                QRScanner.hide();
+
+                if(data.status){
+                    toastAction.show({
+                        top : false,
+                        bottom : true,
+                        left : false,
+                        right : true,
+                        text : 'Seu pedido começou! Escolha os produtos e aproveite!',
+                        scope : QRCodeReader
+                    });
+                    saveLastAction.save({
+                        module : 'placeRequest',
+                        data : $stateParams.place,
+                        action : 'inRequest'
+                    });
+                    $state.go('placeRequest', {
+                        place : $stateParams.place
+                    });
+
+                }else{
+                    toastAction.show({
+                        top : false,
+                        bottom : true,
+                        left : false,
+                        right : true,
+                        text : 'Algo deu errado, tente novamente',
+                        scope : QRCodeReader
+                    });
+
+                    QRCodeReader.functions.initScan();
+                }
+            }
+        },
+
+        cancelScan : function () {
+            QRScanner.cancelScan();
+            QRScanner.hide();
+            $state.go('user.mainList');
+        }
+    };
+
+    QRCodeReader.functions.core();
+}
+})();
+(function(){
+"use strict";
+angular.module('QRCodeReader')
+    .service('QRCodeReaderService', QRCodeReaderService);
+
+function QRCodeReaderService($resource, defineHost) {
+    return {
+        checkTableValid : $resource(defineHost.host + '/app/checkTableValid'),
+        startRequest : $resource(defineHost.host + '/app/startRequest')
+    }
 }
 })();
 (function(){
@@ -692,7 +787,7 @@ function placeController($stateParams, $state, placeService, mainListService, ex
 
         getCategory : {
             getCategory : function () {
-                placeService.getCategory.save({id : place.vars.dataPub.userID}, place.functions.getCategory.successGetCategory);
+                placeService.getCategory.save({id : place.vars.dataPub._id}, place.functions.getCategory.successGetCategory);
             },
 
             successGetCategory : function (data) {
@@ -783,5 +878,220 @@ function placeService($resource, defineHost) {
 angular.module('placeRequest', [])
     .controller('placeRequestController', placeRequestController);
 
-function placeRequestController() {}
+function placeRequestController($stateParams, $state, placeService, placeRequestService, toastAction) {
+    var placeRequest = this;
+    placeRequest.vars = {};
+
+    placeRequest.functions = {
+        core : function () {
+            placeRequest.functions.defineVars().then(function () {
+                placeRequest.functions.getCategory().then(function () {
+                    placeRequest.functions.defineMenu();
+                    placeRequest.functions.getMenu.getMenu();
+                });
+            }, function () {
+                $state.go('user.mainList')
+            });
+        },
+
+        defineVars : function () {
+            return new Promise(function (success, fail) {
+                if(!angular.equals($stateParams.requestID, {})){
+                    placeRequest.vars.dataPub = $stateParams.place.pubData;
+                    placeRequest.vars.tableID = $stateParams.tableID;
+                    placeRequest.vars.requestID = $stateParams.requestID;
+                    placeRequest.vars.listByCategory = [];
+                    placeRequest.vars.listPromotion = [];
+                    placeRequest.vars.listProductsInRequest = [];
+                    success();
+                }else{
+                    fail();
+                }
+            });
+        },
+
+        defineMenu : function () {
+            switch (true) {
+                case moment().weekday() === 0:
+                    placeRequest.vars.menuDefined = placeRequest.vars.dataPub.sunday.sundayMenu;
+                    break;
+
+                case moment().weekday() === 1:
+                    placeRequest.vars.menuDefined = placeRequest.vars.dataPub.monday.mondayMenu;
+                    break;
+
+                case moment().weekday() === 2:
+                    placeRequest.vars.menuDefined = placeRequest.vars.dataPub.tuesday.tuesdayMenu;
+                    break;
+
+                case moment().weekday() === 3:
+                    placeRequest.vars.menuDefined = placeRequest.vars.dataPub.wednesday.wednesdayMenu;
+                    break;
+
+                case moment().weekday() === 4:
+                    placeRequest.vars.menuDefined = placeRequest.vars.dataPub.thursday.thursdayMenu;
+                    break;
+
+                case moment().weekday() === 5:
+                    placeRequest.vars.menuDefined = placeRequest.vars.dataPub.friday.fridayMenu;
+                    break;
+
+                default:
+                    placeRequest.vars.menuDefined = placeRequest.vars.dataPub.saturday.saturdayMenu;
+            }
+        },
+
+        getCategory : function () {
+            return new Promise(function (success) {
+                placeService.getCategory.save({id : placeRequest.vars.dataPub._id}, function(data){
+                    placeRequest.vars.listCategory = data.data;
+                    success();
+                });
+            });
+        },
+
+        getMenu : {
+            getMenu : function () {
+                placeService.getMenu.save(placeRequest.vars, placeRequest.functions.getMenu.success);
+            },
+
+            success : function (data) {
+                placeRequest.vars.menu = data.data;
+
+                if(placeRequest.vars.menu){
+                    //region List products by category
+                    placeRequest.vars.listCategory.forEach(function (valueCat, keyCat) {
+
+                        placeRequest.vars.listByCategory.push({
+                            categoryName : valueCat.categoryName,
+                            products: []
+                        });
+
+                        placeRequest.vars.menu.productsID.forEach(function (valueProd, keyProd) {
+                            if(valueCat._id === valueProd.categoryID){
+                                placeRequest.vars.listByCategory[keyCat].products.push({
+                                    productID: valueProd._id,
+                                    productName: valueProd.productName,
+                                    value : valueProd.value,
+                                    promotionValue : valueProd.promotionValue,
+                                    imgPath : valueProd.imgPath,
+                                    amountInRequest : 0
+                                });
+                            }
+                        });
+                    });
+                    placeRequest.vars.listByCategoryFilter = placeRequest.vars.listByCategory;
+                    //endregion
+
+                    //region List products by promotion
+                    placeRequest.vars.menu.productsID.forEach(function (value) {
+                        if(value.promotionValue && value.promotionValue > 0){
+                            placeRequest.vars.listPromotion.push({
+                                productID: value._id,
+                                productName: value.productName,
+                                value : value.value,
+                                promotionValue : value.promotionValue,
+                                imgPath : value.imgPath,
+                                amountInRequest : 0
+                            })
+                        }
+                    });
+                    //endregion
+                }
+            }
+        },
+
+        controlRequest : {
+            addInGeneral : function (data) {
+                data.amountInRequest += 1;
+                placeRequest.vars.listProductsInRequest.push({
+                    productID : data.productID
+                });
+            },
+
+            removeToGeneral : function (data) {
+                if(data.amountInRequest === 0){
+                    data.amountInRequest = 0;
+
+                    if(placeRequest.vars.listProductsInRequest.map(function(e) { return e.productID; }).indexOf(data.productID) > -1){
+                        placeRequest.vars.listProductsInRequest.splice(placeRequest.vars.listProductsInRequest.map(function(e) { return e.productID; }).indexOf(data.productID), 1);
+                    }
+                }else{
+                    data.amountInRequest -= 1;
+                    if(placeRequest.vars.listProductsInRequest.map(function(e) { return e.productID; }).indexOf(data.productID) > -1){
+                        placeRequest.vars.listProductsInRequest.splice(placeRequest.vars.listProductsInRequest.map(function(e) { return e.productID; }).indexOf(data.productID), 1);
+                    }
+                }
+            },
+
+            sendRequest : {
+                sendRequest : function () {
+                    if(placeRequest.vars.listProductsInRequest.length === 0){
+                        toastAction.show({
+                            top : false,
+                            bottom : true,
+                            left : false,
+                            right : true,
+                            text : 'Você não adicionou nenhum produto ao pedido ainda.',
+                            scope : placeRequest
+                        });
+                    }else {
+                        placeRequest.vars.sendDisabled = true;
+                        placeRequestService.addProductsInRequest.save({
+                            products : placeRequest.vars.listProductsInRequest,
+                            requestID : placeRequest.vars.requestID
+                        }, placeRequest.functions.controlRequest.sendRequest.successSendRequest);
+                    }
+                },
+
+                successSendRequest : function (data) {
+                    if(data.status){
+                        toastAction.show({
+                            top : true,
+                            bottom : false,
+                            left : false,
+                            right : true,
+                            text : 'Produto enviado com sucesso.',
+                            scope : placeRequest
+                        });
+                        placeRequest.vars.sendDisabled = false;
+
+                        placeRequest.vars.listProductsInRequest = [];
+                        placeRequest.vars.listPromotion.forEach(function (value) {
+                            value.amountInRequest = 0;
+                        });
+                        placeRequest.vars.listByCategory.forEach(function (value) {
+                            value.products.forEach(function (value) {
+                                value.amountInRequest = 0;
+                            })
+                        });
+                    }else{
+                        toastAction.show({
+                            top : true,
+                            bottom : false,
+                            left : false,
+                            right : true,
+                            text : 'Alguma coisa deu errado, tente novamente.',
+                            scope : placeRequest
+                        });
+                        placeRequest.vars.sendDisabled = false;
+                    }
+                }
+            }
+        }
+    };
+
+    placeRequest.functions.core();
+}
+})();
+(function(){
+"use strict";
+angular.module('placeRequest')
+    .service('placeRequestService', placeRequestService);
+
+function placeRequestService($resource, defineHost) {
+    return {
+        addProductsInRequest : $resource(defineHost.host + '/app/addProductsInRequest')
+    }
+}
 })();

@@ -4,5 +4,6 @@ angular.module('modules', [
     'products',
     'profile',
     'menu',
-    'tables'
+    'tables',
+    'requests'
 ]);

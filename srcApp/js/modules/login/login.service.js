@@ -42,11 +42,16 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
                         'offline': false
                     },
                     function (obj) {
-                        success(JSON.stringify(obj)); // do something useful instead of alerting
+                        success({
+                            status : true,
+                            data : JSON.stringify(obj)
+                        });
                     },
                     function (msg) {
+                        console.log(msg);
                         success({
-                            status : false
+                            status : false,
+                            data : msg
                         });
                     }
                 );

@@ -1,9 +1,9 @@
 exports.getProfile = function (req, res) {
     let mongoose = require('mongoose'),
-        userProfile = mongoose.model('userAdminProfile');
+        userAdmin = mongoose.model('userAdmin');
 
-    userProfile.find({
-        userID : req.body.id
+    userAdmin.find({
+        _id : mongoose.Types.ObjectId(req.body.id)
     }, function(err, user) {
         if (err){
             res.json({status : false});
