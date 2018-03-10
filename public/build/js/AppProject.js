@@ -190,7 +190,7 @@ angular
                 $window.localStorage.clear();
             }else if (toState.name === 'home' && token !== undefined) {
                 e.preventDefault();
-                $state.go('admin.products');
+                $state.go('admin.requests');
             }
         });
     });

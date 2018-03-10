@@ -3,6 +3,8 @@ angular.module('placeRequest')
 
 function placeRequestService($resource, defineHost) {
     return {
-        addProductsInRequest : $resource(defineHost.host + '/app/addProductsInRequest')
+        addProductsInRequest : $resource(defineHost.host + '/app/addProductsInRequest'),
+        requireClose : $resource(defineHost.host + '/app/requireClose'),
+        getListProductsRequest : $resource(defineHost.host + '/app/getListProductsRequest')
     }
 }

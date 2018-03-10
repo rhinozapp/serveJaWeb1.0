@@ -1,7 +1,7 @@
 angular.module('placeRequest', [])
     .controller('placeRequestController', placeRequestController);
 
-function placeRequestController($stateParams, $state, placeService, placeRequestService, toastAction) {
+function placeRequestController($stateParams, $state, placeService, placeRequestService, toastAction, dialogAdvanced) {
     var placeRequest = this;
     placeRequest.vars = {};
 
@@ -201,8 +201,118 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
                     }
                 }
             }
+        },
+
+        requireClose : {
+            requireClose : function () {
+                placeRequestService.requireClose.save({
+                    requestID : placeRequest.vars.requestID
+                }, placeRequest.functions.requireClose.successRequireClose);
+            },
+
+            successRequireClose : function (data) {
+                dialogAdvanced.show({
+                    controller : resumeToEndController,
+                    controllerAs : 'resumeToEnd',
+                    templateUrl : 'templates/modules/placeRequest/resumeToEnd.html',
+                    clickOutsideToClose : false,
+                    dataToDialog : data.data,
+                    functionThen : function (data) {
+                        if(data.status){
+                            //cancelar
+                        }
+                    }
+                });
+            }
+        },
+        
+        getListProductsRequest : {
+            getListProductsRequest : function () {
+                placeRequestService.getListProductsRequest.save({
+                    requestID : placeRequest.vars.requestID
+                }, placeRequest.functions.getListProductsRequest.successGetListProductsRequest);
+            },
+
+            successGetListProductsRequest : function (data) {
+                if(data.status){
+                    placeRequest.vars.dataResume = data.data;
+                    placeRequest.vars.listProducts = [];
+                    placeRequest.vars.dataResume.products.forEach(function (value) {
+                        if(placeRequest.vars.listProducts.map(function(e) {
+                                return e._id;
+                            }).indexOf(value.productID._id) < 0) {
+                            if(value.productID.promotionValue !== 'null'){
+                                value.productID.realValue = value.productID.promotionValue
+                            }else{
+                                value.productID.realValue = value.productID.value
+                            }
+
+                            placeRequest.vars.listProducts.push({
+                                _id : value.productID._id,
+                                productName : value.productID.productName,
+                                value : value.productID.realValue,
+                                amount : 1
+                            });
+                        }else{
+                            placeRequest.vars.listProducts[placeRequest.vars.listProducts.map(function(e) { return e._id; }).indexOf(value.productID._id)].amount ++;
+                        }
+                    });
+
+                    if(placeRequest.vars.listProducts.length > 0){
+                        placeRequest.vars.total = 0;
+                        placeRequest.vars.listProducts.forEach(function (value) {
+                            placeRequest.vars.total = placeRequest.vars.total + (value.value * value.amount);
+                        })
+                    }
+                }
+            }
         }
     };
 
     placeRequest.functions.core();
+}
+
+function resumeToEndController(data, dialogAdvanced) {
+    var resumeToEnd = this;
+    resumeToEnd.vars = {};
+
+    resumeToEnd.functions = {
+        core : function () {
+            resumeToEnd.functions.defineVars();
+        },
+
+        defineVars : function () {
+            resumeToEnd.vars.dataResume = data;
+            resumeToEnd.vars.listProducts = [];
+            resumeToEnd.vars.dataResume.products.forEach(function (value) {
+                if(resumeToEnd.vars.listProducts.map(function(e) {
+                    return e._id;
+                }).indexOf(value.productID._id) < 0) {
+                    if(value.productID.promotionValue !== 'null'){
+                        value.productID.realValue = value.productID.promotionValue
+                    }else{
+                        value.productID.realValue = value.productID.value
+                    }
+
+                    resumeToEnd.vars.listProducts.push({
+                        _id : value.productID._id,
+                        productName : value.productID.productName,
+                        value : value.productID.realValue,
+                        amount : 1
+                    });
+                }else{
+                    resumeToEnd.vars.listProducts[resumeToEnd.vars.listProducts.map(function(e) { return e._id; }).indexOf(value.productID._id)].amount ++;
+                }
+            });
+
+            if(resumeToEnd.vars.listProducts.length > 0){
+                resumeToEnd.vars.total = 0;
+                resumeToEnd.vars.listProducts.forEach(function (value) {
+                    resumeToEnd.vars.total = resumeToEnd.vars.total + (value.value * value.amount);
+                })
+            }
+        }
+    };
+
+    resumeToEnd.functions.core();
 }

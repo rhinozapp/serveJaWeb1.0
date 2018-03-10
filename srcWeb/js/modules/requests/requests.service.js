@@ -3,6 +3,7 @@ angular.module('requests')
 
 function requestsService($resource, defineHost) {
     return {
-        getRequests: $resource(defineHost.host + '/web/getRequests')
+        getRequests: $resource(defineHost.host + '/web/getRequests'),
+        checkProductSent: $resource(defineHost.host + '/web/checkProductSent')
     }
 }

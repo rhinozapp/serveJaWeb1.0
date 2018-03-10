@@ -1,0 +1,11 @@
+<div>Resumo do pedido</div>
+
+<p>Data : {{resumeToEnd.vars.dataResume.dateCreate | date:'dd/MM/yyyy HH:mm'}}</p>
+<p>Produtos</p>
+
+<div ng-repeat="data in resumeToEnd.vars.listProducts">
+    <p>Produto: {{data.productName}} | Valor: {{data.value}} | Quantidade: {{data.amount}}</p>
+</div>
+<div>
+    <p>Total : {{resumeToEnd.vars.total | currency:"R$"}}</p>
+</div>

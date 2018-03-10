@@ -92,6 +92,9 @@ module.exports = function(app) {
     //region Requests
     let getRequestsWeb = require('./web/modules/requests/getRequests');
     app.post('/web/getRequests', authenticate, getRequestsWeb.getRequests);
+
+    let checkProductSentWeb = require('./web/modules/requests/checkProductSent');
+    app.post('/web/checkProductSent', authenticate, checkProductSentWeb.checkProductSent);
     //endregion
     //endregion
 
@@ -142,6 +145,12 @@ module.exports = function(app) {
     //region Place Requests
     let addProductsInRequestApp = require('./app/modules/placeRequest/addProductsInRequest');
     app.post('/app/addProductsInRequest', addProductsInRequestApp.addProductsInRequest);
+
+    let requireCloseApp = require('./app/modules/placeRequest/requireClose');
+    app.post('/app/requireClose', requireCloseApp.requireClose);
+
+    let getListProductsRequestApp = require('./app/modules/placeRequest/getListProductsRequest');
+    app.post('/app/getListProductsRequest', getListProductsRequestApp.getListProductsRequest);
     //endregion
     //endregion
 

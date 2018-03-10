@@ -2,19 +2,18 @@
     <div class="content">
         <button class="btn__default"
                 type="button"
-                ng-click="null">Solicitar fechamento do pedido</button>
+                ng-click="placeRequest.functions.requireClose.requireClose()">Solicitar fechamento do pedido</button>
         <button type="button"
-                ng-click="placeRequest.vars.viewMenu = true; placeRequest.vars.viewRequests = false">
+                ng-click="placeRequest.vars.viewMenu = true; placeRequest.vars.viewRequests = false;">
             Cardápio
         </button>
         <button type="button"
-                ng-click="placeRequest.vars.viewMenu = false; placeRequest.vars.viewRequests = true">
+                ng-click="placeRequest.vars.viewMenu = false; placeRequest.vars.viewRequests = true; placeRequest.functions.getListProductsRequest.getListProductsRequest()">
             Meus pedidos feitos
         </button>
 
-        <section ng-if="placeRequest.vars.viewRequests"></section>
-
         <md-button
+                ng-if="placeRequest.vars.viewMenu"
                 class="md-fab btn-float-right"
                 aria-label="refresh"
                 ng-disabled="placeRequest.vars.sendDisabled"
@@ -71,6 +70,20 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+        </section>
+
+        <section ng-if="placeRequest.vars.viewRequests">
+            <div>Resumo do pedido</div>
+
+            <p>Data : {{placeRequest.vars.dataResume.dateCreate | date:'dd/MM/yyyy HH:mm'}}</p>
+            <p>Produtos</p>
+
+            <div ng-repeat="data in placeRequest.vars.listProducts">
+                <p>Produto: {{data.productName}} | Valor: {{data.value}} | Quantidade: {{data.amount}}</p>
+            </div>
+            <div>
+                <p>Total : {{placeRequest.vars.total | currency:"R$"}}</p>
             </div>
         </section>
     </div>

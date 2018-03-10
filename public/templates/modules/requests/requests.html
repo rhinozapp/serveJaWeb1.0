@@ -1,0 +1,64 @@
+<md-content>
+    <md-subheader class="md-primary">Veja abaixo seus pedidos em tempo real</md-subheader>
+
+    <md-tabs md-dynamic-height md-border-bottom md-no-select-click>
+        <md-tab label="Pedidos">
+            <md-content class="md-padding">
+                <div layout="row">
+                    <md-card flex="100">
+                        <md-table-container>
+                            <table md-table>
+
+                                <thead md-head md-order="requests.vars.query.order">
+                                <tr md-row>
+                                    <th md-column md:order:by="productName">Produto</th>
+                                    <th md-column md:order:by="value">Valor</th>
+                                    <th md-column md:order:by="promotionValue">Valor - Promoção</th>
+                                    <th md-column md:order:by="tableName">Mesa</th>
+                                    <th md-column md:order:by="dateInsert">Data / Hora do pedido</th>
+                                    <th md-column>Produto entregue</th>
+                                </tr>
+                                </thead>
+
+                                <tbody md-body>
+                                <tr md-row
+                                    ng-repeat="data in requests.vars.listProductsInRequest | orderBy: requests.vars.query.order | limitTo: requests.vars.query.limit: (requests.vars.query.page - 1) * requests.vars.query.limit">
+
+                                    <td md-cell>{{data.productName}}</td>
+                                    <td md-cell>{{data.value}}</td>
+                                    <td md-cell>{{data.promotionValue}}</td>
+                                    <td md-cell>{{data.tableName}}</td>
+                                    <td md-cell>{{data.dateInsert | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+
+                                    <td md-cell>
+                                        <md-button ng-click="requests.functions.checkSent.checkSent(data)"
+                                                   class="md-icon-button">
+                                            <md-icon class="icon-24">check_circle</md-icon>
+                                            <md-tooltip>
+                                                Ao marcar, o produto saira da lista
+                                            </md-tooltip>
+                                        </md-button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </md-table-container>
+
+                        <md-table-pagination md-limit="requests.vars.query.limit"
+                                             md-page="requests.vars.query.page"
+                                             md-total="{{requests.vars.listProductsInRequest.length}}"
+                                             md-page-select md-label="{page: 'Página:', rowsPerPage: 'Linhas por Página:', of: 'de'}"
+                                             md-options="[25,50,100]"></md-table-pagination>
+                    </md-card>
+                </div>
+
+            </md-content>
+        </md-tab>
+
+        <md-tab label="Requisiçoes de fechamento de pedido">
+            <md-content class="md-padding">
+
+            </md-content>
+        </md-tab>
+    </md-tabs>
+</md-content>

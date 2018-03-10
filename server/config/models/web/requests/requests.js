@@ -13,6 +13,7 @@ let mongoose = require('mongoose'),
             }
         ],
         status : { type : Boolean, required: true },
+        requireStop : { type : Boolean, required: true, default : false },
         dateCreate : { type : Date, default: Date.now }
     });
 

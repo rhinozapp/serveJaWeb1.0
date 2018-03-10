@@ -1,13 +1,11 @@
-exports.addProductsInRequest = function (req, res) {
+exports.requireClose = function (req, res) {
     let mongoose = require('mongoose'),
         requests = mongoose.model('requests');
 
     requests.findOneAndUpdate({
         _id: mongoose.Types.ObjectId(req.body.requestID)
     }, {
-        $pushAll : {
-            products : req.body.products
-        }
+        requireStop : true
     }, {
         multi : false,
         new: true
@@ -19,10 +17,13 @@ exports.addProductsInRequest = function (req, res) {
                 res.json({status : false});
             }else{
                 req.io.sockets.emit(data.userID, {
-                    type : 'newProductInRequest',
+                    type : 'requireStop',
                     data : data
                 });
-                res.json({status : true});
+                res.json({
+                    status : true,
+                    data : data
+                });
             }
         });
 };

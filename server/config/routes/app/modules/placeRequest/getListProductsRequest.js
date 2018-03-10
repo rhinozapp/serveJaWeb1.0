@@ -1,27 +1,19 @@
-exports.getRequests = function (req, res) {
+exports.getListProductsRequest = function (req, res) {
     let mongoose = require('mongoose'),
         requests = mongoose.model('requests');
 
-    requests.find({
-        $and : [
-            {
-                userID : req.body.id,
-                status : true
-            }
-        ]
-
+    requests.findOne({
+        _id: mongoose.Types.ObjectId(req.body.requestID)
     })
         .populate('tableID')
         .populate('products.productID')
         .exec(function (err, data) {
             if(err){
-                res.json({
-                    status : false
-                });
+                res.json({status : false});
             }else{
                 res.json({
                     status : true,
-                    requests : data
+                    data : data
                 });
             }
         });
