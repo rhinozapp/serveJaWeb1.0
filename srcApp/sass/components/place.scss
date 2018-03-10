@@ -76,5 +76,25 @@
                 line-height: 23px;
             }
         }
+        .bars__list{
+            margin: 25px 0;
+            .bars__info-logo{
+                overflow: hidden;
+                display: table;
+                .bars__info-img{
+                    display: table-cell;
+                    vertical-align: middle;
+                    width: 25%;
+                    img{
+                        width: 100%
+                    }
+                }
+                .bars__info-name{
+                    display: table-cell;
+                    vertical-align: middle;
+                    padding-left: 10px;
+                }
+            }
+        }
     }
 }
