@@ -42,7 +42,7 @@
                     <h3>{{data.categoryName}}</h3>
                 </div>
 
-                <div ng-repeat="data2 in data.products | filter:{productName : placeRequest.vars.search}:strict">
+                <div class="bars__list" ng-repeat="data2 in data.products | filter:{productName : placeRequest.vars.search}:strict">
                     <ul class="bars" ng-click="placeRequest.functions.addProducts(data2)">
                         <li class="bars__bar">
                             <div class="bars__info">

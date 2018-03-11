@@ -57,19 +57,19 @@
 
             <input class="input-default" ng-model="place.vars.search" placeholder="Procurar um produto">
 
-            <div ng-repeat="data in place.vars.listPromotion | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
+            <div class="bars__list" ng-repeat="data in place.vars.listPromotion | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
                 <p>
                     <div class="bars__info-logo">
                         <div class="bars__info-img">
                             <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}">
                         </div>
                         <p class="bars__info-name">
-                            {{data.productName}} |
+                            {{data.productName}}
                         </p>
                     </div>
                     <div class="bars__info-cash">
                         <p class="bars__info-name">
-                            {{data.value | currency:'R$':2}} |
+                            {{data.value | currency:'R$':2}}
                         </p>
                         <p class="bars__info-value-promo">
                             {{data.promotionValue | currency:'R$':2}}
