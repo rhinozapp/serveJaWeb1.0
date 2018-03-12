@@ -8,15 +8,11 @@
             </a>
 
             <ul class="place__interactions" ng-if="place.vars.statusUser">
-                <li ng-if="!place.vars.favorite"
-                    ng-click="place.functions.markFavorite.markFavorite()"
-                    class="place__interactions">
+                <li ng-if="!place.vars.favorite" ng-click="place.functions.markFavorite.markFavorite()" class="place__interactions">
                     <i class="fa fa-heart"></i>
                 </li>
 
-                <li ng-if="place.vars.favorite"
-                    ng-click="place.functions.notFavorite.notFavorite()"
-                    class="place__interactions">
+                <li ng-if="place.vars.favorite" ng-click="place.functions.notFavorite.notFavorite()" class="place__interactions">
                     <i class="fa fa-instagram"></i>
                 </li>
             </ul>
@@ -55,28 +51,65 @@
         <button class="btn__default" type="button" ng-click="place.functions.takeQRCode()">Iniciar pedido</button>
         <section class="place__info">
             <h2 class="place__info-title">Sobre o bar</h2>
-                <article class="place__article">
-                    <p class="place__description">{{place.vars.dataPub.description}}</p>
-                </article>
+            <article class="place__article">
+                <p class="place__description">{{place.vars.dataPub.description}}</p>
+            </article>
 
-                <input class="input-default" ng-model="place.vars.search" placeholder="Procurar um produto">
+            <input class="input-default" ng-model="place.vars.search" placeholder="Procurar um produto">
 
-                <div ng-repeat="data in place.vars.listPromotion | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
+            <div class="bars__list" ng-repeat="data in place.vars.listPromotion | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
+                <p>
+                    <div class="bars__info-logo">
+                        <div class="bars__info-img">
+                            <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}">
+                        </div>
+                        <p class="bars__info-name">
+                            {{data.productName}}
+                        </p>
+                    </div>
+                    <div class="bars__info-cash">
+                        <span class="bars__info-value invalid">
+                            {{data.value | currency:'R$':2}}
+                        </span>
+                        <span class="bars__info-value-promo">
+                            {{data.promotionValue | currency:' R$ ':2}}
+                        </span>
+                        <p class="bars__info-ingredients">
+                            Mussarela, provolone, parmesão e queijo tipo catupiry. Mussarela, provolone, parmesão e queijo tipo catupiry.
+                        </p>
+                    </div>
+                </p>
+            </div>
+
+            <div ng-repeat="data in place.vars.listByCategoryFilter">
+                <div ng-if="data.products.length > 0">
+                    <h3 class="place__category">{{data.categoryName}}</h3>
+                </div>
+
+                <div class="bars__list" ng-repeat="data2 in data.products | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
                     <p>
-                        <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}"> {{data.productName}} | {{data.value | currency:'R$':2}} | {{data.promotionValue | currency:'R$':2}}
+                        <div class="bars__info-logo">
+                            <div class="bars__info-img">
+                                <img ng-if="data2.imgPath" ng-src="http://localhost/files/imgProducts/{{data2.imgPath}}">
+                            </div>
+                            <p class="bars__info-name">
+                                {{data2.productName}}
+                            </p>
+                        </div>
+                        <div class="bars__info-cash">
+                            <span class="bars__info-value">
+                                {{data2.value | currency:'R$ ':2}}
+                            </span>
+                            <span class="bars__info-value-promo">
+                                {{data2.promotionValue | currency:'R$ ':2}}
+                            </span>
+                            <p class="bars__info-ingredients">
+                                Mussarela, provolone, parmesão e queijo tipo catupiry. Mussarela, provolone, parmesão e queijo tipo catupiry.
+                            </p>
+                        </div>
                     </p>
                 </div>
-
-                <div ng-repeat="data in place.vars.listByCategoryFilter">
-                    <div ng-if="data.products.length > 0">
-                        <h3>{{data.categoryName}}</h3>
-                    </div>
-
-                    <div ng-repeat="data2 in data.products | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
-                        <p>
-                            <img ng-if="data2.imgPath" ng-src="http://localhost/files/imgProducts/{{data2.imgPath}}"> {{data2.productName}} | {{data2.value | currency:'R$':2}} | {{data2.promotionValue | currency:'R$':2}}</p>
-                    </div>
-                </div>
+            </div>
         </section>
     </div>
 </div>

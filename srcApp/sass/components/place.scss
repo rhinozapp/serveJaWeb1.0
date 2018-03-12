@@ -76,5 +76,39 @@
                 line-height: 23px;
             }
         }
+        .bars__list{
+            margin: 25px 0;
+            border-bottom: 1px solid #aaa;
+            padding-bottom: 10px;
+            .invalid{
+                text-decoration: line-through;
+                color: #aaa;
+            }
+            .bars__info-logo{
+                overflow: hidden;
+                display: table;
+                margin-bottom: 10px;
+                .bars__info-img{
+                    display: table-cell;
+                    vertical-align: middle;
+                    width: 25%;
+                    max-width: 200px;
+                    img{
+                        width: 100%;
+                    }
+                } 
+                .bars__info-name{
+                    display: table-cell;
+                    vertical-align: middle;
+                    padding-left: 20px;
+                    font-weight: bold;
+                }
+            }
+            .bars__info-ingredients{
+                margin-top: 10px;
+                line-height: 23px;
+                color: #aaa;
+            }
+        }
     }
 }
