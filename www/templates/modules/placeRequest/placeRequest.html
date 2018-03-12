@@ -25,7 +25,7 @@
                 <ul class="bars" ng-click="placeRequest.functions.addProducts(data)">
                     <li class="bars__bar">
                         <div class="bars__info">
-                            <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}"> {{data.productName}} | {{data.value | currency:'R$':2}} | {{data.promotionValue | currency:'R$':2}}
+                            <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}"> {{data.productName}} | {{data.value | currency:'R$ ':2}} | {{data.promotionValue | currency:'R$ ':2}}
 
                             <div>
                                 <button ng-click="placeRequest.functions.controlRequest.addInGeneral(data)">+</button>
@@ -53,11 +53,14 @@
                                     <p class="bars__info-name">
                                         {{data2.productName}}
                                     </p>
-                                    <p class="bars__info-value">
-                                        {{data2.value | currency:'R$':2}}
-                                    </p>
-                                    <p class="bars__info-value-promo">
-                                        {{data2.promotionValue | currency:'R$':2}}
+                                    <span class="bars__info-value">
+                                        {{data2.value | currency:'R$ ':2}}
+                                    </span>
+                                    <span class="bars__info-value-promo">
+                                        {{data2.promotionValue | currency:'R$ ':2}}
+                                    </span>
+                                    <p class="bars__info-ingredients">
+                                        Mussarela, provolone, parmesão e queijo tipo catupiry. Mussarela, provolone, parmesão e queijo tipo catupiry.
                                     </p>
                                 </div>
 

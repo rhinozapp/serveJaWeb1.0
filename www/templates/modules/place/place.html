@@ -68,11 +68,14 @@
                         </p>
                     </div>
                     <div class="bars__info-cash">
-                        <p class="bars__info-name">
+                        <span class="bars__info-value invalid">
                             {{data.value | currency:'R$':2}}
-                        </p>
-                        <p class="bars__info-value-promo">
-                            {{data.promotionValue | currency:'R$':2}}
+                        </span>
+                        <span class="bars__info-value-promo">
+                            {{data.promotionValue | currency:' R$ ':2}}
+                        </span>
+                        <p class="bars__info-ingredients">
+                            Mussarela, provolone, parmesão e queijo tipo catupiry. Mussarela, provolone, parmesão e queijo tipo catupiry.
                         </p>
                     </div>
                 </p>
@@ -94,11 +97,14 @@
                             </p>
                         </div>
                         <div class="bars__info-cash">
-                            <p class="bars__info-value">
-                                {{data2.value | currency:'R$':2}}
-                            </p>
-                            <p class="bars__info-value-promo">
-                                {{data2.promotionValue | currency:'R$':2}}
+                            <span class="bars__info-value">
+                                {{data2.value | currency:'R$ ':2}}
+                            </span>
+                            <span class="bars__info-value-promo">
+                                {{data2.promotionValue | currency:'R$ ':2}}
+                            </span>
+                            <p class="bars__info-ingredients">
+                                Mussarela, provolone, parmesão e queijo tipo catupiry. Mussarela, provolone, parmesão e queijo tipo catupiry.
                             </p>
                         </div>
                     </p>
