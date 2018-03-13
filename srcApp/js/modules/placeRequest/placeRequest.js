@@ -100,7 +100,8 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
                                         value : valueProd.value,
                                         promotionValue : valueProd.promotionValue,
                                         imgPath : valueProd.imgPath,
-                                        amountInRequest : 0
+                                        amountInRequest : 0,
+                                        description: valueProd.description
                                     });
                                 }
                             }
@@ -118,7 +119,9 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
                                 value : value.value,
                                 promotionValue : value.promotionValue,
                                 imgPath : value.imgPath,
-                                amountInRequest : 0
+                                amountInRequest : 0,
+                                description: value.description
+                                
                             });
                         }
                     });

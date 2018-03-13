@@ -60,6 +60,7 @@
             <div ng-if="place.vars.listPromotion.length > 0">
                 <h3 class="place__category">Promoção</h3>
             </div>
+
             <div class="bars__list"
                  ng-repeat="data in place.vars.listPromotion | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
                 <div class="bars__info-logo">
@@ -77,9 +78,9 @@
                     <span class="bars__info-value-promo">
                         {{data.promotionValue | currency:' R$ ':2}}
                     </span>
-                    <!--<p class="bars__info-ingredients">
-                        Mussarela, provolone, parmesão e queijo tipo catupiry. Mussarela, provolone, parmesão e queijo tipo catupiry.
-                    </p>-->
+                    <p class="bars__info-ingredients">
+                        {{ data.description }}
+                    </p>
                 </div>
             </div>
 
@@ -101,15 +102,14 @@
                         <span class="bars__info-value">
                             {{data2.value | currency:'R$ ':2}}
                         </span>
-                        <span class="bars__info-value-promo">
-                            {{data2.promotionValue | currency:'R$ ':2}}
-                        </span>
-                        <!--<p class="bars__info-ingredients">
-                            Mussarela, provolone, parmesão e queijo tipo catupiry. Mussarela, provolone, parmesão e queijo tipo catupiry.
-                        </p>-->
+                        <p class="bars__info-ingredients">
+                            {{ data2.description }}
+                        </p>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </section>
 </div>

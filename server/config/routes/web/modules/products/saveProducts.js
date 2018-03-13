@@ -28,7 +28,8 @@ exports.saveProducts = function (req, res) {
             productName: req.body.vars.productName,
             amount : req.body.vars.amount,
             value : req.body.vars.value,
-            promotionValue : req.body.vars.promotionValue
+            promotionValue : req.body.vars.promotionValue,
+            description: req.body.vars.description
         }, {
             multi : false
         }, function () {
@@ -42,7 +43,8 @@ exports.saveProducts = function (req, res) {
             amount : req.body.vars.amount,
             value : req.body.vars.value,
             promotionValue : req.body.vars.promotionValue,
-            imgPath : files
+            imgPath : files,
+            description: req.body.vars.description
         }).save().then(function (data) {
             res.json({status : true});
         }, function (err) {

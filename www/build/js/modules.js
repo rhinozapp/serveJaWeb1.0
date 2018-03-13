@@ -761,7 +761,8 @@ function placeController($stateParams, $state, placeService, mainListService, ex
                                         productName: valueProd.productName,
                                         value : valueProd.value,
                                         promotionValue : valueProd.promotionValue,
-                                        imgPath : valueProd.imgPath
+                                        imgPath : valueProd.imgPath,
+                                        description:  valueProd.description,
                                     })
                                 }
                             }
@@ -778,7 +779,8 @@ function placeController($stateParams, $state, placeService, mainListService, ex
                                productName: value.productName,
                                value : value.value,
                                promotionValue : value.promotionValue,
-                               imgPath : value.imgPath
+                               imgPath : value.imgPath,
+                               description:  value.description,
                            })
                        }
                     });
@@ -981,7 +983,8 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
                                         value : valueProd.value,
                                         promotionValue : valueProd.promotionValue,
                                         imgPath : valueProd.imgPath,
-                                        amountInRequest : 0
+                                        amountInRequest : 0,
+                                        description: valueProd.description
                                     });
                                 }
                             }
@@ -999,7 +1002,9 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
                                 value : value.value,
                                 promotionValue : value.promotionValue,
                                 imgPath : value.imgPath,
-                                amountInRequest : 0
+                                amountInRequest : 0,
+                                description: value.description
+                                
                             });
                         }
                     });
