@@ -1,4 +1,4 @@
-exports.getRequests = function (req, res) {
+exports.getRequestsStop = function (req, res) {
     let mongoose = require('mongoose'),
         requests = mongoose.model('requests');
 
@@ -6,6 +6,7 @@ exports.getRequests = function (req, res) {
         $and : [
             {
                 userID : req.body.id,
+                requireStop : true,
                 status : true
             }
         ]

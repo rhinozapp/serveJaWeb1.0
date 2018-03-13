@@ -21,64 +21,67 @@
             Enviar
         </md-button>
 
-        <section ng-if="placeRequest.vars.viewMenu" class="place__info">
-            <input class="input-default" ng-model="placeRequest.vars.search" placeholder="Procurar um produto">
+        <section ng-if="placeRequest.vars.viewMenu">
 
-            <div ng-if="placeRequest.vars.listPromotion.length > 0">
-                <h3>Promoçao</h3>
-            </div>
+            <div class="place__info">
+                <input class="input-default" ng-model="placeRequest.vars.search" placeholder="Procurar um produto">
 
-            <div ng-repeat="data in placeRequest.vars.listPromotion | filter:{productName : placeRequest.vars.search}:strict">
-                <ul class="bars" ng-click="placeRequest.functions.addProducts(data)">
-                    <li class="bars__bar">
-                        <div class="bars__info">
-                            <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}"> {{data.productName}} | {{data.value | currency:'R$ ':2}} | {{data.promotionValue | currency:'R$ ':2}}
+                <div ng-if="placeRequest.vars.listPromotion.length > 0">
+                    <h3 class="place__category">Promoção</h3>
+                </div>
+                <div class="bars__list"
+                     ng-repeat="data in placeRequest.vars.listPromotion | filter:{productName : placeRequest.vars.search}:strict">
+                    <ul class="bars">
+                        <li class="bars__bar">
+                            <div class="bars__info-logo">
+                                <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}"> {{data.productName}} | {{data.value | currency:'R$ ':2}} | {{data.promotionValue | currency:'R$ ':2}}
 
+                            </div>
                             <div>
                                 <button ng-click="placeRequest.functions.controlRequest.addInGeneral(data)">+</button>
                                 {{data.amountInRequest}}
                                 <button ng-click="placeRequest.functions.controlRequest.removeToGeneral(data)">-</button>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div ng-repeat="data in placeRequest.vars.listByCategoryFilter">
-                <div ng-if="data.products.length > 0">
-                    <h3>{{data.categoryName}}</h3>
-                </div>
-
-                <div class="bars__list" ng-repeat="data2 in data.products | filter:{productName : placeRequest.vars.search}:strict">
-                    <ul class="bars" ng-click="placeRequest.functions.addProducts(data2)">
-                        <li class="bars__bar">
-                            <div class="bars__info">
-                                <div class="bars__info-logo">
-                                    <img class="bars__info-img" ng-if="data2.imgPath" ng-src="http://localhost/files/imgProducts/{{data2.imgPath}}">
-                                </div>
-                                <div class="bars__info-description">
-                                    <p class="bars__info-name">
-                                        {{data2.productName}}
-                                    </p>
-                                    <span class="bars__info-value">
-                                        {{data2.value | currency:'R$ ':2}}
-                                    </span>
-                                    <span class="bars__info-value-promo">
-                                        {{data2.promotionValue | currency:'R$ ':2}}
-                                    </span>
-                                    <p class="bars__info-ingredients">
-                                        Mussarela, provolone, parmesão e queijo tipo catupiry. Mussarela, provolone, parmesão e queijo tipo catupiry.
-                                    </p>
-                                </div>
-
-                                <div>
-                                    <button ng-click="placeRequest.functions.controlRequest.addInGeneral(data2)">+</button>
-                                    {{data2.amountInRequest}}
-                                    <button ng-click="placeRequest.functions.controlRequest.removeToGeneral(data2)">-</button>
-                                </div>
-                            </div>
                         </li>
                     </ul>
+                </div>
+
+                <div ng-repeat="data in placeRequest.vars.listByCategoryFilter">
+                    <div ng-if="data.products.length > 0">
+                        <h3>{{data.categoryName}}</h3>
+                    </div>
+
+                    <div class="bars__list" ng-repeat="data2 in data.products | filter:{productName : placeRequest.vars.search}:strict">
+                        <ul class="bars" ng-click="placeRequest.functions.addProducts(data2)">
+                            <li class="bars__bar">
+                                <div class="bars__info">
+                                    <div class="bars__info-logo">
+                                        <img class="bars__info-img" ng-if="data2.imgPath" ng-src="http://localhost/files/imgProducts/{{data2.imgPath}}">
+                                    </div>
+                                    <div class="bars__info-description">
+                                        <p class="bars__info-name">
+                                            {{data2.productName}}
+                                        </p>
+                                        <span class="bars__info-value">
+                                        {{data2.value | currency:'R$ ':2}}
+                                    </span>
+                                        <span class="bars__info-value-promo">
+                                        {{data2.promotionValue | currency:'R$ ':2}}
+                                    </span>
+                                        <p class="bars__info-ingredients">
+                                            Mussarela, provolone, parmesão e queijo tipo catupiry. Mussarela, provolone, parmesão e queijo tipo catupiry.
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <button ng-click="placeRequest.functions.controlRequest.addInGeneral(data2)">+</button>
+                                        {{data2.amountInRequest}}
+                                        <button ng-click="placeRequest.functions.controlRequest.removeToGeneral(data2)">-</button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>

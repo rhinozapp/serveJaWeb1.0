@@ -14,6 +14,7 @@ exports.addProductsInRequest = function (req, res) {
     })
         .populate('tableID')
         .populate('products.productID')
+        .populate('userAppID')
         .exec(function (err, data) {
             if(err){
                 res.json({status : false});

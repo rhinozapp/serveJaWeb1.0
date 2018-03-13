@@ -69,7 +69,7 @@ angular
 "use strict";
 angular
     .module('core')
-    .factory('getCoordinates', function () {
+    .service('getCoordinates', function () {
         return {
             getPos : function () {
                 return new Promise(function (success) {
@@ -84,6 +84,9 @@ angular
                                 lat : '-23.533773',
                                 long : '-46.625290'
                             });
+                        }, {
+                            enableHighAccuracy: true,
+                            maximumAge: 0
                         });
                     }else{
                         success({
@@ -269,6 +272,11 @@ angular
                 return {
                     lastAction : lastAction
                 };
+            },
+
+            clear : function () {
+                $window.localStorage.lastAction = null;
+                $window.location.reload();
             }
         };
     });
@@ -371,6 +379,17 @@ angular
             // Set scroll to 0
             window.scrollTo(0, 0);
             var token = $window.localStorage.token;
+
+            //region Check QRCode
+            if(toState.name !== 'QRCodeReader'){
+                QRScanner.prepare(function (err, status) {
+                    if(status.scanning){
+                        QRScanner.cancelScan();
+                        QRScanner.hide();
+                    }
+                });
+            }
+            //endregion
 
             //region Check Last Action
             if (toState.name === 'login' && token !== undefined) {

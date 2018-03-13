@@ -93,8 +93,14 @@ module.exports = function(app) {
     let getRequestsWeb = require('./web/modules/requests/getRequests');
     app.post('/web/getRequests', authenticate, getRequestsWeb.getRequests);
 
+    let getRequestsStopWeb = require('./web/modules/requests/getRequestsStop');
+    app.post('/web/getRequestsStop', authenticate, getRequestsStopWeb.getRequestsStop);
+
     let checkProductSentWeb = require('./web/modules/requests/checkProductSent');
     app.post('/web/checkProductSent', authenticate, checkProductSentWeb.checkProductSent);
+
+    let closeRequestWeb = require('./web/modules/requests/closeRequest');
+    app.post('/web/closeRequest', authenticate, closeRequestWeb.closeRequest);
     //endregion
     //endregion
 

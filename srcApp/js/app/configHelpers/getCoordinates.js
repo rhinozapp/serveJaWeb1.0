@@ -1,6 +1,6 @@
 angular
     .module('core')
-    .factory('getCoordinates', function () {
+    .service('getCoordinates', function () {
         return {
             getPos : function () {
                 return new Promise(function (success) {
@@ -15,6 +15,9 @@ angular
                                 lat : '-23.533773',
                                 long : '-46.625290'
                             });
+                        }, {
+                            enableHighAccuracy: true,
+                            maximumAge: 0
                         });
                     }else{
                         success({

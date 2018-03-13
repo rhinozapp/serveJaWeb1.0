@@ -93,13 +93,15 @@ function placeController($stateParams, $state, placeService, mainListService, ex
 
                         place.vars.menu.productsID.forEach(function (valueProd, keyProd) {
                             if(valueCat._id === valueProd.categoryID){
-                                place.vars.listByCategory[keyCat].products.push({
-                                    productID: valueProd._id,
-                                    productName: valueProd.productName,
-                                    value : valueProd.value,
-                                    promotionValue : valueProd.promotionValue,
-                                    imgPath : valueProd.imgPath
-                                });
+                                if(!valueProd.promotionValue || valueProd.promotionValue === 0 || valueProd.promotionValue === 'null'){
+                                    place.vars.listByCategory[keyCat].products.push({
+                                        productID: valueProd._id,
+                                        productName: valueProd.productName,
+                                        value : valueProd.value,
+                                        promotionValue : valueProd.promotionValue,
+                                        imgPath : valueProd.imgPath
+                                    })
+                                }
                             }
                         });
                     });
@@ -135,15 +137,17 @@ function placeController($stateParams, $state, placeService, mainListService, ex
 
         checkFavorite : {
             checkFavorite : function () {
-                mainListService.getListPubsFavorites.save({
-                    userID : getProfile.id
-                }, place.functions.checkFavorite.successCheckFavorite);
+                if(getProfile.status){
+                    mainListService.getListPubsFavorites.save({
+                        userID : getProfile.id
+                    }, place.functions.checkFavorite.successCheckFavorite);
+                }
             },
 
             successCheckFavorite : function (data) {
                 if(data.data){
                     place.vars.favorite = $.grep(data.data, function(value){
-                        return value.userID === place.vars.dataPub.userID;
+                        return value._id === place.vars.dataPub._id;
                     });
 
                     if(place.vars.favorite.length > 0){

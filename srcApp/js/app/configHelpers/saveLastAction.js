@@ -17,6 +17,11 @@ angular
                 return {
                     lastAction : lastAction
                 };
+            },
+
+            clear : function () {
+                $window.localStorage.lastAction = null;
+                $window.location.reload();
             }
         };
     });

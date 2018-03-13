@@ -755,13 +755,15 @@ function placeController($stateParams, $state, placeService, mainListService, ex
 
                         place.vars.menu.productsID.forEach(function (valueProd, keyProd) {
                             if(valueCat._id === valueProd.categoryID){
-                                place.vars.listByCategory[keyCat].products.push({
-                                    productID: valueProd._id,
-                                    productName: valueProd.productName,
-                                    value : valueProd.value,
-                                    promotionValue : valueProd.promotionValue,
-                                    imgPath : valueProd.imgPath
-                                });
+                                if(!valueProd.promotionValue || valueProd.promotionValue === 0 || valueProd.promotionValue === 'null'){
+                                    place.vars.listByCategory[keyCat].products.push({
+                                        productID: valueProd._id,
+                                        productName: valueProd.productName,
+                                        value : valueProd.value,
+                                        promotionValue : valueProd.promotionValue,
+                                        imgPath : valueProd.imgPath
+                                    })
+                                }
                             }
                         });
                     });
@@ -797,15 +799,17 @@ function placeController($stateParams, $state, placeService, mainListService, ex
 
         checkFavorite : {
             checkFavorite : function () {
-                mainListService.getListPubsFavorites.save({
-                    userID : getProfile.id
-                }, place.functions.checkFavorite.successCheckFavorite);
+                if(getProfile.status){
+                    mainListService.getListPubsFavorites.save({
+                        userID : getProfile.id
+                    }, place.functions.checkFavorite.successCheckFavorite);
+                }
             },
 
             successCheckFavorite : function (data) {
                 if(data.data){
                     place.vars.favorite = $.grep(data.data, function(value){
-                        return value.userID === place.vars.dataPub.userID;
+                        return value._id === place.vars.dataPub._id;
                     });
 
                     if(place.vars.favorite.length > 0){
@@ -878,7 +882,7 @@ function placeService($resource, defineHost) {
 angular.module('placeRequest', [])
     .controller('placeRequestController', placeRequestController);
 
-function placeRequestController($stateParams, $state, placeService, placeRequestService, toastAction, dialogAdvanced) {
+function placeRequestController($stateParams, $state, placeService, placeRequestService, toastAction, dialogAdvanced, saveLastAction) {
     var placeRequest = this;
     placeRequest.vars = {};
 
@@ -888,6 +892,7 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
                 placeRequest.functions.getCategory().then(function () {
                     placeRequest.functions.defineMenu();
                     placeRequest.functions.getMenu.getMenu();
+                    placeRequest.functions.socketConfig();
                 });
             }, function () {
                 $state.go('user.mainList')
@@ -969,14 +974,16 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
 
                         placeRequest.vars.menu.productsID.forEach(function (valueProd, keyProd) {
                             if(valueCat._id === valueProd.categoryID){
-                                placeRequest.vars.listByCategory[keyCat].products.push({
-                                    productID: valueProd._id,
-                                    productName: valueProd.productName,
-                                    value : valueProd.value,
-                                    promotionValue : valueProd.promotionValue,
-                                    imgPath : valueProd.imgPath,
-                                    amountInRequest : 0
-                                });
+                                if(!valueProd.promotionValue || valueProd.promotionValue === 0 || valueProd.promotionValue === 'null'){
+                                    placeRequest.vars.listByCategory[keyCat].products.push({
+                                        productID: valueProd._id,
+                                        productName: valueProd.productName,
+                                        value : valueProd.value,
+                                        promotionValue : valueProd.promotionValue,
+                                        imgPath : valueProd.imgPath,
+                                        amountInRequest : 0
+                                    });
+                                }
                             }
                         });
                     });
@@ -993,7 +1000,7 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
                                 promotionValue : value.promotionValue,
                                 imgPath : value.imgPath,
                                 amountInRequest : 0
-                            })
+                            });
                         }
                     });
                     //endregion
@@ -1143,7 +1150,28 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
                     }
                 }
             }
-        }
+        },
+
+        socketConfig : function () {
+            socket.on(placeRequest.vars.requestID, function (data) {
+                switch (true){
+                    case data.type === 'requestVerified':
+                        if(data.closeRequest){
+                            dialogAdvanced.cancel();
+                            toastAction.show({
+                                top : false,
+                                bottom : true,
+                                left : false,
+                                right : true,
+                                text : 'Obrigado por usar o serveJa :)',
+                                scope : placeRequest
+                            });
+                            saveLastAction.clear();
+                        }
+                        break;
+                }
+            });
+        },
     };
 
     placeRequest.functions.core();
