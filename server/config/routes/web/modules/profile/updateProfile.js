@@ -4,7 +4,6 @@ exports.updateProfile = function (req, res) {
         fileName = '',
         mongoose = require('mongoose'),
         userAdmin = mongoose.model('userAdmin'),
-        updateVars = req.body.vars,
         sundayStatus,
         mondayStatus,
         tuesdayStatus,
@@ -14,82 +13,82 @@ exports.updateProfile = function (req, res) {
         saturdayStatus;
 
     //region Config date function
-    if(updateVars.sundayAllDay === 'true'){
+    if(req.body.vars.sundayAllDay === 'true'){
         sundayStatus = true;
-        updateVars.sundayStart = '00:00';
-        updateVars.sundayEnd = '00:00';
-    }else if(updateVars.sundayClosed  === 'true'){
+        req.body.vars.sundayStart = '00:00';
+        req.body.vars.sundayEnd = '00:00';
+    }else if(req.body.vars.sundayClosed  === 'true'){
         sundayStatus = false;
     }else{
         sundayStatus = true;
     }
 
-    if(updateVars.mondayAllDay  === 'true'){
+    if(req.body.vars.mondayAllDay  === 'true'){
         mondayStatus = true;
-        updateVars.mondayStart = '00:00';
-        updateVars.mondayEnd = '00:00';
-    }else if(updateVars.mondayClosed  === 'true'){
+        req.body.vars.mondayStart = '00:00';
+        req.body.vars.mondayEnd = '00:00';
+    }else if(req.body.vars.mondayClosed  === 'true'){
         mondayStatus = false;
     }else{
         mondayStatus = true;
     }
 
-    if(updateVars.tuesdayAllDay  === 'true'){
+    if(req.body.vars.tuesdayAllDay  === 'true'){
         tuesdayStatus = true;
-        updateVars.tuesdayStart = '00:00';
-        updateVars.tuesdayEnd = '00:00';
-    }else if(updateVars.tuesdayClosed  === 'true'){
+        req.body.vars.tuesdayStart = '00:00';
+        req.body.vars.tuesdayEnd = '00:00';
+    }else if(req.body.vars.tuesdayClosed  === 'true'){
         tuesdayStatus = false;
     }else{
         tuesdayStatus = true;
     }
 
-    if(updateVars.wednesdayAllDay  === 'true'){
+    if(req.body.vars.wednesdayAllDay  === 'true'){
         wednesdayStatus = true;
-        updateVars.wednesdayStart = '00:00';
-        updateVars.wednesdayEnd = '00:00';
-    }else if(updateVars.wednesdayClosed  === 'true'){
+        req.body.vars.wednesdayStart = '00:00';
+        req.body.vars.wednesdayEnd = '00:00';
+    }else if(req.body.vars.wednesdayClosed  === 'true'){
         wednesdayStatus = false;
     }else{
         wednesdayStatus = true;
     }
 
-    if(updateVars.thursdayAllDay  === 'true'){
+    if(req.body.vars.thursdayAllDay  === 'true'){
         thursdayStatus = true;
-        updateVars.thursdayStart = '00:00';
-        updateVars.thursdayEnd = '00:00';
-    }else if(updateVars.thursdayClosed  === 'true'){
+        req.body.vars.thursdayStart = '00:00';
+        req.body.vars.thursdayEnd = '00:00';
+    }else if(req.body.vars.thursdayClosed  === 'true'){
         thursdayStatus = false;
     }else{
         thursdayStatus = true;
     }
 
-    if(updateVars.fridayAllDay  === 'true'){
+    if(req.body.vars.fridayAllDay  === 'true'){
         fridayStatus = true;
-        updateVars.fridayStart = '00:00';
-        updateVars.fridayEnd = '00:00';
-    }else if(updateVars.fridayClosed  === 'true'){
+        req.body.vars.fridayStart = '00:00';
+        req.body.vars.fridayEnd = '00:00';
+    }else if(req.body.vars.fridayClosed  === 'true'){
         fridayStatus = false;
     }else{
         fridayStatus = true;
     }
 
-    if(updateVars.saturdayAllDay  === 'true'){
+    if(req.body.vars.saturdayAllDay  === 'true'){
         saturdayStatus = true;
-        updateVars.saturdayStart = '00:00';
-        updateVars.saturdayEnd = '00:00';
-    }else if(updateVars.saturdayClosed  === 'true'){
+        req.body.vars.saturdayStart = '00:00';
+        req.body.vars.saturdayEnd = '00:00';
+    }else if(req.body.vars.saturdayClosed  === 'true'){
         saturdayStatus = false;
     }else{
         saturdayStatus = true;
     }
 
-    if(!updateVars.long){
-        updateVars.long = updateVars.loc.coordinates[0];
+    if(!req.body.vars.long){
+        req.body.vars.long = req.body.vars.loc.coordinates[0];
     }
 
-    if(!updateVars.lat){
-        updateVars.lat = updateVars.loc.coordinates[1];
+    if(!req.body.vars.lat){
+        req.body.vars.lat = req.body.vars.loc.coordinates[1];
     }
     //endregion
 
@@ -99,7 +98,7 @@ exports.updateProfile = function (req, res) {
         files += fileName[1];
 
         userAdmin.update({
-            _id : mongoose.Types.ObjectId(updateVars._id)
+            _id : mongoose.Types.ObjectId(req.body.vars._id)
         }, {
             logoPath : files
         }, {
@@ -111,72 +110,71 @@ exports.updateProfile = function (req, res) {
 
     //region Update info
     userAdmin.update({
-        _id : mongoose.Types.ObjectId(updateVars._id)
+        _id : mongoose.Types.ObjectId(req.body.vars._id)
     }, {
-        name : updateVars.name,
-        cnpj : updateVars.cnpj,
-        description : updateVars.description,
-        pageFacebook : updateVars.pageFacebook,
-        pageInstagram : updateVars.pageInstagram,
-        webSite : updateVars.webSite,
-        zipCode: updateVars.zipCode,
-        address : updateVars.address,
-        number : updateVars.number,
-        complement : updateVars.complement,
-        neighborhood : updateVars.neighborhood,
-        city : updateVars.city,
-        uf : updateVars.uf,
+        name : req.body.vars.name,
+        cnpj : req.body.vars.cnpj,
+        description : req.body.vars.description,
+        pageFacebook : req.body.vars.pageFacebook,
+        pageInstagram : req.body.vars.pageInstagram,
+        webSite : req.body.vars.webSite,
+        zipCode: req.body.vars.zipCode,
+        address : req.body.vars.address,
+        number : req.body.vars.number,
+        complement : req.body.vars.complement,
+        neighborhood : req.body.vars.neighborhood,
+        city : req.body.vars.city,
+        uf : req.body.vars.uf,
         loc : {
             'type' : 'Point',
-            coordinates: [updateVars.long, updateVars.lat]
+            coordinates: [req.body.vars.long, req.body.vars.lat]
         },
-        statusLoc : updateVars.status,
+        statusLoc : req.body.vars.status,
         sunday : {
             status: sundayStatus,
-            timeStart : updateVars.sundayStart,
-            timeEnd : updateVars.sundayEnd,
-            sundayMenu : updateVars.sundayMenu
+            timeStart : req.body.vars.sundayStart,
+            timeEnd : req.body.vars.sundayEnd,
+            sundayMenu : req.body.vars.sundayMenu
         },
         monday : {
             status: mondayStatus,
-            timeStart : updateVars.mondayStart,
-            timeEnd : updateVars.mondayEnd,
-            mondayMenu : updateVars.mondayMenu
+            timeStart : req.body.vars.mondayStart,
+            timeEnd : req.body.vars.mondayEnd,
+            mondayMenu : req.body.vars.mondayMenu
         },
         tuesday : {
             status : tuesdayStatus ,
-            timeStart : updateVars.tuesdayStart,
-            timeEnd : updateVars.tuesdayEnd,
-            tuesdayMenu : updateVars.tuesdayMenu
+            timeStart : req.body.vars.tuesdayStart,
+            timeEnd : req.body.vars.tuesdayEnd,
+            tuesdayMenu : req.body.vars.tuesdayMenu
         },
         wednesday : {
             status : wednesdayStatus,
-            timeStart : updateVars.wednesdayStart,
-            timeEnd : updateVars.wednesdayEnd,
-            wednesdayMenu : updateVars.wednesdayMenu
+            timeStart : req.body.vars.wednesdayStart,
+            timeEnd : req.body.vars.wednesdayEnd,
+            wednesdayMenu : req.body.vars.wednesdayMenu
         },
         thursday : {
             status : thursdayStatus,
-            timeStart : updateVars.thursdayStart,
-            timeEnd : updateVars.thursdayEnd,
-            thursdayMenu : updateVars.thursdayMenu
+            timeStart : req.body.vars.thursdayStart,
+            timeEnd : req.body.vars.thursdayEnd,
+            thursdayMenu : req.body.vars.thursdayMenu
         },
         friday : {
             status: fridayStatus,
-            timeStart : updateVars.fridayStart,
-            timeEnd : updateVars.fridayEnd,
-            fridayMenu : updateVars.fridayMenu
+            timeStart : req.body.vars.fridayStart,
+            timeEnd : req.body.vars.fridayEnd,
+            fridayMenu : req.body.vars.fridayMenu
         },
         saturday : {
             status : saturdayStatus,
-            timeStart : updateVars.saturdayStart,
-            timeEnd : updateVars.saturdayEnd,
-            saturdayMenu : updateVars.saturdayMenu
+            timeStart : req.body.vars.saturdayStart,
+            timeEnd : req.body.vars.saturdayEnd,
+            saturdayMenu : req.body.vars.saturdayMenu
         }
     }, {
         multi : false
     }, function (err, data) {
-        console.log(err, data);
         res.send(true);
     });
     //endregion

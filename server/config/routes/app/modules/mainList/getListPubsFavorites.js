@@ -10,6 +10,8 @@ exports.getListPubsFavorites = function (req, res) {
                 res.json({status: false});
             }else if(!favoritesList){
                 res.json({status: false});
+            }else if(favoritesList.length === 0){
+                res.json({status: false});
             }else{
                 res.json({
                     status: true,

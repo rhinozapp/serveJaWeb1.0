@@ -102,6 +102,11 @@ module.exports = function(app) {
     let closeRequestWeb = require('./web/modules/requests/closeRequest');
     app.post('/web/closeRequest', authenticate, closeRequestWeb.closeRequest);
     //endregion
+
+    //region Old Requests
+    let getOldRequestsWeb = require('./web/modules/oldRequests/getOldRequests');
+    app.post('/web/getOldRequests', authenticate, getOldRequestsWeb.getOldRequests);
+    //endregion
     //endregion
 
     //region APP Routes

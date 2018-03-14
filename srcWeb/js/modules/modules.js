@@ -5,5 +5,6 @@ angular.module('modules', [
     'profile',
     'menu',
     'tables',
-    'requests'
+    'requests',
+    'oldRequests'
 ]);

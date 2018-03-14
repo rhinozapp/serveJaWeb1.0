@@ -39,7 +39,7 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
                     {
                         'scopes': '',
                         'webClientId': '675857416832-gkkntadhdgbjs8o19akb071ho7stguki.apps.googleusercontent.com',
-                        'offline': false
+                        'offline': true
                     },
                     function (obj) {
                         success({
@@ -48,7 +48,6 @@ function loginService($window, dialogAlert, $resource, defineHost, $cordovaOauth
                         });
                     },
                     function (msg) {
-                        console.log(msg);
                         success({
                             status : false,
                             data : msg

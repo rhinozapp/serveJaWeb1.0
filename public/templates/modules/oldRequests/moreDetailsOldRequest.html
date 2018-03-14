@@ -1,0 +1,56 @@
+<md-dialog aria-label="Menu" style="width: 1200px">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Resumo do pedido</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="moreDetailsOldRequest.functions.cancel()">
+                <md-icon class="icon-28">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <p class="md-dialog-title">Data : {{moreDetailsOldRequest.vars.dataResume.dateCreate | date:'dd/MM/yyyy HH:mm'}}</p>
+
+            <div layout="row">
+                <md-card flex="100">
+                    <md-table-container>
+                        <table md-table>
+
+                            <thead md-head md-order="requests.vars.query.order">
+                            <tr md-row>
+                                <th md-column md:order:by="productName">Produto</th>
+                                <th md-column md:order:by="value">Valor</th>
+                                <th md-column md:order:by="amount">Quantidade</th>
+                            </tr>
+                            </thead>
+
+                            <tbody md-body>
+                            <tr md-row
+                                ng-repeat="data in moreDetailsOldRequest.vars.listProducts | orderBy: requests.vars.query.order | limitTo: requests.vars.query.limit: (requests.vars.query.page - 1) * requests.vars.query.limit">
+
+
+                                <td md-cell>{{data.productName}}</td>
+                                <td md-cell>{{data.value | currency:"R$"}}</td>
+                                <td md-cell>{{data.amount}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-card>
+            </div>
+
+            <div layout="row" layout-align="end end">
+                <h2>Total : {{moreDetailsOldRequest.vars.total | currency:"R$"}}</h2>
+            </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <md-button ng-click="moreDetailsOldRequest.functions.cancel()">
+            Fechar
+        </md-button>
+        <span flex></span>
+    </md-dialog-actions>
+</md-dialog>

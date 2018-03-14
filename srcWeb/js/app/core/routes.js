@@ -95,6 +95,16 @@ angular
                         templateUrl: 'templates/modules/requests/requests.html'
                     },
                     //endregion
+
+                    //region Old Requests
+                    {
+                        name: 'oldRequests',
+                        url: '/oldRequests',
+                        controller: 'oldRequestsController',
+                        controllerAs: 'oldRequests',
+                        templateUrl: 'templates/modules/oldRequests/oldRequests.html'
+                    },
+                    //endregion
                 ]
 			});
 

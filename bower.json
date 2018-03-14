@@ -26,6 +26,7 @@
     "ng-cpf-cnpj": "^0.0.5",
     "angular-haversine": "^0.1.0",
     "angular-google-places-autocomplete": "^0.2.7",
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "angularjs-google-maps": "^0.5.0"
   }
 }

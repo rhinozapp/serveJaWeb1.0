@@ -57,7 +57,7 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-qrscanner": {},
       "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "675857416832-cja7rbuo650a35cjcksnq9o4qnln2afk.apps.googleusercontent.com"
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.675857416832-cja7rbuo650a35cjcksnq9o4qnln2afk"
       }
     },
     "platforms": [

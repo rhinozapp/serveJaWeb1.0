@@ -1,6 +1,11 @@
 <div class="content">
     <div ng-if="mainList.vars.actionFindLocal">
-        <input class="input-default" g-places-autocomplete ng-model="mainList.vars.searchLocal" ng-change="mainList.functions.getList.getLocal()" placeholder="Procurar bares próximos à">
+        <input class="input-default"
+               ng-model="mainList.vars.searchLocal"
+               ng-change="mainList.functions.getList.getLocal()"
+               googleplace
+               geo="mainList.vars.geo"
+               placeholder="Procurar bares próximos à">
     </div>
 
     <div>

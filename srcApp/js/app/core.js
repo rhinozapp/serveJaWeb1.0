@@ -23,7 +23,5 @@ angular.module('core', [
 
     'ngCordovaOauth',
 
-    'benharold.haversine',
-
-    'google.places'
+    'benharold.haversine'
 ]);

@@ -95,7 +95,7 @@ gulp.task('vendor', function () {
 
         bower + 'angular-haversine/angular-haversine.js',
 
-        bower + 'angular-google-places-autocomplete/src/autocomplete.js'
+        bower + 'firebase/firebase.js'
     ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest(dest + 'js'));
