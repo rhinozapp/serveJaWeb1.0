@@ -58,13 +58,13 @@
                 <p class="place__description">{{place.vars.dataPub.description}}</p>
             </article>
 
-            <input class="input-default" ng-model="place.vars.search" placeholder="Procurar um produto">
+            <input class="input-default" ng-model="place.vars.search.$" placeholder="Procurar um produto">
 
-            <div ng-if="place.vars.listPromotion.length > 0">
+            <div ng-if="place.vars.listPromotion.length > 0 && !place.vars.search.$">
                 <h3 class="place__category">Promoção</h3>
             </div>
 
-            <div class="bars__list" ng-repeat="data in place.vars.listPromotion | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
+            <div class="bars__list" ng-repeat="data in place.vars.listPromotion | filter:place.vars.search:false">
 
                 <div class="bars__info-logo">
                     <div class="bars__info-img">
@@ -89,11 +89,11 @@
 
             <div ng-repeat="data in place.vars.listByCategoryFilter">
 
-                <div ng-if="data.products.length > 0">
+                <div ng-if="data.products.length > 0 && !place.vars.search.$">
                     <h3 class="place__category">{{data.categoryName}}</h3>
                 </div>
 
-                <div class="bars__list" ng-repeat="data2 in data.products | filter:{productName : place.vars.search, value: place.vars.search, promotionValue: place.vars.search}:false">
+                <div class="bars__list" ng-repeat="data2 in data.products | filter:place.vars.search:false">
                     <div class="bars">
                         <div class="bars__info-logo">
                             <div class="bars__info-img">

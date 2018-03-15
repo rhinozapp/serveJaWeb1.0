@@ -7,8 +7,9 @@
                 <table md-table>
                     <thead md-head md-order="oldRequests.vars.query.order">
                     <tr md-row>
-                        <th md-column md:order:by="tableName">Mesa</th>
-                        <th md-column md:order:by="name">Usuário</th>
+                        <th md-column md:order:by="tableID.tableName">Mesa</th>
+                        <th md-column md:order:by="userAppID.name">Usuário</th>
+                        <th md-column md:order:by="dateCreate">Data</th>
                         <th md-column>Ver detalhes</th>
                     </tr>
                     </thead>
@@ -20,6 +21,7 @@
 
                         <td md-cell>{{data.tableID.tableName}}</td>
                         <td md-cell>{{data.userAppID.name}}</td>
+                        <td md-cell>{{data.dateCreate | date:'dd/MM/yyyy HH:mm'}}</td>
 
                         <td md-cell>
                             <md-button ng-click="oldRequests.functions.moreDetailsOldRequest(data)"

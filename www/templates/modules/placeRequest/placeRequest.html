@@ -15,13 +15,13 @@
     <section class="content" ng-if="placeRequest.vars.viewMenu">
 
         <div class="place__info">
-            <input class="input-default" ng-model="placeRequest.vars.search" placeholder="Procurar um produto">
+            <input class="input-default" ng-model="placeRequest.vars.search.$" placeholder="Procurar um produto">
 
-            <div ng-if="placeRequest.vars.listPromotion.length > 0">
+            <div ng-if="placeRequest.vars.listPromotion.length > 0 && !placeRequest.vars.search.$">
                 <h3 class="place__category">Promoção</h3>
             </div>
 
-            <div class="bars__list" ng-repeat="data in placeRequest.vars.listPromotion | filter:{productName : placeRequest.vars.search}:strict">
+            <div class="bars__list" ng-repeat="data in placeRequest.vars.listPromotion | filter:placeRequest.vars.search:false">
                 <div class="bars__info-logo">
                     <div class="bars__info-img">
                         <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}"> {{data.productName}} | {{data.value | currency:'R$ ':2}} | {{data.promotionValue | currency:'R$':2}}
@@ -35,11 +35,11 @@
             </div>
 
             <!-- <div ng-repeat="data in placeRequest.vars.listByCategoryFilter">
-                <div ng-if="data.products.length > 0">
+                <div ng-if="data.products.length > 0 && !placeRequest.vars.search.$">
                     <h3 class="place__category">{{data.categoryName}}</h3>
                 </div>
 
-                <div class="bars__list" ng-repeat="data2 in data.products | filter:{productName : placeRequest.vars.search}:strict">
+                <div class="bars__list" ng-repeat="data2 in data.products | filter:placeRequest.vars.search:false">
                     <div ng-click="placeRequest.functions.addProducts(data2)">
                         <div class="bars__info-logo">
                             <div class="bars__info-img">

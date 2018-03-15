@@ -204,19 +204,6 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
             }
         },
 
-        changeHeaderImg : function () {
-            Upload.upload({
-                url: '/web/updateHeaderImgProfile',
-                method: 'POST',
-                data: {
-                    file: profile.vars.headerImgProfile,
-                    vars: profile.vars
-                }
-            }).then(function() {
-                profile.functions.core();
-            });
-        },
-
         zipCodeChange: function() {
             profile.vars.zipCode = profile.vars.zipCode.replace('-', '');
             if (profile.vars.zipCode.length >= 8) {
@@ -231,6 +218,19 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.status = data.latlong.status;
                 });
             }
+        },
+
+        changeHeaderImg : function () {
+            Upload.upload({
+                url: '/web/updateHeaderImgProfile',
+                method: 'POST',
+                data: {
+                    file: profile.vars.headerImgProfile,
+                    vars: profile.vars
+                }
+            }).then(function() {
+                /*profile.functions.core();*/
+            });
         },
 
         upload: function() {
@@ -250,6 +250,14 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
 
                 profile.functions.core();
             });
+        },
+
+        save : function () {
+            if(profile.vars.headerImgProfile){
+                profile.functions.changeHeaderImg();
+            }
+
+            profile.functions.upload();
         }
     };
 

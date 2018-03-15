@@ -167,6 +167,8 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
         checkCNPJ: function() {
             if (signUP.vars.cnpj === '00000000000000') {
                 $scope.adminSignUp.cnpj.$setValidity('void', false);
+            }else{
+                $scope.adminSignUp.cnpj.$setValidity('void', true);
             }
         },
 
@@ -190,13 +192,12 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
             loginService.usernameValidation.save(signUP.vars, function(data) {
                 switch (true) {
                     case data.status === true:
-                        //The user does not exist in our database. We can go on.
-                        signUP.vars.userExist = false;
+                        $scope.adminSignUp.email.$setValidity('userExist', true);
                         break;
 
                     case data.status === false:
-                        //The user exist in our database. We should alert and stop him
-                        signUP.vars.userExist = true;
+                        $scope.adminSignUp.$valid = false;
+                        $scope.adminSignUp.email.$setValidity('userExist', false);
                         signUP.vars.message = data.message;
                         break;
 
@@ -233,7 +234,17 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
 
         cancel: function() {
             dialogAdvanced.cancel();
-        }
+        },
+
+        doLogin: function() {
+            dialogAdvanced.show({
+                controller: loginController,
+                controllerAs: 'login',
+                templateUrl: 'templates/modules/home/loginDialog.html',
+                clickOutsideToClose: false
+                /*functionThen : function () {}*/
+            });
+        },
     };
 
     signUP.functions.core();
@@ -513,7 +524,7 @@ function oldRequests($scope, $filter, oldRequestsService, profileGet, dialogAdva
 
         defineVars : function () {
             oldRequests.vars.query = {
-                order: '-dateInsert',
+                order: '-dateCreate',
                 limit: 100,
                 page: 1
             };
@@ -1152,19 +1163,6 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
             }
         },
 
-        changeHeaderImg : function () {
-            Upload.upload({
-                url: '/web/updateHeaderImgProfile',
-                method: 'POST',
-                data: {
-                    file: profile.vars.headerImgProfile,
-                    vars: profile.vars
-                }
-            }).then(function() {
-                profile.functions.core();
-            });
-        },
-
         zipCodeChange: function() {
             profile.vars.zipCode = profile.vars.zipCode.replace('-', '');
             if (profile.vars.zipCode.length >= 8) {
@@ -1179,6 +1177,19 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
                     profile.vars.status = data.latlong.status;
                 });
             }
+        },
+
+        changeHeaderImg : function () {
+            Upload.upload({
+                url: '/web/updateHeaderImgProfile',
+                method: 'POST',
+                data: {
+                    file: profile.vars.headerImgProfile,
+                    vars: profile.vars
+                }
+            }).then(function() {
+                /*profile.functions.core();*/
+            });
         },
 
         upload: function() {
@@ -1198,6 +1209,14 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
 
                 profile.functions.core();
             });
+        },
+
+        save : function () {
+            if(profile.vars.headerImgProfile){
+                profile.functions.changeHeaderImg();
+            }
+
+            profile.functions.upload();
         }
     };
 

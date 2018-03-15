@@ -11,7 +11,7 @@
     <md-button
             class="md-fab md-mini md-primary btn-float-right"
             aria-label="refresh"
-            ng-click="profile.functions.upload()">
+            ng-click="profile.functions.save()">
         <md-icon class="icon-24">save</md-icon>
 
         <md-tooltip>
@@ -29,8 +29,14 @@
                      style="height: 200px"
                      alt="Header img">
 
-                <img ng-if="profile.vars.headerImgPath"
+                <img ng-if="profile.vars.headerImgPath && !profile.vars.headerImgProfile"
                      ng-src="files/headerImgProfile/{{profile.vars.headerImgPath}}"
+                     class="md-card-image"
+                     style="height: 200px"
+                     alt="Header img">
+
+                <img ng-if="profile.vars.headerImgProfile"
+                     ngf-thumbnail="profile.vars.headerImgProfile || '/thumb.jpg'"
                      class="md-card-image"
                      style="height: 200px"
                      alt="Header img">
@@ -81,7 +87,6 @@
                                    type="file"
                                    name="files"
                                    ng-model="profile.vars.headerImgProfile"
-                                   ng-change="profile.functions.changeHeaderImg()"
 
                                    ngf-select
                                    ngf-pattern="'image/*'"

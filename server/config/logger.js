@@ -12,12 +12,12 @@ let logger = new winston.Logger({
             //maxFiles: 5, //A cada 5 MB de arquivo, cria-se outro
             colorize: false
         }),
-        new winston.transports.Console({
+        /*new winston.transports.Console({
             level: 'debug',
             handleExceptions: true,
             json: false,
             colorize: true
-        })
+        })*/
     ],
     exitOnError: false
 });

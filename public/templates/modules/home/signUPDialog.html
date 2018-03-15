@@ -1,5 +1,4 @@
 <div class="modal">
-
     <header class="modal__header">
         <div class="modal__centralizer">
             <h2 class="modal__title">Cadastrar meu bar</h2>
@@ -26,8 +25,13 @@
                 <div ng-messages="adminSignUp.email.$error" ng-if="adminSignUp.email.$touched">
                     <div class="model__empty-msg" ng-message="required">E-mail não pode ser vazio.</div>
                     <div class="model__empty-msg" ng-message="pattern">Digite um E-mail válido.</div>
+                    <div class="model__empty-msg" ng-message="userExist">
+                        <a ng-click="signUP.functions.doLogin()">
+                            {{signUP.vars.message}} Clique aqui para realizar o login ou resetar sua senha
+                        </a>
+                    </div>
                 </div>
-                <div class="model__empty-msg" ng-show="signUP.vars.userExist">{{signUP.vars.message}}.</div>
+
 
             </div>
 
@@ -115,7 +119,7 @@
             Cancelar
         </button>
 
-        <button class="btn-default btn-right" ng-click="signUP.functions.signUPAction()" ng-disabled="!signUP.vars.name ||
+        <!--<button class="btn-default btn-right" ng-click="signUP.functions.signUPAction()" ng-disabled="!signUP.vars.name ||
                    !signUP.vars.username ||
                    signUP.vars.userExist ||
                    !signUP.vars.cnpj ||
@@ -126,6 +130,13 @@
                    !signUP.vars.uf ||
                    (!signUP.vars.password || !signUP.vars.repPassword) ||
                    (signUP.vars.password !== signUP.vars.repPassword)" disabled="disabled">
+            Cadastrar
+        </button>-->
+
+        <button class="btn-default btn-right"
+                ng-click="signUP.functions.signUPAction()"
+                ng-show="adminSignUp.$valid"
+                disabled="disabled">
             Cadastrar
         </button>
     </div>

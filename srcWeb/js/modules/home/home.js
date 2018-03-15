@@ -152,6 +152,8 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
         checkCNPJ: function() {
             if (signUP.vars.cnpj === '00000000000000') {
                 $scope.adminSignUp.cnpj.$setValidity('void', false);
+            }else{
+                $scope.adminSignUp.cnpj.$setValidity('void', true);
             }
         },
 
@@ -175,13 +177,12 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
             loginService.usernameValidation.save(signUP.vars, function(data) {
                 switch (true) {
                     case data.status === true:
-                        //The user does not exist in our database. We can go on.
-                        signUP.vars.userExist = false;
+                        $scope.adminSignUp.email.$setValidity('userExist', true);
                         break;
 
                     case data.status === false:
-                        //The user exist in our database. We should alert and stop him
-                        signUP.vars.userExist = true;
+                        $scope.adminSignUp.$valid = false;
+                        $scope.adminSignUp.email.$setValidity('userExist', false);
                         signUP.vars.message = data.message;
                         break;
 
@@ -218,7 +219,17 @@ function signUPController(dialogAdvanced, loginService, zipCodeSearch, $scope, d
 
         cancel: function() {
             dialogAdvanced.cancel();
-        }
+        },
+
+        doLogin: function() {
+            dialogAdvanced.show({
+                controller: loginController,
+                controllerAs: 'login',
+                templateUrl: 'templates/modules/home/loginDialog.html',
+                clickOutsideToClose: false
+                /*functionThen : function () {}*/
+            });
+        },
     };
 
     signUP.functions.core();

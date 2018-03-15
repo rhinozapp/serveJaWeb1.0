@@ -13,7 +13,7 @@ function oldRequests($scope, $filter, oldRequestsService, profileGet, dialogAdva
 
         defineVars : function () {
             oldRequests.vars.query = {
-                order: '-dateInsert',
+                order: '-dateCreate',
                 limit: 100,
                 page: 1
             };
