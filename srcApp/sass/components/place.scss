@@ -70,6 +70,10 @@
             margin: 20px 0 10px 0;
             font-size: 1.5em;
         }
+        .place__category{
+            margin-top: 15px;
+            font-size: 1.4em;
+        }
         .place__article{
             margin-bottom: 10px;
             .place__description{
@@ -78,11 +82,16 @@
         }
         .bars__list{
             margin: 25px 0;
-            border-bottom: 1px solid #aaa;
+            border-bottom: 1px solid #ccc;
             padding-bottom: 10px;
+            .green{
+                color: #64DD17;
+            }
             .invalid{
                 text-decoration: line-through;
                 color: #aaa;
+                margin-bottom: 3px;
+                display: block;
             }
             .bars__info-logo{
                 overflow: hidden;
@@ -98,10 +107,19 @@
                     }
                 } 
                 .bars__info-name{
+                    width: 40%;
                     display: table-cell;
                     vertical-align: middle;
                     padding-left: 20px;
                     font-weight: bold;
+                }
+                .bars__info-cash{
+                    display: table-cell;
+                    vertical-align: middle;
+                    padding-left: 20px;
+                    font-weight: bold;
+                    width: 25%;
+                    text-align: right;
                 }
             }
             .bars__info-ingredients{
