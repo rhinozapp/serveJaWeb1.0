@@ -1,19 +1,11 @@
-<div class="place" ng-init="placeRequest.vars.viewMenu = true">
-    <button class="btn__default" type="button" ng-click="placeRequest.functions.requireClose.requireClose()">Solicitar fechamento do pedido</button>
-    <button type="button" ng-click="placeRequest.vars.viewMenu = true; placeRequest.vars.viewRequests = false;">
-        Cardápio
-    </button>
-    <button type="button" ng-click="placeRequest.vars.viewMenu = false; placeRequest.vars.viewRequests = true; placeRequest.functions.getListProductsRequest.getListProductsRequest()">
-        Meus pedidos feitos
-    </button>
+<div class="place content" ng-init="placeRequest.vars.viewMenu = true">
 
-    <md-button ng-if="placeRequest.vars.viewMenu" class="md-fab btn-float-right" aria-label="refresh" ng-disabled="placeRequest.vars.sendDisabled"
-        ng-click="placeRequest.functions.controlRequest.sendRequest.sendRequest()">
-        Enviar
-    </md-button>
+    <button type="button" class="btn__default" -click="placeRequest.functions.requireClose.requireClose()">Solicitar fechamento do pedido</button>
+    <button type="button" ng-click="placeRequest.vars.viewMenu = true; placeRequest.vars.viewRequests = false;">Cardápio</button>
+    <button type="button" ng-click="placeRequest.vars.viewMenu = false; placeRequest.vars.viewRequests = true; placeRequest.functions.getListProductsRequest.getListProductsRequest()">Meus pedidos feitos</button>
+    <button type="button" class="btn__send" ng-if="placeRequest.vars.viewMenu" class="md-fab btn-float-right" aria-label="refresh" ng-disabled="placeRequest.vars.sendDisabled" ng-click="placeRequest.functions.controlRequest.sendRequest.sendRequest()">Enviar</button>
 
-    <section class="content" ng-if="placeRequest.vars.viewMenu">
-
+    <section ng-if="placeRequest.vars.viewMenu">
         <div class="place__info">
             <input class="input-default" ng-model="placeRequest.vars.search.$" placeholder="Procurar um produto">
 
@@ -24,23 +16,38 @@
             <div class="bars__list" ng-repeat="data in placeRequest.vars.listPromotion | filter:placeRequest.vars.search:false">
                 <div class="bars__info-logo">
                     <div class="bars__info-img">
-                        <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}"> {{data.productName}} | {{data.value | currency:'R$ ':2}} | {{data.promotionValue | currency:'R$':2}}
+                        <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}">
+                    </div>
+                    <p class="bars__info-name">
+                        {{data.productName}}
+                    </p>
+                    <div class="bars__info-cash">
+                        <span class="bars__info-value invalid">
+                            {{data.value | currency:'R$ ':2}}
+                        </span>
+                        <span class="bars__info-value-promo green">
+                            {{data.promotionValue | currency:' R$ ':2}}
+                        </span>
                     </div>
                 </div>
-                <div>
-                    <button ng-click="placeRequest.functions.controlRequest.addInGeneral(data)">+</button>
-                    {{data.amountInRequest}}
-                    <button ng-click="placeRequest.functions.controlRequest.removeToGeneral(data)">-</button>
+                <p class="bars__info-ingredients">
+                    {{ data.description }}
+                </p>
+                <div class="bars__request">
+                    <button class="bars__request-btn" ng-click="placeRequest.functions.controlRequest.removeToGeneral(data)">-</button>
+                    <span class="bars__request-number">
+                        {{data.amountInRequest}}
+                    </span>
+                    <button class="bars__request-btn" ng-click="placeRequest.functions.controlRequest.addInGeneral(data)">+</button>
                 </div>
             </div>
 
-            <!-- <div ng-repeat="data in placeRequest.vars.listByCategoryFilter">
+            <div ng-repeat="data in placeRequest.vars.listByCategoryFilter">
                 <div ng-if="data.products.length > 0 && !placeRequest.vars.search.$">
                     <h3 class="place__category">{{data.categoryName}}</h3>
                 </div>
-
                 <div class="bars__list" ng-repeat="data2 in data.products | filter:placeRequest.vars.search:false">
-                    <div ng-click="placeRequest.functions.addProducts(data2)">
+                    <div class="bars" ng-click="placeRequest.functions.addProducts(data2)">
                         <div class="bars__info-logo">
                             <div class="bars__info-img">
                                 <img ng-if="data2.imgPath" ng-src="http://localhost/files/imgProducts/{{data2.imgPath}}">
@@ -48,40 +55,46 @@
                             <p class="bars__info-name">
                                 {{data2.productName}}
                             </p>
-                        </div>
-                        <div class="bars__info-cash">
-                            <span class="bars__info-value-promo invalid">
-                                {{data2.promotionValue | currency:'R$ ':2}}
-                            </span>
-                            <span class="bars__info-value">
-                                {{data2.value | currency:'R$ ':2}}
-                            </span>
+
+                            <div class="bars__info-cash">
+                                <span class="bars__info-value-promo invalid">
+                                    {{data2.promotionValue | currency:'R$ ':2}}
+                                </span>
+                                <span class="bars__info-value green">
+                                    {{data2.value | currency:'R$ ':2}}
+                                </span>
+                            </div>
                         </div>
                         <p class="bars__info-ingredients">
                             {{ data2.description }}
                         </p>
-                        <div>
-                            <button ng-click="placeRequest.functions.controlRequest.addInGeneral(data2)">+</button>
+                    </div>
+                    <div class="bars__request">
+                        <button class="bars__request-btn" ng-click="placeRequest.functions.controlRequest.removeToGeneral(data2)">-</button>
+                        <span class="bars__request-number">
                             {{data2.amountInRequest}}
-                            <button ng-click="placeRequest.functions.controlRequest.removeToGeneral(data2)">-</button>
-                        </div>
+                        </span>
+                        <button class="bars__request-btn" ng-click="placeRequest.functions.controlRequest.addInGeneral(data2)">+</button>
                     </div>
                 </div>
-            </div> -->
-        </div>
-    </section>
+            </div>
 
-    <section ng-if="placeRequest.vars.viewRequests">
-        <div>Resumo do pedido</div>
-
-        <p>Data : {{placeRequest.vars.dataResume.dateCreate | date:'dd/MM/yyyy HH:mm'}}</p>
-        <p>Produtos</p>
-
-        <div ng-repeat="data in placeRequest.vars.listProducts">
-            <p>Produto: {{data.productName}} | Valor: {{data.value}} | Quantidade: {{data.amount}}</p>
         </div>
-        <div>
-            <p>Total : {{placeRequest.vars.total | currency:"R$"}}</p>
-        </div>
-    </section>
+</div>
+</section>
+
+<section ng-if="placeRequest.vars.viewRequests">
+    <div>Resumo do pedido</div>
+
+    <p>Data : {{placeRequest.vars.dataResume.dateCreate | date:'dd/MM/yyyy HH:mm'}}</p>
+    <p>Produtos</p>
+
+    <div ng-repeat="data in placeRequest.vars.listProducts">
+        <p>Produto: {{data.productName}} | Valor: {{data.value}} | Quantidade: {{data.amount}}</p>
+    </div>
+    <div>
+        <p>Total : {{placeRequest.vars.total | currency:"R$"}}</p>
+    </div>
+</section>
+
 </div>

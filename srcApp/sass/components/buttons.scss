@@ -24,6 +24,7 @@
     font-size: .8em;
     text-transform: uppercase;
     font-weight: bold;
+    outline: none;
 }
 
 .btn-float-right{
@@ -31,4 +32,21 @@
     float: right;
     left: 82%;
     top: 80%;
+    outline: none;
+}
+
+.btn__send{
+    box-shadow: 0px 1px 20px -2px #000;
+    text-align: center;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: $main-color;
+    color: $secondary-color;
+    border: none;
+    font-weight: bold;
+    outline: none;
 }

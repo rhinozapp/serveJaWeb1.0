@@ -88,11 +88,9 @@
             </div>
 
             <div ng-repeat="data in place.vars.listByCategoryFilter">
-
                 <div ng-if="data.products.length > 0 && !place.vars.search.$">
                     <h3 class="place__category">{{data.categoryName}}</h3>
                 </div>
-
                 <div class="bars__list" ng-repeat="data2 in data.products | filter:place.vars.search:false">
                     <div class="bars">
                         <div class="bars__info-logo">
