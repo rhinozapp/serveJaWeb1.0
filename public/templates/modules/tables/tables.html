@@ -10,7 +10,7 @@
 
     <div layout="row" layout-wrap layout-align="center center">
         <md-card flex="10" ng-repeat="data in tables.vars.listTablesFilter">
-            <img ng-src="/files/qrCodes/{{data._id}}.png" class="md-card-image" alt="Washed Out">
+            <img ng-src="{{data.qrPath}}" class="md-card-image" alt="Washed Out">
 
             <md-card-title>
                 <md-card-title-text>

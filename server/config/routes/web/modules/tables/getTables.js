@@ -3,7 +3,7 @@ exports.getTables = function (req, res) {
         tables = mongoose.model('tables');
 
     tables.find({
-        userID : req.body.id
+        userID : mongoose.Types.ObjectId(req.body.id)
     }, function(err, tablesList) {
         if (err){
             res.json({status : false});
