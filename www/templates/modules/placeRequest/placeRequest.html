@@ -3,7 +3,8 @@
     <button type="button" class="btn__default" -click="placeRequest.functions.requireClose.requireClose()">Solicitar fechamento do pedido</button>
     <button type="button" ng-click="placeRequest.vars.viewMenu = true; placeRequest.vars.viewRequests = false;">Cardápio</button>
     <button type="button" ng-click="placeRequest.vars.viewMenu = false; placeRequest.vars.viewRequests = true; placeRequest.functions.getListProductsRequest.getListProductsRequest()">Meus pedidos feitos</button>
-    <button type="button" class="btn__send" ng-if="placeRequest.vars.viewMenu" class="md-fab btn-float-right" aria-label="refresh" ng-disabled="placeRequest.vars.sendDisabled" ng-click="placeRequest.functions.controlRequest.sendRequest.sendRequest()">Enviar</button>
+    <button type="button" class="btn__send" ng-if="placeRequest.vars.viewMenu" class="md-fab btn-float-right" aria-label="refresh"
+        ng-disabled="placeRequest.vars.sendDisabled" ng-click="placeRequest.functions.controlRequest.sendRequest.sendRequest()">Enviar</button>
 
     <section ng-if="placeRequest.vars.viewMenu">
         <div class="place__info">
@@ -78,23 +79,53 @@
                     </div>
                 </div>
             </div>
-
         </div>
-</div>
-</section>
+    </section>
 
-<section ng-if="placeRequest.vars.viewRequests">
-    <div>Resumo do pedido</div>
+    <section class="resume" ng-if="placeRequest.vars.viewRequests">
+        <div class="content">
 
-    <p>Data : {{placeRequest.vars.dataResume.dateCreate | date:'dd/MM/yyyy HH:mm'}}</p>
-    <p>Produtos</p>
+            <h2 class="resume__title">Resumo do pedido</h2>
 
-    <div ng-repeat="data in placeRequest.vars.listProducts">
-        <p>Produto: {{data.productName}} | Valor: {{data.value}} | Quantidade: {{data.amount}}</p>
-    </div>
-    <div>
-        <p>Total : {{placeRequest.vars.total | currency:"R$"}}</p>
-    </div>
-</section>
+            <div class="resume__info-group">
+                <div class="resume__info-by-order">
+                    <div class="resume__tag-group">
+                        <span class="resume__tag">Data</span>
+                        <span class="resume__info">{{placeRequest.vars.dataResume.dateCreate | date:'dd/MM/yyyy'}}</span>
+                    </div>
+                    <div class="resume__tag-group">
+                        <span class="resume__tag">Hora</span>
+                        <span class="resume__info">{{placeRequest.vars.dataResume.dateCreate | date:'HH:mm'}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="resume__info-group">
+                <div class="resume__info-by-order" ng-repeat="data in placeRequest.vars.listProducts">
+                    <div class="resume__tag-group">
+                        <span class="resume__tag">Produto</span>
+                        <span class="resume__info">{{data.productName}}</span>
+                    </div>
+                    <div class="resume__tag-group">
+                        <span class="resume__tag">Quantidade</span>
+                        <span class="resume__info">{{data.amount}}</span>
+                    </div>
+                    <div class="resume__tag-group">
+                        <span class="resume__tag">Valor</span>
+                        <span class="resume__info">R$ {{data.value}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="resume__info-group">
+                <div class="resume__info-by-order">
+                    <div class="resume__tag-group">
+                        <span class="resume__tag">Total</span>
+                        <span class="resume__info">R$ {{placeRequest.vars.total | currency:"R$"}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 </div>

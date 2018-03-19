@@ -1,0 +1,24 @@
+.resume{
+    .resume__title{
+        text-align: center;
+        margin: 20px 0;
+        font-size: 1.4em;
+    }
+    .resume__info-group{
+        margin: 15px 0;
+        border-bottom: 1px solid #eee;
+        .resume__info-by-order{
+            margin: 25px 0;
+            .resume__tag-group{
+                overflow: hidden;
+                margin-bottom: 10px;
+                .resume__tag{
+                    float: left;
+                }
+                .resume__info{
+                    float: right;
+                }
+            }
+        }
+    }
+}
