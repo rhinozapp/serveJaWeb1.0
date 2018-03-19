@@ -17,7 +17,7 @@
             <div class="bars__list" ng-repeat="data in placeRequest.vars.listPromotion | filter:placeRequest.vars.search:false">
                 <div class="bars__info-logo">
                     <div class="bars__info-img">
-                        <img ng-if="data.imgPath" ng-src="http://localhost/files/imgProducts/{{data.imgPath}}">
+                        <img ng-if="data.imgPath" ng-src="{{data.imgPath}}">
                     </div>
                     <p class="bars__info-name">
                         {{data.productName}}
@@ -51,7 +51,7 @@
                     <div class="bars" ng-click="placeRequest.functions.addProducts(data2)">
                         <div class="bars__info-logo">
                             <div class="bars__info-img">
-                                <img ng-if="data2.imgPath" ng-src="http://localhost/files/imgProducts/{{data2.imgPath}}">
+                                <img ng-if="data2.imgPath" ng-src="{{data2.imgPath}}">
                             </div>
                             <p class="bars__info-name">
                                 {{data2.productName}}

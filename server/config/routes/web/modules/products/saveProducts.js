@@ -1,24 +1,9 @@
 exports.saveProducts = function (req, res) {
     let mongoose = require('mongoose'),
         products = mongoose.model('products'),
+        cloudinary = require('cloudinary'),
         files = '',
         fileName = '';
-
-    //region If file
-    if(req.files.file){
-        console.log(req.files);
-        fileName = req.files.file.path.split('imgProducts/');
-        files += fileName[1];
-
-        products.update({
-            _id : req.body.vars._id
-        }, {
-            imgPath : files
-        },{
-            multi : false
-        }, function () {});
-    }
-    //endregion
 
     //region Treatment data
     if(req.body.vars.amount === 0 || req.body.vars.amount === 'null'){
@@ -38,9 +23,35 @@ exports.saveProducts = function (req, res) {
     }
     //endregion
 
-    if(req.body.vars._id){
+    //region update
+    if(req.files.file){
+        cloudinary.v2.uploader.upload(req.files.file.path, {
+            folder : 'imgProducts'
+        }, function (error, result) {
+            products.update({
+                _id : mongoose.Types.ObjectId(req.body.vars._id)
+            }, {
+                imgPath : result.secure_url,
+                categoryID : req.body.vars.categoryID,
+                productName: req.body.vars.productName,
+                amount : Number(req.body.vars.amount),
+                value : Number(req.body.vars.value),
+                promotionValue : Number(req.body.vars.promotionValue),
+                description: req.body.vars.description
+            }, {
+                multi : false,
+                upsert: true
+            }, function (err) {
+                if(err){
+                    res.json({status : false});
+                }else{
+                    res.json({status : true});
+                }
+            });
+        });
+    }else{
         products.update({
-            _id : req.body.vars._id
+            _id : mongoose.Types.ObjectId(req.body.vars._id)
         }, {
             categoryID : req.body.vars.categoryID,
             productName: req.body.vars.productName,
@@ -49,25 +60,15 @@ exports.saveProducts = function (req, res) {
             promotionValue : Number(req.body.vars.promotionValue),
             description: req.body.vars.description
         }, {
-            multi : false
+            multi : false,
+            upsert: true
         }, function (err) {
-            res.json({status : true});
-        });
-    }else{
-        new products({
-            userID: req.body.id,
-            categoryID : req.body.vars.categoryID,
-            productName: req.body.vars.productName,
-            amount : req.body.vars.amount,
-            value : req.body.vars.value,
-            promotionValue : req.body.vars.promotionValue,
-            imgPath : files,
-            description: req.body.vars.description
-        }).save().then(function (data) {
-            res.json({status : true});
-        }, function (err) {
-            console.log(err);
-            res.json({status : false});
+            if(err){
+                res.json({status : false});
+            }else{
+                res.json({status : true});
+            }
         });
     }
+    //endregion
 };

@@ -16,6 +16,7 @@
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
+    "cloudinary": "^1.10.0",
     "connect-multiparty": "^2.0.0",
     "consign": "^0.1.5",
     "cordova-android": "^7.0.0",
