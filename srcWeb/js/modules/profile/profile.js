@@ -4,7 +4,6 @@ angular.module('profile', [])
 function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert, menuService) {
     var profile = this;
     profile.vars = {};
-    profile.vars.charge = true;
 
     profile.functions = {
         core: function() {
@@ -197,7 +196,6 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
             },
 
             success: function(data) {
-                profile.vars.charge = false;
                 profile.vars = data.data;
 
                 profile.functions.defineVars();
