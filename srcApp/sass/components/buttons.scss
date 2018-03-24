@@ -27,6 +27,10 @@
     outline: none;
 }
 
+.btn__default--pay{
+    margin-bottom: 20px;
+}
+
 .btn-float-right{
     position: fixed;
     float: right;
@@ -44,6 +48,17 @@
     position: fixed;
     bottom: 10px;
     right: 10px;
+    background: $main-color;
+    color: $secondary-color;
+    border: none;
+    font-weight: bold;
+    outline: none;
+}
+
+.btn__default-back{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     background: $main-color;
     color: $secondary-color;
     border: none;
