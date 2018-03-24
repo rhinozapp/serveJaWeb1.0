@@ -410,14 +410,14 @@ angular
             var token = $window.localStorage.token;
 
             //region Check QRCode
-            // if(toState.name !== 'QRCodeReader'){
-            //     QRScanner.prepare(function (err, status) {
-            //         if(status.scanning){
-            //             QRScanner.cancelScan();
-            //             QRScanner.hide();
-            //         }
-            //     });
-            // }
+            if(toState.name !== 'QRCodeReader'){
+                QRScanner.prepare(function (err, status) {
+                    if(status.scanning){
+                        QRScanner.cancelScan();
+                        QRScanner.hide();
+                    }
+                });
+            }
             //endregion
 
             //region Check Last Action
