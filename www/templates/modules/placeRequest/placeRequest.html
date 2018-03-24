@@ -1,12 +1,10 @@
 <div class="place content" ng-init="placeRequest.vars.viewMenu = true">
 
-    <button type="button" class="btn__default" -click="placeRequest.functions.requireClose.requireClose()">Solicitar fechamento do pedido</button>
-    <button type="button" ng-click="placeRequest.vars.viewMenu = true; placeRequest.vars.viewRequests = false;">Cardápio</button>
-    <button type="button" ng-click="placeRequest.vars.viewMenu = false; placeRequest.vars.viewRequests = true; placeRequest.functions.getListProductsRequest.getListProductsRequest()">Meus pedidos feitos</button>
-    <button type="button" class="btn__send" ng-if="placeRequest.vars.viewMenu" class="md-fab btn-float-right" aria-label="refresh"
-        ng-disabled="placeRequest.vars.sendDisabled" ng-click="placeRequest.functions.controlRequest.sendRequest.sendRequest()">Enviar</button>
+    <button type="button" class="btn__default" ng-click="placeRequest.vars.viewMenu = false; placeRequest.vars.viewRequests = true; placeRequest.functions.getListProductsRequest.getListProductsRequest()">Ver resumo / Encerrar pedido</button>    
+    <button type="button" class="btn__send" ng-if="placeRequest.vars.viewMenu" class="md-fab btn-float-right" aria-label="refresh" ng-disabled="placeRequest.vars.sendDisabled" ng-click="placeRequest.functions.controlRequest.sendRequest.sendRequest()">Enviar</button>
 
     <section ng-if="placeRequest.vars.viewMenu">
+            
         <div class="place__info">
             <input class="input-default" ng-model="placeRequest.vars.search.$" placeholder="Procurar um produto">
 
@@ -83,10 +81,10 @@
     </section>
 
     <section class="resume" ng-if="placeRequest.vars.viewRequests">
+            <button type="button" class="btn__default-back" ng-click="placeRequest.vars.viewMenu = true; placeRequest.vars.viewRequests = false;"> < </button>
         <div class="content">
-
-            <h2 class="resume__title">Resumo do pedido</h2>
-
+                
+                <h2 class="resume__title">Resumo do pedido</h2>
             <div class="resume__info-group">
                 <div class="resume__info-by-order">
                     <div class="resume__tag-group">
@@ -125,6 +123,7 @@
                     </div>
                 </div>
             </div>
+            <button type="button" class="btn__default btn__default--pay" ng-click="placeRequest.functions.requireClose.requireClose()">Finalizar Pedido</button>
         </div>
     </section>
 
