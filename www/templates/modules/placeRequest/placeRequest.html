@@ -1,5 +1,5 @@
 <div class="place content" ng-init="placeRequest.vars.viewMenu = true">
-    <button type="button" class="btn__default" ng-click="placeRequest.vars.viewMenu = false; placeRequest.vars.viewRequests = true; placeRequest.functions.getListProductsRequest.getListProductsRequest()">Ver resumo / Encerrar pedido</button>    
+    <button type="button" ng-if="placeRequest.vars.viewMenu" class="btn__default" ng-click="placeRequest.vars.viewMenu = false; placeRequest.vars.viewRequests = true;">Ver resumo / Encerrar pedido</button>
     <button type="button" class="btn__send" ng-if="placeRequest.vars.viewMenu" class="md-fab btn-float-right" aria-label="refresh" ng-disabled="placeRequest.vars.sendDisabled" ng-click="placeRequest.functions.controlRequest.sendRequest.sendRequest()">Enviar</button>
 
     <section ng-if="placeRequest.vars.viewMenu">
