@@ -19,7 +19,7 @@ function QRCodeReaderController($stateParams, $state, getProfile, toastAction, s
                             bottom : true,
                             left : false,
                             right : true,
-                            text : 'Algo deu errado, tente novamente.',
+                            text : 'Scan finalizado.',
                             scope : QRCodeReader
                         });
                         QRScanner.cancelScan();
