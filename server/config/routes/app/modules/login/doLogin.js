@@ -12,7 +12,11 @@ exports.doLogin = function (req, res) {
             photo : req.body.data.picture.data.url,
             tokenFace : null,
             idFace : req.body.data.id
-        }
+        };
+
+        data.vars.condition = {
+            idFace : data.vars.idFace
+        };
     }else{
         req.body.data = JSON.parse(req.body.data);
 
@@ -22,15 +26,14 @@ exports.doLogin = function (req, res) {
             photo : req.body.data.imageUrl,
             tokenGoogle : req.body.data.accessToken,
             idGoogle : req.body.data.userId
-        }
+        };
+
+        data.vars.condition = {
+            idGoogle : data.vars.idGoogle
+        };
     }
 
-    userApp.findOneAndUpdate({
-        $or : [
-            { idFace : data.vars.idFace },
-            { idGoogle : data.vars.idGoogle }
-        ]
-    }, data.vars, {
+    userApp.findOneAndUpdate(data.vars.condition, data.vars, {
         multi : false,
         upsert: true,
         new : true
