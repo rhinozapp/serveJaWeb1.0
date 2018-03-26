@@ -20,7 +20,7 @@ function QRCodeReaderController($stateParams, $state, getProfile, toastAction, s
 
     QRCodeReader.functions = {
         core : function () {
-            /*QRCodeReader.functions.initScan();*/
+            QRCodeReader.functions.initScan();
         },
 
         initScan : function () {
