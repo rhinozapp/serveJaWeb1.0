@@ -313,21 +313,11 @@ angular
 })();
 (function(){
 "use strict";
-/**
- * Created by Guilherme Assis on 19/09/2016.
- */
-
-angular
-	.module('core');
-
-})();
-(function(){
-"use strict";
 angular
 	.module('core')
 	.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeBar = true;
-        cfpLoadingBarProvider.includeSpinner = false;
+        cfpLoadingBarProvider.includeSpinner = true;
         cfpLoadingBarProvider.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
 	}]);
 
@@ -409,14 +399,14 @@ angular
             var token = $window.localStorage.token;
 
             //region Check QRCode
-            if(toState.name !== 'QRCodeReader'){
+            /*if(toState.name !== 'QRCodeReader'){
                 QRScanner.prepare(function (err, status) {
                     if(status.scanning){
                         QRScanner.cancelScan();
                         QRScanner.hide();
                     }
                 });
-            }
+            }*/
             //endregion
 
             //region Check Last Action
@@ -539,27 +529,6 @@ angular.module('layout', []);
 
 angular
     .module('layout')
-    .directive('container', container);
-
-function container() {
-    return {
-        restrict: 'EA',
-        template: '<ui-view></ui-view>',
-        link: linkFunc,
-        bindToController: true
-    };
-    
-    function linkFunc() {}
-}
-})();
-(function(){
-"use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
-angular
-    .module('layout')
     .directive('header', header);
 
 function header() {
@@ -621,5 +590,26 @@ function headerController(loginService, $mdSidenav, getProfile) {
     };
 
     header.functions.core();
+}
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular
+    .module('layout')
+    .directive('container', container);
+
+function container() {
+    return {
+        restrict: 'EA',
+        template: '<ui-view></ui-view>',
+        link: linkFunc,
+        bindToController: true
+    };
+    
+    function linkFunc() {}
 }
 })();

@@ -7,7 +7,7 @@ function QRCodeReaderController($stateParams, $state, getProfile, toastAction, s
 
     QRCodeReader.functions = {
         core : function () {
-            QRCodeReader.functions.initScan();
+            /*QRCodeReader.functions.initScan();*/
         },
 
         initScan : function () {
@@ -121,7 +121,15 @@ function QRCodeReaderController($stateParams, $state, getProfile, toastAction, s
         cancelScan : function () {
             QRScanner.cancelScan();
             QRScanner.hide();
-            $state.go('user.mainList');
+            $state.go('place', {
+                place : {
+                    pubData : $stateParams.place.pubData,
+                    userLocal : {
+                        lat : $stateParams.place.userLocal.lat,
+                        long : $stateParams.place.userLocal.long
+                    }
+                }
+            });
         }
     };
 

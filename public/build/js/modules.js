@@ -1387,19 +1387,30 @@ function requests($scope, $filter, profileGet, requestsService, toastAction, dia
 
         socketConfig : function () {
             socket.on(profileGet.id, function (data) {
+                console.log(data, requests.vars.requestsList);
                 switch (true){
                     case data.type === 'newProductInRequest':
                         data.data.products.forEach(function (value) {
                             if(requests.vars.listProductsInRequest.map(function(e) { return e.idRequest; }).indexOf(value._id) < 0){
-                                requests.vars.listProductsInRequest.unshift({
-                                    idRequest : value._id,
-                                    productName : value.productID.productName,
-                                    value : value.productID.value,
-                                    promotionValue : value.productID.promotionValue,
-                                    tableName : data.data.tableID.tableName,
-                                    dateInsert : value.dateInsert
+                                if(!value.status){
+                                    requests.vars.listProductsInRequest.unshift({
+                                        idRequest : value._id,
+                                        productName : value.productID.productName,
+                                        value : value.productID.value,
+                                        promotionValue : value.productID.promotionValue,
+                                        tableName : data.data.tableID.tableName,
+                                        dateInsert : value.dateInsert
+                                    });
+                                    $scope.$apply();
+                                }
+                            }
+
+                            if(requests.vars.requestsList.length > 0){
+                                requests.vars.requestsList.forEach(function (valueList) {
+                                    if(valueList.products.map(function(e) { return e._id; }).indexOf(value._id) < 0){
+                                        valueList.products.unshift(value);
+                                    }
                                 });
-                                $scope.$apply();
                             }
                         });
                         break;

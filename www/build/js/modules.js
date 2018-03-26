@@ -20,7 +20,7 @@ function QRCodeReaderController($stateParams, $state, getProfile, toastAction, s
 
     QRCodeReader.functions = {
         core : function () {
-            QRCodeReader.functions.initScan();
+            /*QRCodeReader.functions.initScan();*/
         },
 
         initScan : function () {
@@ -134,7 +134,15 @@ function QRCodeReaderController($stateParams, $state, getProfile, toastAction, s
         cancelScan : function () {
             QRScanner.cancelScan();
             QRScanner.hide();
-            $state.go('user.mainList');
+            $state.go('place', {
+                place : {
+                    pubData : $stateParams.place.pubData,
+                    userLocal : {
+                        lat : $stateParams.place.userLocal.lat,
+                        long : $stateParams.place.userLocal.long
+                    }
+                }
+            });
         }
     };
 
@@ -877,8 +885,12 @@ function placeService($resource, defineHost) {
     return {
         getMenu : $resource(defineHost.host + '/app/getMenu'),
         getCategory : $resource(defineHost.host + '/app/getCategory'),
-        notFavorite : $resource(defineHost.host + '/app/notFavorite'),
-        markFavorite : $resource(defineHost.host + '/app/markFavorite')
+        notFavorite : $resource(defineHost.host + '/app/notFavorite', {
+            ignoreLoadingBar: true
+        }),
+        markFavorite : $resource(defineHost.host + '/app/markFavorite', {
+            ignoreLoadingBar: true
+        })
     }
 }
 })();
