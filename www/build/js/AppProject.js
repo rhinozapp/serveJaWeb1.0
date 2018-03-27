@@ -392,11 +392,28 @@ angular
 "use strict";
 angular
     .module('core')
-    .run(function($rootScope, $window, $state, saveLastAction, getRequestStatus, getProfile) {
+    .run(function($rootScope, $window, $state, saveLastAction, getRequestStatus, getProfile, dialogConfirm) {
         $rootScope.$on('$stateChangeStart', function (e, toState) {
             // Set scroll to 0
             window.scrollTo(0, 0);
             var token = $window.localStorage.token;
+
+            //region Check connection
+            if(navigator.connection.type === 'none'){
+                dialogConfirm.show({
+                    title : 'Atenção',
+                    textContent : 'Você não está conectado a internet!',
+                    ok : 'Tentar novamente',
+                    cancel : 'Sair',
+                    confirmFunction : function () {
+                        window.location.reload();
+                    },
+                    cancelFunction : function () {
+                        navigator.app.exitApp();
+                    }
+                });
+            }
+            //endregion
 
             //region Check QRCode
             if(toState.name !== 'QRCodeReader'){
