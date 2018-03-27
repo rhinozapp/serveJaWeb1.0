@@ -1,4 +1,4 @@
-<md-dialog aria-label="Products" style="width: 1200px">
+<md-dialog aria-label="Products" flex="100">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>Produtos</h2>
@@ -17,90 +17,107 @@
                 </md-card-title-text>
             </md-card-title>
 
-            <div layout="row" style="margin-top: 50px">
-                <div flex="25" style="margin-left: 50px">
-                    <img ng-if="saveProducts.vars.imgPath && !saveProducts.vars.files"
-                         ng-src="{{saveProducts.vars.imgPath}}"
-                         style="width: 200px; height: 200px"
-                         alt="" />
+            <form name="saveProductsForm">
+                <div layout="row" style="margin-top: 50px">
+                    <div flex="25" style="margin-left: 50px">
+                        <img ng-if="saveProducts.vars.imgPath && !saveProducts.vars.files"
+                             ng-src="{{saveProducts.vars.imgPath}}"
+                             style="width: 200px; height: 200px"
+                             alt="" />
 
-                    <img ng-if="saveProducts.vars.files"
-                         style="width: 200px; height: 200px"
-                         ngf-thumbnail="saveProducts.vars.files || '/thumb.jpg'">
+                        <img ng-if="saveProducts.vars.files"
+                             style="width: 200px; height: 200px"
+                             ngf-thumbnail="saveProducts.vars.files || '/thumb.jpg'">
+                    </div>
+
+                    <div flex="70">
+                        <input class="ng-hide"
+                               id="input-file-id"
+                               type="file"
+                               name="files"
+                               ng-model="saveProducts.vars.files"
+
+                               ngf-select
+                               ngf-pattern="'image/*'"
+                               ngf-accept="'image/*'"
+                               ngf-multiple="false">
+
+                        <label for="input-file-id"
+                               class="md-button md-raised md-accent">
+                            inserir imagem do produto
+                        </label>
+                        <md-input-container class="md-block"
+                                            flex="70"
+                                            style="margin: 0; top: 13px; left: 5px;">
+                            <label>Recomendamos subir imagens com 200px de largura e 200px de altura</label>
+                            <input name="files-name"
+                                   ng-model="saveProducts.vars.filesName"
+                                   readonly>
+                        </md-input-container>
+                    </div>
                 </div>
 
-                <div flex="70">
-                    <input class="ng-hide"
-                           id="input-file-id"
-                           type="file"
-                           name="files"
-                           ng-model="saveProducts.vars.files"
-
-                           ngf-select
-                           ngf-pattern="'image/*'"
-                           ngf-accept="'image/*'"
-                           ngf-multiple="false">
-
-                    <label for="input-file-id"
-                           class="md-button md-raised md-accent">
-                        inserir imagem do produto
-                    </label>
-                    <md-input-container class="md-block"
-                                        flex="70"
-                                        style="margin: 0; top: 13px; left: 5px;">
-                        <label>Recomendamos subir imagens com 200px de largura e 200px de altura</label>
-                        <input name="files-name"
-                               ng-model="saveProducts.vars.filesName"
-                               readonly>
+                <div layout="row">
+                    <md-input-container flex="100">
+                        <label>Nome do produto</label>
+                        <input name="name" ng-model="saveProducts.vars.productName" required>
+                        <div ng-messages="saveProductsForm.name.$error">
+                            <div ng-message="required">
+                                Digite o nome do produto.
+                            </div>
+                        </div>
                     </md-input-container>
                 </div>
-            </div>
 
-            <div layout="row">
-                <md-input-container flex="100">
-                    <label>Nome do produto</label>
-                    <input ng-model="saveProducts.vars.productName">
-                </md-input-container>
-            </div>
-            <div layout="row">
-                <md-input-container flex="100">
-                    <label>Valor</label>
-                    <input type="number" ng-model="saveProducts.vars.value">
-                </md-input-container>
+                <div layout="row">
+                    <md-input-container flex="100">
+                        <label>Valor</label>
+                        <input type="number" name="value" ng-model="saveProducts.vars.value" required>
+                        <div ng-messages="saveProductsForm.value.$error">
+                            <div ng-message="required">
+                                Digite o valor do produto.
+                            </div>
+                        </div>
+                    </md-input-container>
 
-                <md-input-container flex="100">
-                    <label>Valor em promoção</label>
-                    <input type="number" ng-model="saveProducts.vars.promotionValue">
+                    <md-input-container flex="100">
+                        <label>Valor em promoção</label>
+                        <input type="number" ng-model="saveProducts.vars.promotionValue">
 
-                    <md-tooltip>
-                        Deixe em branco caso não esteja em promoção
-                    </md-tooltip>
-                </md-input-container>
+                        <md-tooltip>
+                            Deixe em branco caso não esteja em promoção
+                        </md-tooltip>
+                    </md-input-container>
 
-                <md-input-container flex="100">
-                    <label>Quantidade</label>
-                    <input type="number" ng-model="saveProducts.vars.amount">
-                </md-input-container>
+                    <md-input-container flex="100">
+                        <label>Quantidade</label>
+                        <input type="number" ng-model="saveProducts.vars.amount">
+                    </md-input-container>
 
-                <md-input-container flex="100">
-                    <label>Categoria</label>
-                    <md-select ng-model="saveProducts.vars.categoryID" aria-label="type">
-                        <md-option ng-repeat="item in saveProducts.vars.listCategory"
-                                   aria-label="{{item.categoryName}}"
-                                   value="{{item._id}}">
-                            {{item.categoryName}}
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-            </div>
+                    <md-input-container flex="100">
+                        <label>Categoria</label>
+                        <md-select name="category" ng-model="saveProducts.vars.categoryID" aria-label="type" required>
+                            <md-option ng-repeat="item in saveProducts.vars.listCategory"
+                                       aria-label="{{item.categoryName}}"
+                                       value="{{item._id}}">
+                                {{item.categoryName}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="saveProductsForm.category.$error">
+                            <div ng-message="required">
+                                Escolha a categoria do produto.
+                            </div>
+                        </div>
+                    </md-input-container>
+                </div>
 
-            <div layout="row">
-                <md-input-container flex="100">
-                    <label>Descrição</label>
-                    <input type="text" ng-model="saveProducts.vars.description">
-                </md-input-container>
-            </div>
-            
+                <div layout="row">
+                    <md-input-container flex="100">
+                        <label>Descrição</label>
+                        <input type="text" ng-model="saveProducts.vars.description">
+                    </md-input-container>
+                </div>
+            </form>
         </div>
     </md-dialog-content>
 
@@ -110,11 +127,16 @@
         </md-button>
         <span flex></span>
 
-        <md-button ng-click="saveProducts.functions.saveAndNew.doSave()">
-            Salvar e inserir um novo
-        </md-button>
-        <md-button ng-click="saveProducts.functions.save.doSave()">
-            Salvar
-        </md-button>
+        <div>
+            <md-button ng-disabled="!saveProductsForm.$valid" ng-click="saveProducts.functions.saveAndNew.doSave()">
+                Salvar e inserir um novo
+            </md-button>
+            <md-button ng-disabled="!saveProductsForm.$valid" ng-click="saveProducts.functions.save.doSave()">
+                Salvar
+            </md-button>
+            <md-tooltip ng-if="!saveProductsForm.$valid" md-direction="top">
+                <span style="font-size: 20px">É necessário preencher os valores obrigatórios (*)</span>
+            </md-tooltip>
+        </div>
     </md-dialog-actions>
 </md-dialog>

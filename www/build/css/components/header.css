@@ -1,1 +1,0 @@
-body:before{white-space:pre;font-family:monospace;content:"Error: Undefined variable: \"$main-color\".\A         on line 2 of srcApp/sass/components/header.scss\A \A 1: .header {\A 2:     background: $main-color;\A 3:     position: relative;\A 4:     margin-bottom: 15px;\A 5:     text-align: center;\A 6:     overflow: hidden;\A 7:     .header__icon {"}

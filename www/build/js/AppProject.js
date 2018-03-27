@@ -313,24 +313,12 @@ angular
 })();
 (function(){
 "use strict";
-/**
- * Created by Guilherme Assis on 19/09/2016.
- */
-
-angular
-	.module('core');
-
-})();
-(function(){
-"use strict";
-/**
- * Created by Michel Costa S on 2/24/2016.
- * @Description: Configurador da barra de carregamento para o Bloo Project inteiro usando as Promises.
- */
 angular
 	.module('core')
 	.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
-		cfpLoadingBarProvider.includeSpinner = false;
+        cfpLoadingBarProvider.includeBar = true;
+        cfpLoadingBarProvider.includeSpinner = true;
+        cfpLoadingBarProvider.loadingBarTemplate = '<div id="loading-bar"><div class="bar"><div class="peg"></div></div></div>';
 	}]);
 
 })();

@@ -32,7 +32,7 @@ function QRCodeReaderController($stateParams, $state, getProfile, toastAction, s
                             bottom : true,
                             left : false,
                             right : true,
-                            text : 'Algo deu errado, tente novamente.',
+                            text : 'Scan finalizado.',
                             scope : QRCodeReader
                         });
                         QRScanner.cancelScan();
@@ -134,7 +134,15 @@ function QRCodeReaderController($stateParams, $state, getProfile, toastAction, s
         cancelScan : function () {
             QRScanner.cancelScan();
             QRScanner.hide();
-            $state.go('user.mainList');
+            $state.go('place', {
+                place : {
+                    pubData : $stateParams.place.pubData,
+                    userLocal : {
+                        lat : $stateParams.place.userLocal.lat,
+                        long : $stateParams.place.userLocal.long
+                    }
+                }
+            });
         }
     };
 
@@ -168,7 +176,10 @@ function login(loginService, $window, toastAction) {
         loginFacebook : function () {
             loginService.doLoginFacebook().then(function (data) {
                 if(data.status){
-                    loginService.recordData.save(data, function (result) {
+                    loginService.recordData.save({
+                        data : data.data,
+                        type : 'facebook'
+                    }, function (result) {
                         switch (true){
                             case result.status === true:
                                 login.vars.message = 'Logado! :)';
@@ -202,7 +213,10 @@ function login(loginService, $window, toastAction) {
         loginGoogle : function () {
             loginService.doLoginGoogle().then(function (data) {
                 if(data.status){
-                    loginService.recordData.save(data.data, function (result) {
+                    loginService.recordData.save({
+                        data : data.data,
+                        type : 'google'
+                    }, function (result) {
                         switch (true){
                             case result.status === true:
                                 login.vars.message = 'Logado! :)';
@@ -871,8 +885,12 @@ function placeService($resource, defineHost) {
     return {
         getMenu : $resource(defineHost.host + '/app/getMenu'),
         getCategory : $resource(defineHost.host + '/app/getCategory'),
-        notFavorite : $resource(defineHost.host + '/app/notFavorite'),
-        markFavorite : $resource(defineHost.host + '/app/markFavorite')
+        notFavorite : $resource(defineHost.host + '/app/notFavorite', {
+            ignoreLoadingBar: true
+        }),
+        markFavorite : $resource(defineHost.host + '/app/markFavorite', {
+            ignoreLoadingBar: true
+        })
     }
 }
 })();
@@ -1097,17 +1115,13 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
             },
 
             successRequireClose : function (data) {
-                dialogAdvanced.show({
-                    controller : resumeToEndController,
-                    controllerAs : 'resumeToEnd',
-                    templateUrl : 'templates/modules/placeRequest/resumeToEnd.html',
-                    clickOutsideToClose : false,
-                    dataToDialog : data.data,
-                    functionThen : function (data) {
-                        if(data.status){
-                            //cancelar
-                        }
-                    }
+                toastAction.show({
+                    top : false,
+                    bottom : true,
+                    left : false,
+                    right : true,
+                    text : 'Seu pedido esta sendo encerrado, aguarde um instante.',
+                    scope : placeRequest
                 });
             }
         },
@@ -1177,51 +1191,6 @@ function placeRequestController($stateParams, $state, placeService, placeRequest
     };
 
     placeRequest.functions.core();
-}
-
-function resumeToEndController(data, dialogAdvanced) {
-    var resumeToEnd = this;
-    resumeToEnd.vars = {};
-
-    resumeToEnd.functions = {
-        core : function () {
-            resumeToEnd.functions.defineVars();
-        },
-
-        defineVars : function () {
-            resumeToEnd.vars.dataResume = data;
-            resumeToEnd.vars.listProducts = [];
-            resumeToEnd.vars.dataResume.products.forEach(function (value) {
-                if(resumeToEnd.vars.listProducts.map(function(e) {
-                    return e._id;
-                }).indexOf(value.productID._id) < 0) {
-                    if(value.productID.promotionValue !== 'null'){
-                        value.productID.realValue = value.productID.promotionValue
-                    }else{
-                        value.productID.realValue = value.productID.value
-                    }
-
-                    resumeToEnd.vars.listProducts.push({
-                        _id : value.productID._id,
-                        productName : value.productID.productName,
-                        value : value.productID.realValue,
-                        amount : 1
-                    });
-                }else{
-                    resumeToEnd.vars.listProducts[resumeToEnd.vars.listProducts.map(function(e) { return e._id; }).indexOf(value.productID._id)].amount ++;
-                }
-            });
-
-            if(resumeToEnd.vars.listProducts.length > 0){
-                resumeToEnd.vars.total = 0;
-                resumeToEnd.vars.listProducts.forEach(function (value) {
-                    resumeToEnd.vars.total = resumeToEnd.vars.total + (value.value * value.amount);
-                })
-            }
-        }
-    };
-
-    resumeToEnd.functions.core();
 }
 })();
 (function(){

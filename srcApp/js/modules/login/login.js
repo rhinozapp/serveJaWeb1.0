@@ -11,7 +11,10 @@ function login(loginService, $window, toastAction) {
         loginFacebook : function () {
             loginService.doLoginFacebook().then(function (data) {
                 if(data.status){
-                    loginService.recordData.save(data, function (result) {
+                    loginService.recordData.save({
+                        data : data.data,
+                        type : 'facebook'
+                    }, function (result) {
                         switch (true){
                             case result.status === true:
                                 login.vars.message = 'Logado! :)';
@@ -45,7 +48,10 @@ function login(loginService, $window, toastAction) {
         loginGoogle : function () {
             loginService.doLoginGoogle().then(function (data) {
                 if(data.status){
-                    loginService.recordData.save(data.data, function (result) {
+                    loginService.recordData.save({
+                        data : data.data,
+                        type : 'google'
+                    }, function (result) {
                         switch (true){
                             case result.status === true:
                                 login.vars.message = 'Logado! :)';
