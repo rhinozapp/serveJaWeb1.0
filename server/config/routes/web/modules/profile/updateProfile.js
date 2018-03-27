@@ -1,9 +1,7 @@
 exports.updateProfile = function (req, res) {
-    let result = {},
-        files = '',
-        fileName = '',
-        mongoose = require('mongoose'),
+    let mongoose = require('mongoose'),
         userAdmin = mongoose.model('userAdmin'),
+        cloudinary = require('cloudinary'),
         sundayStatus,
         mondayStatus,
         tuesdayStatus,
@@ -94,88 +92,156 @@ exports.updateProfile = function (req, res) {
 
     //region If file
     if(req.files.file){
-        fileName = req.files.file.path.split('logoProfile/');
-        files += fileName[1];
-
+        cloudinary.v2.uploader.upload(req.files.file.path, {
+            folder : 'logoProfile'
+        }, function (error, result) {
+            userAdmin.update({
+                _id : mongoose.Types.ObjectId(req.body.vars._id)
+            }, {
+                logoPath : result.secure_url,
+                name : req.body.vars.name,
+                cnpj : req.body.vars.cnpj,
+                description : req.body.vars.description,
+                pageFacebook : req.body.vars.pageFacebook,
+                pageInstagram : req.body.vars.pageInstagram,
+                webSite : req.body.vars.webSite,
+                zipCode: req.body.vars.zipCode,
+                address : req.body.vars.address,
+                number : req.body.vars.number,
+                complement : req.body.vars.complement,
+                neighborhood : req.body.vars.neighborhood,
+                city : req.body.vars.city,
+                uf : req.body.vars.uf,
+                loc : {
+                    'type' : 'Point',
+                    coordinates: [req.body.vars.long, req.body.vars.lat]
+                },
+                statusLoc : req.body.vars.status,
+                sunday : {
+                    status: sundayStatus,
+                    timeStart : req.body.vars.sundayStart,
+                    timeEnd : req.body.vars.sundayEnd,
+                    sundayMenu : req.body.vars.sundayMenu
+                },
+                monday : {
+                    status: mondayStatus,
+                    timeStart : req.body.vars.mondayStart,
+                    timeEnd : req.body.vars.mondayEnd,
+                    mondayMenu : req.body.vars.mondayMenu
+                },
+                tuesday : {
+                    status : tuesdayStatus ,
+                    timeStart : req.body.vars.tuesdayStart,
+                    timeEnd : req.body.vars.tuesdayEnd,
+                    tuesdayMenu : req.body.vars.tuesdayMenu
+                },
+                wednesday : {
+                    status : wednesdayStatus,
+                    timeStart : req.body.vars.wednesdayStart,
+                    timeEnd : req.body.vars.wednesdayEnd,
+                    wednesdayMenu : req.body.vars.wednesdayMenu
+                },
+                thursday : {
+                    status : thursdayStatus,
+                    timeStart : req.body.vars.thursdayStart,
+                    timeEnd : req.body.vars.thursdayEnd,
+                    thursdayMenu : req.body.vars.thursdayMenu
+                },
+                friday : {
+                    status: fridayStatus,
+                    timeStart : req.body.vars.fridayStart,
+                    timeEnd : req.body.vars.fridayEnd,
+                    fridayMenu : req.body.vars.fridayMenu
+                },
+                saturday : {
+                    status : saturdayStatus,
+                    timeStart : req.body.vars.saturdayStart,
+                    timeEnd : req.body.vars.saturdayEnd,
+                    saturdayMenu : req.body.vars.saturdayMenu
+                }
+            }, {
+                multi : false
+            }, function (err, result) {
+                if(err){
+                    res.json({status : false});
+                }else{
+                    res.json({status : true});
+                }
+            });
+        });
+    }else{
         userAdmin.update({
             _id : mongoose.Types.ObjectId(req.body.vars._id)
         }, {
-            logoPath : files
+            name : req.body.vars.name,
+            cnpj : req.body.vars.cnpj,
+            description : req.body.vars.description,
+            pageFacebook : req.body.vars.pageFacebook,
+            pageInstagram : req.body.vars.pageInstagram,
+            webSite : req.body.vars.webSite,
+            zipCode: req.body.vars.zipCode,
+            address : req.body.vars.address,
+            number : req.body.vars.number,
+            complement : req.body.vars.complement,
+            neighborhood : req.body.vars.neighborhood,
+            city : req.body.vars.city,
+            uf : req.body.vars.uf,
+            loc : {
+                'type' : 'Point',
+                coordinates: [req.body.vars.long, req.body.vars.lat]
+            },
+            statusLoc : req.body.vars.status,
+            sunday : {
+                status: sundayStatus,
+                timeStart : req.body.vars.sundayStart,
+                timeEnd : req.body.vars.sundayEnd,
+                sundayMenu : req.body.vars.sundayMenu
+            },
+            monday : {
+                status: mondayStatus,
+                timeStart : req.body.vars.mondayStart,
+                timeEnd : req.body.vars.mondayEnd,
+                mondayMenu : req.body.vars.mondayMenu
+            },
+            tuesday : {
+                status : tuesdayStatus ,
+                timeStart : req.body.vars.tuesdayStart,
+                timeEnd : req.body.vars.tuesdayEnd,
+                tuesdayMenu : req.body.vars.tuesdayMenu
+            },
+            wednesday : {
+                status : wednesdayStatus,
+                timeStart : req.body.vars.wednesdayStart,
+                timeEnd : req.body.vars.wednesdayEnd,
+                wednesdayMenu : req.body.vars.wednesdayMenu
+            },
+            thursday : {
+                status : thursdayStatus,
+                timeStart : req.body.vars.thursdayStart,
+                timeEnd : req.body.vars.thursdayEnd,
+                thursdayMenu : req.body.vars.thursdayMenu
+            },
+            friday : {
+                status: fridayStatus,
+                timeStart : req.body.vars.fridayStart,
+                timeEnd : req.body.vars.fridayEnd,
+                fridayMenu : req.body.vars.fridayMenu
+            },
+            saturday : {
+                status : saturdayStatus,
+                timeStart : req.body.vars.saturdayStart,
+                timeEnd : req.body.vars.saturdayEnd,
+                saturdayMenu : req.body.vars.saturdayMenu
+            }
         }, {
-           multi : false
-        }, function (data) {
+            multi : false
+        }, function (err, data) {
+            if(err){
+                res.json({status : false});
+            }else{
+                res.json({status : true});
+            }
         });
     }
-    //endregion
-
-    //region Update info
-    userAdmin.update({
-        _id : mongoose.Types.ObjectId(req.body.vars._id)
-    }, {
-        name : req.body.vars.name,
-        cnpj : req.body.vars.cnpj,
-        description : req.body.vars.description,
-        pageFacebook : req.body.vars.pageFacebook,
-        pageInstagram : req.body.vars.pageInstagram,
-        webSite : req.body.vars.webSite,
-        zipCode: req.body.vars.zipCode,
-        address : req.body.vars.address,
-        number : req.body.vars.number,
-        complement : req.body.vars.complement,
-        neighborhood : req.body.vars.neighborhood,
-        city : req.body.vars.city,
-        uf : req.body.vars.uf,
-        loc : {
-            'type' : 'Point',
-            coordinates: [req.body.vars.long, req.body.vars.lat]
-        },
-        statusLoc : req.body.vars.status,
-        sunday : {
-            status: sundayStatus,
-            timeStart : req.body.vars.sundayStart,
-            timeEnd : req.body.vars.sundayEnd,
-            sundayMenu : req.body.vars.sundayMenu
-        },
-        monday : {
-            status: mondayStatus,
-            timeStart : req.body.vars.mondayStart,
-            timeEnd : req.body.vars.mondayEnd,
-            mondayMenu : req.body.vars.mondayMenu
-        },
-        tuesday : {
-            status : tuesdayStatus ,
-            timeStart : req.body.vars.tuesdayStart,
-            timeEnd : req.body.vars.tuesdayEnd,
-            tuesdayMenu : req.body.vars.tuesdayMenu
-        },
-        wednesday : {
-            status : wednesdayStatus,
-            timeStart : req.body.vars.wednesdayStart,
-            timeEnd : req.body.vars.wednesdayEnd,
-            wednesdayMenu : req.body.vars.wednesdayMenu
-        },
-        thursday : {
-            status : thursdayStatus,
-            timeStart : req.body.vars.thursdayStart,
-            timeEnd : req.body.vars.thursdayEnd,
-            thursdayMenu : req.body.vars.thursdayMenu
-        },
-        friday : {
-            status: fridayStatus,
-            timeStart : req.body.vars.fridayStart,
-            timeEnd : req.body.vars.fridayEnd,
-            fridayMenu : req.body.vars.fridayMenu
-        },
-        saturday : {
-            status : saturdayStatus,
-            timeStart : req.body.vars.saturdayStart,
-            timeEnd : req.body.vars.saturdayEnd,
-            saturdayMenu : req.body.vars.saturdayMenu
-        }
-    }, {
-        multi : false
-    }, function (err, data) {
-        res.send(true);
-    });
     //endregion
 };

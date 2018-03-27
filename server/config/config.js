@@ -10,7 +10,8 @@ module.exports = function(app, http) {
         cors = require('cors'),
         logDirectory = './log/server/',
         consign = require('consign'),
-        logger = require('./logger');
+        logger = require('./logger'),
+        cloudinary = require('cloudinary');
     //endregion
 
     //region Morgan Setup
@@ -40,6 +41,14 @@ module.exports = function(app, http) {
     app.use(cors({origin: 'https://rhinozapp.herokuapp.com', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
     app.use(cors({origin: 'https://rhinozapp.herokuapp.com:42701', methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'}));
     app.options('*', cors());
+    //endregion
+
+    //region Cloudinary
+    cloudinary.config({
+        cloud_name: 'hggvadgpm',
+        api_key: '614446967618615',
+        api_secret: 'EmRtEU1guQ0G-B47t8e9PJ7TuqE'
+    });
     //endregion
 
     //region Consign

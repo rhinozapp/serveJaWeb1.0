@@ -40,5 +40,13 @@
     "variables": {
       "REVERSED_CLIENT_ID": "com.googleusercontent.apps.675857416832-cja7rbuo650a35cjcksnq9o4qnln2afk"
     }
+  },
+  "cordova-plugin-geolocation": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-geolocation@^4.0.1"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

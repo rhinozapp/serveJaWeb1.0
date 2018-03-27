@@ -30,7 +30,7 @@
                      alt="Header img">
 
                 <img ng-if="profile.vars.headerImgPath && !profile.vars.headerImgProfile"
-                     ng-src="files/headerImgProfile/{{profile.vars.headerImgPath}}"
+                     ng-src="{{profile.vars.headerImgPath}}"
                      class="md-card-image"
                      style="height: 200px"
                      alt="Header img">
@@ -50,9 +50,14 @@
                 <md-card-content layout-padding>
                     <div layout="row">
                         <div flex="30">
-                            <img ng-if="profile.vars.logoPath && !profile.vars.files" ng-src="files/logoProfile/{{profile.vars.logoPath}}" class="avatar-profile" alt="" />
+                            <img ng-if="profile.vars.logoPath && !profile.vars.files"
+                                 ng-src="{{profile.vars.logoPath}}"
+                                 class="avatar-profile"
+                                 alt="" />
 
-                            <img ng-if="profile.vars.files" class="avatar-profile" ngf-thumbnail="profile.vars.files || '/thumb.jpg'">
+                            <img ng-if="profile.vars.files"
+                                 class="avatar-profile"
+                                 ngf-thumbnail="profile.vars.files || '/thumb.jpg'">
                         </div>
 
                         <div flex="30">

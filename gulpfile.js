@@ -93,9 +93,7 @@ gulp.task('vendor', function () {
 
         bower + 'ng-cordova-oauth/dist/ng-cordova-oauth.js',
 
-        bower + 'angular-haversine/angular-haversine.js',
-
-        bower + 'firebase/firebase.js'
+        bower + 'angular-haversine/angular-haversine.js'
     ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest(dest + 'js'));

@@ -28,5 +28,6 @@
     <plugin name="cordova-plugin-googleplus" spec="^5.2.1">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.675857416832-cja7rbuo650a35cjcksnq9o4qnln2afk" />
     </plugin>
+    <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <engine name="android" spec="^7.0.0" />
 </widget>

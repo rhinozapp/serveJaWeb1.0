@@ -16,11 +16,13 @@
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
+    "cloudinary": "^1.10.0",
     "connect-multiparty": "^2.0.0",
     "consign": "^0.1.5",
     "cordova-android": "^7.0.0",
     "cordova-plugin-cognex-mx1000-scanner": "0.0.2",
     "cordova-plugin-compat": "^1.2.0",
+    "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-googleplus": "^5.2.1",
     "cordova-plugin-inappbrowser": "^1.7.2",
     "cordova-plugin-qrscanner": "^2.5.0",
@@ -58,7 +60,8 @@
       "cordova-plugin-qrscanner": {},
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.675857416832-cja7rbuo650a35cjcksnq9o4qnln2afk"
-      }
+      },
+      "cordova-plugin-geolocation": {}
     },
     "platforms": [
       "android"

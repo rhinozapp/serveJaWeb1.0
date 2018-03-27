@@ -3,7 +3,7 @@ exports.deleteTables = function (req, res) {
         tables = mongoose.model('tables');
 
     tables.remove({
-        _id : req.body.tablesID
+        _id : mongoose.Types.ObjectId(req.body.tablesID)
     }, function (err) {
         if (err){
             res.json({status : false});
