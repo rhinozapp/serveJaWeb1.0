@@ -219,15 +219,13 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
         },
 
         changeHeaderImg : function () {
-            Upload.upload({
+            return Upload.upload({
                 url: '/web/updateHeaderImgProfile',
                 method: 'POST',
                 data: {
                     file: profile.vars.headerImgProfile,
                     vars: profile.vars
                 }
-            }).then(function() {
-                /*profile.functions.core();*/
             });
         },
 
@@ -252,10 +250,12 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
 
         save : function () {
             if(profile.vars.headerImgProfile){
-                profile.functions.changeHeaderImg();
+                profile.functions.changeHeaderImg().then(function() {
+                    profile.functions.upload();
+                });
+            }else{
+                profile.functions.upload();
             }
-
-            profile.functions.upload();
         }
     };
 

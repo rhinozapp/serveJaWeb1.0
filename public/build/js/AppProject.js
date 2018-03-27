@@ -205,18 +205,17 @@ angular
 })();
 (function(){
 "use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
 angular
     .module('core')
     .config(function ($mdThemingProvider) {
+
+        $mdThemingProvider.definePalette('myTheme', $mdThemingProvider.extendPalette('amber', {
+            '500': '#ffbb00'
+        }));
+
         $mdThemingProvider.theme('default')
-            .primaryPalette('grey', {
-                'default' : '800'
-            })
-            .accentPalette('blue')
+            .primaryPalette('myTheme')
+            .accentPalette('grey')
             .warnPalette('orange');
     });
 })();
@@ -225,14 +224,6 @@ angular
 angular
     .module('core')
     .config(['uiMask.ConfigProvider', function(uiMaskConfigProvider) {}]);
-})();
-(function(){
-"use strict";
-/**
- * Created by guiga on 25/05/2017.
- */
-
-angular.module('layout', []);
 })();
 (function(){
 "use strict";
@@ -456,6 +447,14 @@ angular
             getDataBack : $resource('web/zipCode')
         };
     });
+})();
+(function(){
+"use strict";
+/**
+ * Created by guiga on 25/05/2017.
+ */
+
+angular.module('layout', []);
 })();
 (function(){
 "use strict";

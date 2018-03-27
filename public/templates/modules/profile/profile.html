@@ -13,10 +13,9 @@
     </md-button>
 
     <div layout="row" layout-align="start start">
-
         <div layout="column" flex="50">
             <md-card flex="100">
-                <img ng-if="!profile.vars.headerImgPath"
+                <img ng-if="!profile.vars.headerImgPath && !profile.vars.headerImgProfile"
                      ng-src="files/headerImgProfile/default.png"
                      class="md-card-image"
                      style="height: 200px"

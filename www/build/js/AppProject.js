@@ -398,6 +398,21 @@ angular
             window.scrollTo(0, 0);
             var token = $window.localStorage.token;
 
+            //region Diagnostic
+            cordova.plugins.diagnostic.isGpsLocationAvailable(function(available){
+                if(!available){
+                    dialogConfirm.show({
+                        title : 'Atenção',
+                        textContent : 'Para melhorar sua experiência no ServeJa, ative a localização.',
+                        ok : 'Ativar',
+                        confirmFunction : function () {
+                            cordova.plugins.diagnostic.switchToLocationSettings();
+                        }
+                    });
+                }
+            }, function(error){});
+            //endregion
+
             //region Check connection
             if(navigator.connection.type === 'none'){
                 dialogConfirm.show({

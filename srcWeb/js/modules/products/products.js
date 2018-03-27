@@ -122,7 +122,7 @@ function products($scope, $filter, productsService, profileGet, dialogAdvanced, 
     products.functions.core();
 }
 
-function saveProductsController(dialogAdvanced, toastAction, productsService, profileGet, data, Upload) {
+function saveProductsController($scope, dialogAdvanced, toastAction, productsService, profileGet, data, Upload) {
     var saveProducts = this;
     saveProducts.vars = {};
 
@@ -201,6 +201,9 @@ function saveProductsController(dialogAdvanced, toastAction, productsService, pr
                     text : 'Produto salvo!',
                     scope : saveProducts
                 });
+                $scope.saveProductsForm.value.$touched = false;
+                $scope.saveProductsForm.nameProduct.$touched = false;
+                $scope.saveProductsForm.category.$touched = false;
                 saveProducts.vars = {};
                 saveProducts.functions.getCategory.getCategory();
             }

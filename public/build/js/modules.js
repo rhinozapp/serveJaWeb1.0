@@ -772,7 +772,7 @@ function products($scope, $filter, productsService, profileGet, dialogAdvanced, 
     products.functions.core();
 }
 
-function saveProductsController(dialogAdvanced, toastAction, productsService, profileGet, data, Upload) {
+function saveProductsController($scope, dialogAdvanced, toastAction, productsService, profileGet, data, Upload) {
     var saveProducts = this;
     saveProducts.vars = {};
 
@@ -851,6 +851,9 @@ function saveProductsController(dialogAdvanced, toastAction, productsService, pr
                     text : 'Produto salvo!',
                     scope : saveProducts
                 });
+                $scope.saveProductsForm.value.$touched = false;
+                $scope.saveProductsForm.nameProduct.$touched = false;
+                $scope.saveProductsForm.category.$touched = false;
                 saveProducts.vars = {};
                 saveProducts.functions.getCategory.getCategory();
             }
@@ -1178,15 +1181,13 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
         },
 
         changeHeaderImg : function () {
-            Upload.upload({
+            return Upload.upload({
                 url: '/web/updateHeaderImgProfile',
                 method: 'POST',
                 data: {
                     file: profile.vars.headerImgProfile,
                     vars: profile.vars
                 }
-            }).then(function() {
-                /*profile.functions.core();*/
             });
         },
 
@@ -1211,10 +1212,12 @@ function profile(profileGet, profileService, zipCodeSearch, Upload, dialogAlert,
 
         save : function () {
             if(profile.vars.headerImgProfile){
-                profile.functions.changeHeaderImg();
+                profile.functions.changeHeaderImg().then(function() {
+                    profile.functions.upload();
+                });
+            }else{
+                profile.functions.upload();
             }
-
-            profile.functions.upload();
         }
     };
 

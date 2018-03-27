@@ -1,14 +1,13 @@
-/**
- * Created by guiga on 25/05/2017.
- */
-
 angular
     .module('core')
     .config(function ($mdThemingProvider) {
+
+        $mdThemingProvider.definePalette('myTheme', $mdThemingProvider.extendPalette('amber', {
+            '500': '#ffbb00'
+        }));
+
         $mdThemingProvider.theme('default')
-            .primaryPalette('grey', {
-                'default' : '800'
-            })
-            .accentPalette('blue')
+            .primaryPalette('myTheme')
+            .accentPalette('grey')
             .warnPalette('orange');
     });
