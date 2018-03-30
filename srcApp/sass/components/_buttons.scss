@@ -25,12 +25,12 @@
     text-transform: uppercase;
     font-weight: bold;
     outline: none;
-    transition: .3s ease;
+    transition: .1s ease;
 }
 
 .btn__default--pay{
     margin-bottom: 20px;
-    transition: .3s ease;
+    transition: .1s ease;
 }
 
 .btn-float-right{
@@ -39,11 +39,11 @@
     left: 82%;
     top: 80%;
     outline: none;
-    transition: .3s ease;
+    transition: .1s ease;
 }
 
 .btn__send{
-    box-shadow: 0px 1px 20px -2px #000;
+    box-shadow: 0px 1px 20px -4px #000;
     text-align: center;
     border-radius: 50%;
     width: 70px;
@@ -56,19 +56,22 @@
     border: none;
     font-weight: bold;
     outline: none;
-    transition: .3s ease;
+    transition: .1s ease;
 }
 
 .btn__default-back{
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     background: $main-color;
     color: $secondary-color;
     border: none;
     font-weight: bold;
     outline: none;
-    transition: .3s ease;
+    transition: .1s ease;
+    position: fixed;
+    top: 17px;
+    font-size: 0.9em;
 }
 
 .btn__default:active,
