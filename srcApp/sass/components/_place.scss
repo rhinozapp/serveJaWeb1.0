@@ -105,6 +105,12 @@
                     font-weight: bold;
                     font-size: 1.2em;
                     outline: none;
+                    transition: .1s ease;
+                    &:active{
+                        -webkit-transform: scale(0.9);
+                        -ms-transform: scale(0.9);
+                        transform: scale(0.9);
+                    }
                 }
                 .bars__request-number{
                     width: 17%;
